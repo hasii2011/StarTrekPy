@@ -8,6 +8,7 @@ from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
 
+
 class IntelligenceTest(BaseTest):
     """ha ha"""
 
@@ -20,7 +21,7 @@ class IntelligenceTest(BaseTest):
     #
     # Need to know this cuz' commander count depends on this value
     #
-    KNOWN_KLINGON_COUNT         = 48
+    KNOWN_KLINGON_COUNT = 48
 
     @classmethod
     def setUpClass(cls):
@@ -40,7 +41,7 @@ class IntelligenceTest(BaseTest):
         self.assertIsNotNone(coordinates, "Should not be null")
         self.logger.info("random coordinates: '%s'",coordinates)
 
-        bogusCoordinate =Coordinates(-1,-1)
+        bogusCoordinate =Coordinates(-1, -1)
 
         self.assertNotEqual(coordinates, bogusCoordinate, "Not truly initializing random coordinates")
 
@@ -70,9 +71,9 @@ class IntelligenceTest(BaseTest):
     def testInitialKlingonCountPlayerTypeEmeritusGameTypeLong(self):
         """"""
 
-        settings            = Settings()
-        settings.skill      = PlayerType.Emeritus
-        settings.gameType   = GameType.Long
+        settings          = Settings()
+        settings.skill    = PlayerType.Emeritus
+        settings.gameType = GameType.Long
 
         intelligence = Intelligence()
         klingonCount = intelligence.getInitialKlingonCount(remainingGameTime=IntelligenceTest.DEFAULT_GAME_LENGTH)

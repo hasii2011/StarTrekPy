@@ -11,7 +11,8 @@ from org.hasii.pytrek.objects import Coordinates
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.ComputerStatus import ComputerStatus
 
-class GameStatisticsSingletonTest(BaseTest):
+
+class GameStatisticsTest(BaseTest):
     """"""
     @classmethod
     def setUpClass(cls):
@@ -38,8 +39,8 @@ class GameStatisticsSingletonTest(BaseTest):
         gsst.gameType = GameType.Medium
         gsst.starDate = 40501.0
         gsst.computerStatus = ComputerStatus.Down
-        gsst.currentQuadrantCoordinates = Coordinates(4,4)
-        gsst.currentSectorCoordinates   = Coordinates(9,9)
+        gsst.currentQuadrantCoordinates = Coordinates(4, 4)
+        gsst.currentSectorCoordinates   = Coordinates(9, 9)
 
         jsonGsst = jsonpickle.encode(gsst)
         self.assertIsNotNone(jsonGsst, "Pickling failed")
@@ -61,6 +62,7 @@ class GameStatisticsSingletonTest(BaseTest):
         self.assertEqual(gsst.skill,          thawedGameGsst.skill,          "Skill did not thaw")
         self.assertEqual(gsst.starDate,       thawedGameGsst.starDate,       "Star date did not thaw")
         self.assertEqual(gsst.computerStatus, thawedGameGsst.computerStatus, "Computer status did not thaw")
+
 
 if __name__ == '__main__':
     unittest.main()

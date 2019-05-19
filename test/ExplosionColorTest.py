@@ -5,6 +5,7 @@ import logging
 from BaseTest import BaseTest
 from org.hasii.pytrek.gui.ExplosionColor import ExplosionColor
 
+
 class ExplosionColorTest(BaseTest):
     """ha ha"""
 
@@ -16,7 +17,7 @@ class ExplosionColorTest(BaseTest):
 
     def setUp(self):
         """"""
-        self.logger       = logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
 
     def testSuccessorFromUnknown(self):
         """"""
@@ -39,7 +40,6 @@ class ExplosionColorTest(BaseTest):
 
         self.assertEqual(nextColor, ExplosionColor.NO_COLOR, "Wrap around from last color did not work")
 
-
     def testPredecessorFromBlue(self):
         """"""
         color:     ExplosionColor = ExplosionColor.BLUE
@@ -61,8 +61,6 @@ class ExplosionColorTest(BaseTest):
         nextColor: ExplosionColor = color.predecessor()
 
         self.assertEqual(nextColor, ExplosionColor.WHITE, "Predecessor from top does not work")
-
-
 
 
 if __name__ == '__main__':

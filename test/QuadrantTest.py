@@ -2,12 +2,12 @@ import unittest
 import logging
 
 from BaseTest import BaseTest
-from org.hasii.pytrek.Settings import Settings
-from org.hasii.pytrek.engine.Computer import Computer
+
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.objects.Quadrant import Quadrant
 from org.hasii.pytrek.objects.SectorType import SectorType
+
 
 class QuadrantTest(BaseTest):
     """ha ha"""
@@ -20,13 +20,11 @@ class QuadrantTest(BaseTest):
     def setUp(self):
         """"""
 
-        # self.settings     = Settings()
-        # self.computer     = Computer()
         self.intelligence = Intelligence()
         self.logger       = logging.getLogger(__name__)
 
         mockCoordinates   = Coordinates(x=5, y=5)
-        self.quadrant     = Quadrant(coordinates=mockCoordinates,screen=None);
+        self.quadrant     = Quadrant(coordinates=mockCoordinates, screen=None);
 
     def testGetRandomEmptySector(self):
         """"""
@@ -44,7 +42,7 @@ class QuadrantTest(BaseTest):
         self.quadrant.addKlingon()
         self.quadrant.addKlingon()
 
-        actualKlingonCount = self.quadrant.klingonCount;
+        actualKlingonCount = self.quadrant.klingonCount
 
         self.assertEqual(2, actualKlingonCount, "mismatched Klingon Count")
 

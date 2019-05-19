@@ -6,6 +6,7 @@ import unittest
 from BaseTest import BaseTest
 from org.hasii.pytrek.engine.GameEngine import GameEngine
 
+
 class GameEngineTest(BaseTest):
     """"""
     @classmethod
@@ -15,7 +16,7 @@ class GameEngineTest(BaseTest):
 
     def setUp(self):
         """"""
-        self.logger     = logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
         self.gameEngine = GameEngine()
 
     def testRemainingGameTime(self):
@@ -30,6 +31,7 @@ class GameEngineTest(BaseTest):
 
     def testComputeEnergyForWarpTravel(self):
         """"""
+
 
 if __name__ == '__main__':
     unittest.main()

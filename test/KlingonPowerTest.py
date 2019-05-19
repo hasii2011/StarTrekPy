@@ -1,11 +1,10 @@
-import unittest
 
 import logging
 
 from BaseTest import BaseTest
 
-from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.KlingonPower import KlingonPower
+
 
 class KlingonPowerTest(BaseTest):
     @classmethod

@@ -1,15 +1,15 @@
 import unittest
 
-import BaseTest
-import ComputerTest
-import CoordinateTest
-import ExplosionColorTest
-import GameEngineTest
-import GameStatisticsTest
-import QuadrantTest
-import SettingsTest
-import IntelligenceTest
-import KlingonPowerTest
+from BaseTest import BaseTest
+from ComputerTest import ComputerTest
+from CoordinateTest import CoordinateTest
+from ExplosionColorTest import ExplosionColorTest
+from GameEngineTest import GameEngineTest
+from GameStatisticsTest import GameStatisticsTest
+from QuadrantTest import QuadrantTest
+from SettingsTest import SettingsTest
+from IntelligenceTest import IntelligenceTest
+from KlingonPowerTest import KlingonPowerTest
 
 
 # Initialize the test suite
@@ -17,16 +17,16 @@ loader = unittest.TestLoader()
 suite  = unittest.TestSuite()
 
 # add tests to the suite
-suite.addTest(loader.loadTestsFromModule(BaseTest))
-suite.addTest(loader.loadTestsFromModule(ComputerTest))
-suite.addTest(loader.loadTestsFromModule(CoordinateTest))
-suite.addTest(loader.loadTestsFromModule(ExplosionColorTest))
-suite.addTest(loader.loadTestsFromModule(GameEngineTest))
-suite.addTest(loader.loadTestsFromModule(GameStatisticsTest))
-suite.addTest(loader.loadTestsFromModule(IntelligenceTest))
-suite.addTest(loader.loadTestsFromModule(KlingonPowerTest))
-suite.addTest(loader.loadTestsFromModule(QuadrantTest))
-suite.addTest(loader.loadTestsFromModule(SettingsTest))
+suite.addTest(loader.loadTestsFromTestCase(BaseTest))
+suite.addTest(loader.loadTestsFromTestCase(ComputerTest))
+suite.addTest(loader.loadTestsFromTestCase(CoordinateTest))
+suite.addTest(loader.loadTestsFromTestCase(ExplosionColorTest))
+suite.addTest(loader.loadTestsFromTestCase(GameEngineTest))
+suite.addTest(loader.loadTestsFromTestCase(GameStatisticsTest))
+suite.addTest(loader.loadTestsFromTestCase(IntelligenceTest))
+suite.addTest(loader.loadTestsFromTestCase(KlingonPowerTest))
+suite.addTest(loader.loadTestsFromTestCase(QuadrantTest))
+suite.addTest(loader.loadTestsFromTestCase(SettingsTest))
 
 
 # initialize a runner, pass it your suite and run it
