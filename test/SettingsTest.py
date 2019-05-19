@@ -3,7 +3,6 @@ import unittest
 from unittest import TestCase
 from org.hasii.pytrek.Settings import Settings
 
-import os
 class ConfigParserTest(TestCase):
     """More ha ha"""
 

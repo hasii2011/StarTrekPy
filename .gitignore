@@ -6,3 +6,6 @@ __pycache__/
 /build/
 /dist/
 /python3_albow.egg-info/
+/.svn/
+/venv/
+/venv-1.9.4-3.7.2/
