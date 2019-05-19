@@ -1,0 +1,8 @@
+.idea/
+__pycache__/
+.DS_Store
+/venv-albow/
+/html/
+/build/
+/dist/
+/python3_albow.egg-info/
