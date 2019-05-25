@@ -53,21 +53,23 @@ class StarTrekScreen(Screen):
         # Python 3 update
         #
         super().__init__(shell)
+
         self.logger = logging.getLogger(__name__)
         self.surface = theSurface
 
-        self.settings     = Settings()
-        self.computer     = Computer()
-        self.stats        = GameStatistics()
+        self.settings = Settings()
+        self.computer = Computer()
+
+        self.statistics = GameStatistics()
         self.intelligence = Intelligence()
 
         self.logger = logging.getLogger(__name__)
 
-        self.soundUnableToComply  = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
-        self.soundInaccurate      = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))
-        self.soundWarp            = pygame.mixer.Sound(os.path.join('sounds', 'tos_flyby_1.wav'))
-        self.soundImpulse         = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
-        self.soundTorpedo         = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
+        self.soundUnableToComply = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
+        self.soundInaccurate     = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))
+        self.soundWarp           = pygame.mixer.Sound(os.path.join('sounds', 'tos_flyby_1.wav'))
+        self.soundImpulse        = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
+        self.soundTorpedo        = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
 
         self.galaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround           = QuadrantBackground(theSurface)
@@ -75,14 +77,14 @@ class StarTrekScreen(Screen):
         self.messageWindow        = MessageWindow(theSurface)
 
         self.gameEngine = GameEngine()
-
-        self.galaxy     = Galaxy(theSurface, self.settings, self.intelligence, self.gameEngine)
         self.enterprise = Enterprise(theSurface)
-        self.quadrant   = self.galaxy.getCurrentQuadrant()
 
-        self.stats.currentQuadrantCoordinates = self.galaxy.currentQuadrant.coordinates
-        self.stats.currentSectorCoordinates   = self.intelligence.getRandomSectorCoordinates()
-        self.quadrant.placeEnterprise(self.enterprise, self.stats.currentSectorCoordinates)
+        self.galaxy   = Galaxy(theSurface, self.settings, self.intelligence, self.gameEngine)
+        self.quadrant = self.galaxy.getCurrentQuadrant()
+
+        self.statistics.currentQuadrantCoordinates = self.galaxy.currentQuadrant.coordinates
+        self.statistics.currentSectorCoordinates   = self.intelligence.getRandomSectorCoordinates()
+        self.quadrant.placeEnterprise(self.enterprise, self.statistics.currentSectorCoordinates)
 
         self.playTime = 0
         self.mouseClickEvent = None
@@ -162,7 +164,7 @@ class StarTrekScreen(Screen):
     def impulseScreenUpdate(self):
         """"""
         coordinates: Coordinates = self.computer.computeSectorCoordinates(self.mouseClickEvent.pos[0], self.mouseClickEvent.pos[1])
-        if coordinates.__eq__(self.stats.currentSectorCoordinates):
+        if coordinates.__eq__(self.statistics.currentSectorCoordinates):
             self.messageWindow.displayMessage("WTF.  You are already here!")
             self.soundUnableToComply.play()
         else:
@@ -176,7 +178,7 @@ class StarTrekScreen(Screen):
         """"""
 
         quadrantCoordinates: Coordinates = self.computer.computeQuadrantCoordinates(self.mouseClickEvent.pos[0], self.mouseClickEvent.pos[1])
-        if quadrantCoordinates.__eq__(self.stats.currentQuadrantCoordinates):
+        if quadrantCoordinates.__eq__(self.statistics.currentQuadrantCoordinates):
             self.messageWindow.displayMessage("Hey! You are already here.")
             self.soundInaccurate.play()
         else:
