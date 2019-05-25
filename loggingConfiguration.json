@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        },
+        "demoSimple": {
+            "format": "%(levelname)s: %(module)s: %(message)s"
+        }
+    },
+    "handlers": {
+        "consoleHandler": {
+            "class": "logging.StreamHandler",
+            "formatter": "demoSimple",
+            "stream": "ext://sys.stdout"
+        }
+    },
+    "loggers": {
+        "root": {
+            "level": "INFO",
+            "handlers": [
+                "consoleHandler"
+            ],
+            "propagate": "0"
+        },
+        "__main__": {
+            "level": "INFO",
+            "handlers": [
+                "consoleHandler"
+            ],
+            "propagate": "0"
+        },
+
+        "org.hasii.pytrek.albow.StarTrekScreen": {
+            "level": "INFO",
+            "handlers": [
+                "consoleHandler"
+            ],
+            "propagate": "0"
+        }
+    }
+}

@@ -2,12 +2,16 @@ import math
 import logging
 import random
 
+from typing import List
+
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Quadrant import Quadrant
 
 from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.engine.Direction import Direction
 from org.hasii.pytrek.gui.GamePiece import GamePiece
+
+
 class Computer():
     """
     Make a computer a singleton so we don't have to pass it around
@@ -116,7 +120,7 @@ class Computer():
         self.logger.debug("Quadrant Distance: %s", distance)
         return distance
 
-    def interpolateYIntercepts(self, start: Coordinates, end: Coordinates):
+    def interpolateYIntercepts(self, start: Coordinates, end: Coordinates) -> List:
         """
         Interpolate the coordinates between the start and end coordinates.  The grid
         we implemented is oriented in Quadrant IV;
