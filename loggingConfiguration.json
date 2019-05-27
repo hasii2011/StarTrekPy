@@ -5,14 +5,15 @@
         "simple": {
             "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         },
-        "demoSimple": {
-            "format": "%(levelname)s: %(module)s: %(message)s"
+        "starTrekSimple": {
+            "format": "%(asctime)s.%(msecs)06d - %(levelname)s: %(module)s: %(message)s",
+            "datefmt" : "%H:%M:%S"
         }
     },
     "handlers": {
         "consoleHandler": {
             "class": "logging.StreamHandler",
-            "formatter": "demoSimple",
+            "formatter": "starTrekSimple",
             "stream": "ext://sys.stdout"
         }
     },
