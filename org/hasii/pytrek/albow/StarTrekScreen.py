@@ -14,7 +14,8 @@ from pygame.event import Event
 
 from albow.core.Screen import Screen
 from albow.core.Shell import Shell
-from albow.core.RootWidget import MUSIC_END_EVENT
+from albow.core.RootWidget import RootWidget
+from albow.core.UserEventCall import UserEventCall
 
 from albow.dialog.DialogUtilities import ask
 
@@ -44,8 +45,10 @@ class StarTrekScreen(Screen):
 
     MAX_X_POS = Intelligence.GALAXY_WIDTH * GamePiece.QUADRANT_PIXEL_WIDTH
 
-    CLOCK_EVENT = MUSIC_END_EVENT + 1
+    CLOCK_EVENT = RootWidget.MUSIC_END_EVENT + 1
     KLINGON_TORPEDO_EVENT = CLOCK_EVENT + 1
+
+    _myself: 'StarTrekScreen' = None
 
     def __init__(self, shell: Shell, theSurface: Surface):
 
@@ -91,6 +94,14 @@ class StarTrekScreen(Screen):
 
         pygame.time.set_timer(StarTrekScreen.CLOCK_EVENT, 10 * 1000)
         pygame.time.set_timer(StarTrekScreen.KLINGON_TORPEDO_EVENT, 15 * 1000)
+
+        clockEventCall: UserEventCall = UserEventCall(func=StarTrekScreen.clockEventCallback, userEvent=StarTrekScreen.CLOCK_EVENT)
+        ktkEventCall: UserEventCall = UserEventCall(func=StarTrekScreen.ktkEventCallback, userEvent=StarTrekScreen.KLINGON_TORPEDO_EVENT)
+
+        RootWidget.addUserEvent(clockEventCall)
+        RootWidget.addUserEvent(ktkEventCall)
+
+        StarTrekScreen._myself = self
 
     def key_down(self, theEvent: Event):
 
@@ -252,3 +263,21 @@ class StarTrekScreen(Screen):
 
     def saveGame(self):
         self.logger.info("Selected Save Game")
+
+    @staticmethod
+    def clockEventCallback(theEvent: Event):
+
+        self = StarTrekScreen._myself
+        self.logger.info(f"Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
+
+        randomTime = self.intelligence.computeRandomTimeInterval()
+        self.statistics.remainingGameTime -= randomTime
+        self.statistics.starDate += randomTime
+
+    @staticmethod
+    def ktkEventCallback(theEvent: Event):
+
+        self = StarTrekScreen._myself
+
+        self.logger.info(f"Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
+        self.fireKlingonTorpedoesAtEnterprise()

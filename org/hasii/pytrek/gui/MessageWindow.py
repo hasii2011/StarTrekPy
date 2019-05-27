@@ -30,7 +30,7 @@ class MessageWindow(Sprite):
 
         super().__init__()
 
-        self.screen  = screen
+        self.screen = screen
         self.logger = logging.getLogger(__name__)
 
         self.messageFont    = pygame.font.Font(FONT_PATH, 14)
