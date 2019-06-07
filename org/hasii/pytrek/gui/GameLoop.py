@@ -92,9 +92,6 @@ class GameLoop():
                         self.settings.gameMode = GameMode.Warp
                     elif self.settings.gameMode != GameMode.Impulse:
                         self.settings.gameMode = GameMode.Impulse
-            #
-            # This takes care of if we have a dialog up.  Needs work
-            #
             elif event.type == pygame.KEYDOWN:
 
                 if (self.settings.getGameMode() == GameMode.Impulse and event.key == pygame.K_RETURN):

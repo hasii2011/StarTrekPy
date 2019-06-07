@@ -12,9 +12,10 @@ import pygame
 from pygame import Surface
 from pygame.event import Event
 
-from albow.core.Screen import Screen
-from albow.core.Shell import Shell
-from albow.core.RootWidget import RootWidget
+from albow.core.ui.Screen import Screen
+from albow.core.ui.Shell import Shell
+from albow.core.ui.RootWidget import RootWidget
+from albow.core.ui.AlbowEventLoop import AlbowEventLoop
 from albow.core.UserEventCall import UserEventCall
 
 from albow.dialog.DialogUtilities import ask
@@ -45,16 +46,13 @@ class StarTrekScreen(Screen):
 
     MAX_X_POS = Intelligence.GALAXY_WIDTH * GamePiece.QUADRANT_PIXEL_WIDTH
 
-    CLOCK_EVENT = RootWidget.MUSIC_END_EVENT + 1
+    CLOCK_EVENT = AlbowEventLoop.MUSIC_END_EVENT + 1
     KLINGON_TORPEDO_EVENT = CLOCK_EVENT + 1
 
     _myself: 'StarTrekScreen' = None
 
     def __init__(self, shell: Shell, theSurface: Surface):
 
-        #
-        # Python 3 update
-        #
         super().__init__(shell)
 
         self.logger = logging.getLogger(__name__)
@@ -65,8 +63,6 @@ class StarTrekScreen(Screen):
 
         self.statistics = GameStatistics()
         self.intelligence = Intelligence()
-
-        self.logger = logging.getLogger(__name__)
 
         self.soundUnableToComply = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
         self.soundInaccurate     = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))

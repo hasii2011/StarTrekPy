@@ -1,7 +1,7 @@
 
 from pygame import Surface
 
-from albow.core.Shell import Shell
+from albow.core.ui.Shell import Shell
 
 from org.hasii.pytrek.albow.StarTrekScreen import StarTrekScreen
 
