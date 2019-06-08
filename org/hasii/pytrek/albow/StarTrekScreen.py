@@ -56,6 +56,10 @@ class StarTrekScreen(Screen):
         super().__init__(shell)
 
         self.logger = logging.getLogger(__name__)
+        while self.logger is not None:
+            print(f"level: {self.logger.level}, name: {self.logger.name}, handlers: {self.logger.handlers}")
+            self.logger = self.logger.parent
+
         self.surface = theSurface
 
         self.settings = Settings()
@@ -138,8 +142,8 @@ class StarTrekScreen(Screen):
 
         """
         clock = pygame.time.Clock()
-        milliseconds = clock.tick(30)         # milliseconds passed since last frame; needs to agree wit StarTrekShell value
-        seconds = milliseconds / 1000.0  # seconds passed since last frame (float)
+        milliseconds = clock.tick(30)      # milliseconds passed since last frame; needs to agree witH StarTrekShell value
+        seconds = milliseconds / 1000.0    # seconds passed since last frame (float)
         self.playTime += seconds
 
         return True

@@ -21,7 +21,7 @@ class Commander(GamePiece):
         self.currentPosition   = coordinates
         self.timeSinceMovement = 0
 
-    def update(self, sectorX, sectorY, playTime: float) -> Coordinates:
+    def update(self, sectorX, sectorY, playTime: float = 0) -> Coordinates:
         """"""
 
         self.currentPosition.x = sectorX
@@ -29,15 +29,16 @@ class Commander(GamePiece):
         timeSinceLastUpdate = playTime - self.timeSinceMovement
         if timeSinceLastUpdate > Commander.UPDATE_INTERVAL_SECONDS:
             self.logger.debug("'%s' seconds have elapsed;  Commander will move", Commander.UPDATE_INTERVAL_SECONDS)
-            self.currentPosition   = self._evade_(self.currentPosition )
+            self.currentPosition   = self.evade(self.currentPosition)
             self.timeSinceMovement = playTime
 
         super().update(self.currentPosition.x, self.currentPosition.y)
 
         return self.currentPosition
 
-    def _evade_(self, currentLocation: Coordinates) -> Coordinates:
-        """        Move commander around to avoid torpedoes
+    def evade(self, currentLocation: Coordinates) -> Coordinates:
+        """
+        Move commander around to avoid torpedoes
 
         :return: new random coordinates
         """

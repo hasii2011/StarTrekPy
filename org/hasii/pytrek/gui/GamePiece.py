@@ -24,6 +24,7 @@ class GamePiece(Sprite):
         self.settings        = Settings()
         self.image           = pygame.image.load(fileNamePath)
         self.currentPosition = None
+        self.playTime        = 0.0
         #
         #
         self.rect   = self.image.get_rect()
@@ -31,7 +32,7 @@ class GamePiece(Sprite):
         self.rect.y = self.rect.height
         self.x      = float(self.rect.x)
 
-    def update(self, sectorX, sectorY):
+    def update(self, sectorX: int, sectorY: int, playTime: float = 0):
         """"""
 
         self.rect.x = ((sectorX * GamePiece.STANDARD_SPRITE_WIDTH)  * 2) + GamePiece.STANDARD_X_ADJUSTMENT + self.settings.leftMargin

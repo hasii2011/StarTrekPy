@@ -3,11 +3,11 @@ import logging
 
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 
+
 class BasicTorpedo(GamePiece):
     """"""
 
     UPDATE_INTERVAL_SECONDS = 1
-
 
     def __init__(self, screen: pygame.Surface, fileName: str):
         """"""
@@ -21,7 +21,7 @@ class BasicTorpedo(GamePiece):
         self.timeSinceMovement    = 0
         self.torpedoAtTarget      = False
 
-    def update(self, sectorX: int, sectorY: int, playTime: float):
+    def update(self, sectorX: int, sectorY: int, playTime: float = 0):
         """"""
 
         timeSinceLastUpdate = playTime - self.timeSinceMovement

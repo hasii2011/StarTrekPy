@@ -137,7 +137,7 @@ class Quadrant():
                                 if self.isSectorEmpty(changedSectorCoordinates) == True:
                                     break
                                 else:
-                                    changedSectorCoordinates = commander._evade_(currentSectorCoordinates)
+                                    changedSectorCoordinates = commander.evade(currentSectorCoordinates)
 
                             self.logger.debug("Commander moved from '%s' to '%s", currentSectorCoordinates, changedSectorCoordinates)
                             self.moveCommander(commander, currentSectorCoordinates, changedSectorCoordinates)

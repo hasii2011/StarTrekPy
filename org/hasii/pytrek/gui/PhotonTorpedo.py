@@ -4,6 +4,7 @@ import pygame
 from org.hasii.pytrek.engine import Direction
 from org.hasii.pytrek.gui.BasicTorpedo import BasicTorpedo
 
+
 class PhotonTorpedo(BasicTorpedo):
     """"""
 
