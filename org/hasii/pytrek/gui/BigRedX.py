@@ -3,6 +3,7 @@ import logging
 
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 
+
 class BigRedX(GamePiece):
 
     DISPLAY_SECONDS = 5
@@ -30,6 +31,6 @@ class BigRedX(GamePiece):
 
         timeSinceLastUpdate = playTime - self.displayTime
         if timeSinceLastUpdate < BigRedX.DISPLAY_SECONDS:
-            super().update(sectorX, sectorY)
+            super().update(sectorX, sectorY,playTime)
         else:
             self.eligibleToRemove = True

@@ -2,6 +2,7 @@ import pygame
 
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 
+
 class Enterprise(GamePiece):
     """Initialize the ship and set its starting position"""
 
@@ -10,6 +11,6 @@ class Enterprise(GamePiece):
         super().__init__(screen, 'images/EnterpriseD.png')
 
 
-    def update(self, sectorX, sectorY):
+    def update(self, sectorX, sectorY, playTime: float):
         """"""
-        super().update(sectorX, sectorY)
+        super().update(sectorX, sectorY, playTime)

@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "disable_existing_loggers": false,
+    "disable_existing_loggers": "False",
     "formatters": {
         "simple": {
             "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -19,26 +19,25 @@
     },
     "loggers": {
         "root": {
-            "level": "INFO",
-            "handlers": [
-                "consoleHandler"
-            ],
-            "propagate": "0"
+            "level": "ERROR",
+            "propagate": "False"
         },
-        "__main__": {
-            "level": "INFO",
-            "handlers": [
-                "consoleHandler"
-            ],
-            "propagate": "0"
+        "org.hasii.pytrek": {
+            "level": "ERROR",
+            "handlers": ["consoleHandler"],
+            "propagate": "False"
         },
-
         "org.hasii.pytrek.albow.StarTrekScreen": {
             "level": "INFO",
-            "handlers": [
-                "consoleHandler"
-            ],
-            "propagate": "0"
+            "propagate": "False"
+        },
+        "org.hasii.pytrek.objects.Quadrant": {
+            "level": "INFO",
+            "propagate": "False"
+        },
+        "org.hasii.pytrek.gui.Klingon": {
+            "level": "INFO",
+            "propagate": "False"
         }
     }
 }

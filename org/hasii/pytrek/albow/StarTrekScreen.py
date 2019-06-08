@@ -56,9 +56,14 @@ class StarTrekScreen(Screen):
         super().__init__(shell)
 
         self.logger = logging.getLogger(__name__)
-        while self.logger is not None:
-            print(f"level: {self.logger.level}, name: {self.logger.name}, handlers: {self.logger.handlers}")
-            self.logger = self.logger.parent
+        #
+        # Debug logger
+        #
+        # saveLogger = self.logger
+        # while self.logger is not None:
+        #     print(f"level: '{self.logger.level}'', name: '{self.logger.name}'', handlers: '{self.logger.handlers}"'')
+        #     self.logger = self.logger.parent
+        # self.logger = saveLogger
 
         self.surface = theSurface
 

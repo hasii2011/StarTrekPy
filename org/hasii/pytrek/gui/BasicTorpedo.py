@@ -1,4 +1,6 @@
-import pygame
+
+from pygame import Surface
+
 import logging
 
 from org.hasii.pytrek.gui.GamePiece import GamePiece
@@ -9,7 +11,7 @@ class BasicTorpedo(GamePiece):
 
     UPDATE_INTERVAL_SECONDS = 1
 
-    def __init__(self, screen: pygame.Surface, fileName: str):
+    def __init__(self, screen: Surface, fileName: str):
         """"""
 
         super().__init__(screen, fileName)
@@ -21,7 +23,7 @@ class BasicTorpedo(GamePiece):
         self.timeSinceMovement    = 0
         self.torpedoAtTarget      = False
 
-    def update(self, sectorX: int, sectorY: int, playTime: float = 0):
+    def update(self, sectorX: int, sectorY: int, playTime: float):
         """"""
 
         timeSinceLastUpdate = playTime - self.timeSinceMovement

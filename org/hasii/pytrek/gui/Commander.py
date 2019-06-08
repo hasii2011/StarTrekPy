@@ -27,8 +27,9 @@ class Commander(GamePiece):
         self.currentPosition.x = sectorX
         self.currentPosition.y = sectorY
         timeSinceLastUpdate = playTime - self.timeSinceMovement
+
         if timeSinceLastUpdate > Commander.UPDATE_INTERVAL_SECONDS:
-            self.logger.debug("'%s' seconds have elapsed;  Commander will move", Commander.UPDATE_INTERVAL_SECONDS)
+            self.logger.debug(f"'{Commander.UPDATE_INTERVAL_SECONDS}' seconds have elapsed;  Commander will move")
             self.currentPosition   = self.evade(self.currentPosition)
             self.timeSinceMovement = playTime
 
