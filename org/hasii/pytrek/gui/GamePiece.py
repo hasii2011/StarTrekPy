@@ -1,9 +1,13 @@
+
+from typing import cast
+
 import pygame
 
 from pygame.sprite import Sprite
 from pygame import Surface
 
 from org.hasii.pytrek.Settings import Settings
+from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 class GamePiece(Sprite):
     """Provided only to have a common sprite for us to update"""
@@ -20,11 +24,12 @@ class GamePiece(Sprite):
         """"""
         super().__init__()
 
-        self.screen          = screen
-        self.settings        = Settings()
-        self.image           = pygame.image.load(fileNamePath)
-        self.currentPosition = None
-        self.playTime        = 0.0
+        self.screen:          Surface     = screen
+        self.settings:        Settings    = Settings()
+        self.currentPosition: Coordinates = cast(Coordinates,None)
+        self.playTime:        float       = 0.0
+        self.image = pygame.image.load(fileNamePath)
+
         #
         #
         self.rect   = self.image.get_rect()

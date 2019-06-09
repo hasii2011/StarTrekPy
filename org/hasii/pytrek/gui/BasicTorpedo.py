@@ -23,7 +23,7 @@ class BasicTorpedo(GamePiece):
         self.timeSinceMovement    = 0
         self.torpedoAtTarget      = False
 
-    def update(self, sectorX: int, sectorY: int, playTime: float):
+    def update(self, sectorX: int, sectorY: int, playTime: float = 0):
         """"""
 
         timeSinceLastUpdate = playTime - self.timeSinceMovement

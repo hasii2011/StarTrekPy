@@ -15,6 +15,6 @@ class Klingon(GamePiece):
         super().__init__(screen, 'images/KlingonD7.png')
         self.currentPosition = coordinates
 
-    def update(self, sectorX, sectorY):
+    def update(self, sectorX, sectorY, playTime: float=0):
         """"""
         super().update(sectorX, sectorY)

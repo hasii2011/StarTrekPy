@@ -26,7 +26,8 @@ from org.hasii.pytrek.Settings import Settings
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Galaxy import Galaxy
-
+from org.hasii.pytrek.objects.Quadrant import Quadrant
+from org.hasii.pytrek.objects.SectorType import SectorType
 
 from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.GameEngine import GameEngine
@@ -40,6 +41,7 @@ from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 from org.hasii.pytrek.gui.PhotonTorpedo import PhotonTorpedo
+from org.hasii.pytrek.gui.KlingonTorpedo import KlingonTorpedo
 
 
 class StarTrekScreen(Screen):
@@ -78,6 +80,7 @@ class StarTrekScreen(Screen):
         self.soundWarp           = pygame.mixer.Sound(os.path.join('sounds', 'tos_flyby_1.wav'))
         self.soundImpulse        = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
         self.soundTorpedo        = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
+        self.soundKlingonTorpedo = pygame.mixer.Sound(os.path.join('sounds', 'klingon_torpedo.wav'))
 
         self.galaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround           = QuadrantBackground(theSurface)
@@ -128,7 +131,7 @@ class StarTrekScreen(Screen):
 
     def mouse_down(self, theEvent: Event):
 
-        self.logger.info("Mouse Down")
+        self.logger.debug("Mouse Down")
         xPos = theEvent.pos[0]
         if xPos < StarTrekScreen.MAX_X_POS:
             self.mouseClickEvent = theEvent
@@ -166,7 +169,7 @@ class StarTrekScreen(Screen):
         elif self.settings.gameMode == GameMode.Warp:
             self.warpScreenUpdate()
         elif self.settings.gameMode == GameMode.PhotonTorpedoes:
-            self.fireEnterpriseTorpedoesAtKlingons(playTime=self.playTime)
+            self.fireEnterpriseTorpedoesAtKlingons()
 
     def normalScreenUpdate(self, playTime: int):
         """"""
@@ -212,45 +215,59 @@ class StarTrekScreen(Screen):
     def fireKlingonTorpedoesAtEnterprise(self):
         """"""
 
-        enterprisePosition: Coordinates = self.enterprise.currentPosition
-        self.logger.info("Enterprise is at: '%s'", enterprisePosition)
+        quadrant = self.quadrant
+        klingonCount: int = quadrant.getKlingonCount()
+        if klingonCount > 0:
 
-    def fireEnterpriseTorpedoesAtKlingons(self, playTime: int):
+            self.logger.info(f"# of klingons to shooting: '{klingonCount}'")
+            enterprisePosition: Coordinates = self.enterprise.currentPosition
+            self.logger.info(f"Enterprise is at: '{enterprisePosition}'")
+            klingonPositions: List[Coordinates] = quadrant.getKlingonPositions()
+
+            klingonPosition = klingonPositions[0]
+            self.messageWindow.displayMessage(f"Klingon at {klingonPosition} firing!")
+
+            torpedo: KlingonTorpedo = KlingonTorpedo(screen=self.surface)
+            self.fireTorpedoAt(klingonPosition, enterprisePosition, torpedo, SectorType.KLINGON_TORPEDO, "Enterprise", self.soundKlingonTorpedo)
+
+    def fireEnterpriseTorpedoesAtKlingons(self):
         """"""
 
         self.messageWindow.displayMessage("Firing Torpedoes!!")
 
-        quadrant = self.galaxy.getCurrentQuadrant()
-
-        enterprisePosition: Coordinates = quadrant.enterpriseCoordinates
+        quadrant:           Quadrant      = self.galaxy.getCurrentQuadrant()
+        enterprisePosition: Coordinates   = self.enterprise.currentPosition
 
         for klingon in quadrant.klingons:
-            self.fireTorpedoAt(klingon, enterprisePosition, playTime, "Klingon")
+
+            direction: Direction = self.computer.determineDirection(enterprisePosition, klingon.currentPosition)
+            torpedo: PhotonTorpedo = PhotonTorpedo(screen=self.surface, direction=direction)
+            self.fireTorpedoAt(enterprisePosition, klingon.currentPosition, torpedo, "Klingon", self.soundTorpedo)
 
         for commander in quadrant.commanders:
-            self.fireTorpedoAt(commander, enterprisePosition, playTime, "Commander")
+
+            direction: Direction = self.computer.determineDirection(enterprisePosition, commander.currentPosition)
+            torpedo: PhotonTorpedo = PhotonTorpedo(screen=self.surface, direction=direction)
+            self.fireTorpedoAt(enterprisePosition, commander.currentPosition, torpedo, SectorType.PHOTON_TORPEDO, "Commander", self.soundTorpedo)
 
         self.settings.gameMode = GameMode.Normal
 
-    def fireTorpedoAt(self, badGuy, enterprisePosition, playTime, badGuyName):
+    def fireTorpedoAt(self, firingPosition, targetPosition, torpedo, sectorType, targetName, soundToPlay):
         """"""
+        interceptCoordinates: List = self.computer.interpolateYIntercepts(firingPosition, targetPosition)
 
-        badGuyPosition:       Coordinates = badGuy.currentPosition
-        interceptCoordinates: List = self.computer.interpolateYIntercepts(enterprisePosition, badGuyPosition)
-        direction:            Direction = self.computer.determineDirection(enterprisePosition, badGuyPosition)
+        self.messageWindow.displayMessage(f"Targeting {targetName} at: {targetPosition.__str__()}")
 
-        self.messageWindow.displayMessage("Targeting " + badGuyName + " at: " + badGuyPosition.__str__())
+        # self.logger.debug(f"{targetName} at {targetPosition}, Shooting Direction: {targetPosition}, interceptCoordinates {interceptCoordinates}")
 
-        self.logger.debug("%s at %s, Shooting Direction: %s, interceptCoordinates %s", badGuyName, badGuyPosition, direction.name, interceptCoordinates)
-
-        torpedo: PhotonTorpedo = PhotonTorpedo(screen=self.surface, direction=direction)
         torpedo.setTrajectory(interceptCoordinates)
-        torpedo.timeSinceMovement = playTime
-        self.logger.debug("Photon Torpedo creation time %s", playTime)
+
+        torpedo.timeSinceMovement = self.playTime
+        self.logger.debug(f"Photon Torpedo creation time {self.playTime}")
 
         initialTorpedoPosition: Coordinates = interceptCoordinates[0]
-        self.quadrant.placeATorpedo(coordinates=initialTorpedoPosition, torpedo=torpedo)
-        self.soundTorpedo.play()
+        self.quadrant.placeATorpedo(coordinates=initialTorpedoPosition, torpedo=torpedo, torpedoType=sectorType)
+        soundToPlay.play()
 
     def ensureQuit(self):
         """"""
@@ -273,7 +290,7 @@ class StarTrekScreen(Screen):
     def clockEventCallback(theEvent: Event):
 
         self = StarTrekScreen._myself
-        self.logger.info(f"Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
+        self.logger.debug(f"clockEventCallback - Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
 
         randomTime = self.intelligence.computeRandomTimeInterval()
         self.statistics.remainingGameTime -= randomTime
@@ -284,5 +301,5 @@ class StarTrekScreen(Screen):
 
         self = StarTrekScreen._myself
 
-        self.logger.info(f"Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
+        self.logger.debug(f"ktkEventCallback - Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
         self.fireKlingonTorpedoesAtEnterprise()
