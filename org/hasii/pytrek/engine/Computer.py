@@ -1,8 +1,10 @@
+
 import math
 import logging
 import random
 
 from typing import List
+from typing import cast
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Quadrant import Quadrant
@@ -12,7 +14,7 @@ from org.hasii.pytrek.engine.Direction import Direction
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 
 
-class Computer():
+class Computer:
     """
     Make a computer a singleton so we don't have to pass it around
     """
@@ -62,7 +64,7 @@ class Computer():
         gameX =  int(math.floor(xPos / GamePiece.QUADRANT_PIXEL_WIDTH))
         gameY =  int(math.floor(yPos / GamePiece.QUADRANT_PIXEL_HEIGHT))
 
-        coordinates = Coordinates(gameX,gameY)
+        coordinates = Coordinates(gameX, gameY)
 
         return coordinates
 
@@ -83,7 +85,7 @@ class Computer():
 
         return strValue
 
-    def computeDistance(self, startCoordinates: Coordinates, endCoordinates: Coordinates, travelFactor: float) ->float:
+    def computeDistance(self, startCoordinates: Coordinates, endCoordinates: Coordinates, travelFactor: float) -> float:
         """
 
          x1 = startSector.getX()
@@ -157,7 +159,6 @@ class Computer():
         # if len(interceptCoordinates) == 0:
         interceptCoordinates.append(end)
 
-
         return interceptCoordinates
 
     def doStraightLineInterpolation(self, x0: int, y0: int, y1: int):
@@ -165,10 +166,10 @@ class Computer():
 
         interceptCoordinates = []
 
-        if y0 < y1 :
+        if y0 < y1:
             y = y0 + 1
             while True:
-                c = Coordinates(x0,y)
+                c = Coordinates(x0, y)
                 interceptCoordinates.append(c)
                 y = y + 1
                 if y >= y1:
@@ -211,7 +212,7 @@ class Computer():
         endX:   int = endCoordinates.getX()
         endY:   int = endCoordinates.getY()
 
-        answer: Direction = None
+        answer: Direction = cast(Direction, None)
 
         if startX == endX:
             if startY < endY:
@@ -252,7 +253,7 @@ class Computer():
         """
 
         /* Enemy used photon torpedo */
-		double course = 1.90985 * atan2((double)secty-jy, (double)jx-sectx);
+        double course = 1.90985 * atan2((double)secty-jy, (double)jx-sectx);
 
         :param start:
         :param end:
@@ -263,14 +264,15 @@ class Computer():
         sectx = end.getX()
         secty = end.getY()
 
-        course: float = 1.90985 * math.atan2( (secty - jy), (jx - sectx))
+        course: float = 1.90985 * math.atan2((secty - jy), (jx - sectx))
 
         return course
+
     def _randomizeAttackerPower(self, attackerPower: float) -> float:
         """
 
         r = (Rand()+Rand())*0.5 -0.5;
-		r += 0.002*kpower[l]*r;
+        r += 0.002*kpower[l]*r;
 
         Rand() is SST's version
          double in the range 0.0 to 1.0
@@ -293,7 +295,6 @@ class Computer():
         :return:
         """
         return num * num
-
 
     def __repr__(self):
         return '<%s at %s>' % (self.__class__.__name__, hex(id(self)))
