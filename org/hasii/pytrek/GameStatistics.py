@@ -1,3 +1,4 @@
+
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
@@ -5,6 +6,7 @@ from org.hasii.pytrek.engine.ShieldStatus import ShieldStatus
 from org.hasii.pytrek.engine.TorpedoStatus import TorpedoStatus
 from org.hasii.pytrek.engine.PhaserStatus import PhaserStatus
 from org.hasii.pytrek.engine.ComputerStatus import ComputerStatus
+
 
 class GameStatistics:
 
@@ -38,15 +40,13 @@ class GameStatistics:
 
     def __init__(self):
         """"""
-        if self.__initialized == True:
+        if self.__initialized is True:
             return
         else:
             self.__initialized = True
 
-        self.gameActive = True
-
     def resetStatistics(self):
-        self.gameActive = True
+        GameStatistics.gameActive = True
 
     def __repr__(self):
         return '<%s at %s>' % (self.__class__.__name__, hex(id(self)))
