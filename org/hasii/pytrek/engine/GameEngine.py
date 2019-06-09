@@ -1,5 +1,5 @@
+
 import logging
-from random import random
 
 from org.hasii.pytrek.Settings import Settings
 
@@ -17,6 +17,7 @@ from org.hasii.pytrek.gui.Enterprise import Enterprise
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Galaxy import Galaxy
 from org.hasii.pytrek.objects.Quadrant import Quadrant
+
 
 class GameEngine:
     """"""
@@ -55,7 +56,7 @@ class GameEngine:
         self.updateTimeAfterImpulseTravel(travelDistance=travelDistance)
 
         if self.stats.energy < self.settings.minimumImpulseEnergy:
-            neededEnergyForImpulseMove = self.energy
+            neededEnergyForImpulseMove = self.stats.energy
         else:
             neededEnergyForImpulseMove = self.computeEnergyForQuadrantTravel(travelDistance=travelDistance)
 
@@ -67,7 +68,8 @@ class GameEngine:
         self.logger.info("Move to Quadrant: %s", moveToCoordinates)
 
         currentCoordinates: Coordinates = galaxy.currentQuadrant.coordinates
-        distance:           float       = self.computer.computeGalacticDistance(startQuadrantCoordinates=currentCoordinates, endQuadrantCoordinates=moveToCoordinates)
+        distance:           float       = self.computer.computeGalacticDistance(startQuadrantCoordinates=currentCoordinates,
+                                                                                endQuadrantCoordinates=moveToCoordinates)
         energyForWarp:      float       = self.computeEnergyForWarpTravel(travelDistance=distance, warpFactor=self.settings.warpFactor)
         #
         # Make sure starship has enough energy for the trip
@@ -90,7 +92,7 @@ class GameEngine:
 
         return quadrant
 
-    def updateTimeAfterImpulseTravel(self, travelDistance: float ):
+    def updateTimeAfterImpulseTravel(self, travelDistance: float):
         """
 
         Time = dist/0.095;
@@ -117,7 +119,7 @@ class GameEngine:
         # oldTime      = self.stats.remainingGameTime
         # oldStarDate  = self.stats.starDate
 
-        self.stats.starDate          = self.stats.starDate + elapsedTime;
+        self.stats.starDate          = self.stats.starDate + elapsedTime
         self.stats.remainingGameTime = self.stats.remainingGameTime - elapsedTime
 
     def computeEnergyForQuadrantTravel(self, travelDistance: float) -> float:
@@ -128,7 +130,7 @@ class GameEngine:
         :return:  The energy necessary to do inter-quadrant travel
         """
 
-        quadrantEnergy: float = 20 + (100.0 * travelDistance);
+        quadrantEnergy: float = 20 + (100.0 * travelDistance)
 
         self.logger.debug("theTravelDistance: '%s' quadrantEnergy : '%s'", travelDistance, quadrantEnergy)
 
