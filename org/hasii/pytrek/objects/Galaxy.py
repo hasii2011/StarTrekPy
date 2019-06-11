@@ -8,7 +8,8 @@ from org.hasii.pytrek.objects.Quadrant import Quadrant
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 
-class Galaxy():
+
+class Galaxy:
     """Galaxy management"""
 
     def __init__(self, screen, settings, intelligence, gameEngine):
@@ -21,18 +22,21 @@ class Galaxy():
         self.settings       = Settings()
         self.logger         = logging.getLogger(__name__)
 
-        self.starBaseCount  = 0
-        self.planetCount    = 0
-        self.gameParameters = None
+        self.starBaseCount   = 0
+        self.planetCount     = 0
+        self.gameParameters  = None
+        self.currentQuadrant = None
+        self.quadrants       = []
 
-        self.createGalaxy(intelligence, screen, settings)
+        self.createGalaxy(screen, settings)
 
         self.placeKlingonsInGalaxy()
         self.placeCommandersInGalaxy()
         self.placeStarBasesInGalaxy()
         self.setInitialQuadrant()
 
-    def createGalaxy(self, intelligence, screen, settings):
+    def createGalaxy(self, screen, settings):
+
         self.quadrants = []
         for x in range(Intelligence.GALAXY_WIDTH):
             col = []
@@ -53,7 +57,7 @@ class Galaxy():
         row = self.quadrants[coordinates.getX()]
         self.currentQuadrant = row[coordinates.getY()]
 
-    def getCurrentQuadrant(self)->Quadrant:
+    def getCurrentQuadrant(self) -> Quadrant:
         """"""
         return self.currentQuadrant
 
@@ -78,15 +82,15 @@ class Galaxy():
         while starBaseCount != 0:
             quadrantCoordinates = self.intelligence.getRandomQuadrantCoordinates()
             quadrant            = self.getQuadrant(quadrantCoordinates)
-            while quadrant.hasStarBase() == True:
+            while quadrant.hasStarBase() is True:
                 quadrantCoordinates = self.intelligence.getRandomQuadrantCoordinates()
                 quadrant = self.getQuadrant(quadrantCoordinates)
 
-            self.logger.debug("Starbase at quadrant (%s,%s)", quadrantCoordinates.getX(), quadrantCoordinates.getY())
+            self.logger.debug(f"Starbase at quadrant {quadrantCoordinates}")
             quadrant.addStarBase()
-            starBaseCount -=1
+            starBaseCount -= 1
 
-    def getQuadrant(self, quadrantCoordinates: Coordinates)->Quadrant:
+    def getQuadrant(self, quadrantCoordinates: Coordinates) -> Quadrant:
 
         quadrantRow = self.quadrants.__getitem__(quadrantCoordinates.getX())
         quadrant    = quadrantRow.__getitem__(quadrantCoordinates.getY())
@@ -99,4 +103,4 @@ class Galaxy():
             quadRow = self.quadrants[x]
             for y in range(Intelligence.GALAXY_WIDTH):
                 quadrant = quadRow[y]
-                self.logger.debug("Quadrant(%s,%s) Klingon Count %s", x,y, str(quadrant.getKlingonCount()))
+                self.logger.debug("Quadrant(%s,%s) Klingon Count %s", x, y, str(quadrant.getKlingonCount()))
