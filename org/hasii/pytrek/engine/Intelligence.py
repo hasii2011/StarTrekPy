@@ -7,6 +7,7 @@ from random import random
 
 import logging
 
+
 class Intelligence:
     """Is a smart piece of code"""
 
@@ -30,6 +31,8 @@ class Intelligence:
     RANDOM_TIME_INTERVAL_END   = 3.0  # end time is non-inclusive
     RANDOM_TIME_STEP           = 1.0
 
+    RAND_MAX = 32767.0
+
     def __new__(cls, *args, **kwargs):
 
         if not cls._singleton:
@@ -40,7 +43,7 @@ class Intelligence:
     def __init__(self):
         """"Constructor"""
 
-        if self.__initialized == True:
+        if self.__initialized is True:
             return
         else:
             self.__initialized = True
@@ -51,24 +54,30 @@ class Intelligence:
         self.gameType = self.settings.gameType
         self.skill    = self.settings.skill
 
+        self.remainingKlingons = 0
+        self.commanderCount    = 0
+
     def computeRandomTimeInterval(self) -> int:
         """
         Generate some random passage of time (stardates)
         """
         return randrange(self.RANDOM_TIME_INTERVAL_START, self.RANDOM_TIME_INTERVAL_END, self.RANDOM_TIME_STEP)
+
     def getRandomSectorCoordinates(self) -> Coordinates:
         """Generate a random set of sector coordinates"""
 
         x = randrange(self.QUADRANT_HEIGHT)
         y = randrange(self.QUADRANT_WIDTH)
-        return Coordinates(x,y)
-    def getRandomQuadrantCoordinates(self)-> Coordinates:
+        return Coordinates(x, y)
+
+    def getRandomQuadrantCoordinates(self) -> Coordinates:
         """Generate a random set  of quadrant coordinates"""
 
         x = randrange(Intelligence.GALAXY_HEIGHT)
         y = randrange(Intelligence.GALAXY_WIDTH)
         return Coordinates(x, y)
-    def getInitialStarBaseCount(self)-> int:
+
+    def getInitialStarBaseCount(self) -> int:
         """
                     Calculate and returns the star base count for the game start
             d.rembase = 3.0*Rand()+2.0;
@@ -76,7 +85,7 @@ class Intelligence:
             With the default values guarantees a minimum of 2 and a maximum of 5
         :return:  A starbase count
         """
-        retBaseCount = 0
+        # retBaseCount = 0
 
         multiplier = self.settings.starBaseMultiplier
         extender   = self.settings.starBaseExtender
@@ -99,9 +108,9 @@ class Intelligence:
             retBaseCount = maxStarbaseCount
             self.logger.info("adjusted retBaseCount: %s", str(retBaseCount))
 
-
         return retBaseCount
-    def getInitialKlingonCount(self, remainingGameTime: float)-> int:
+
+    def getInitialKlingonCount(self, remainingGameTime: float) -> int:
         """
 
         private double      dremkl                  = 2.0*intime*((skill+1 - 2*Intelligence.Rand())*skill*0.1+0.15);
@@ -121,7 +130,8 @@ class Intelligence:
                          self.skill.name, self.gameType.name, str(self.remainingKlingons))
 
         return self.remainingKlingons
-    def getInitialCommanderCount(self)-> int:
+
+    def getInitialCommanderCount(self) -> int:
         """
         incom = skill + 0.0625*inkling*Rand();
 
@@ -137,13 +147,30 @@ class Intelligence:
         #
         self.remainingKlingons = self.remainingKlingons - self.commanderCount
         return self.commanderCount
+
     def getInitialGameTime(self) -> float:
         """"""
         self.logger.info("Game Length factor: '%s'  GameType: '%s' GameTypeValue: '%s'",
                          self.settings.gameLengthFactor, self.gameType.name, self.gameType.value)
         remainingGameTime = self.settings.gameLengthFactor * self.settings.gameType.value
         return remainingGameTime
+
     def getInitialStarDate(self) -> int:
 
         starDate: int = int(100.0 * (31.0 * random()) * 20.0)
         return starDate
+
+    def rand(self) -> float:
+        """
+
+        double Rand(void) {
+            return rand()/(1.0 + (double)RAND_MAX);
+        }
+
+        Returns: Random float in range 0.0 - 0.99999
+
+        """
+        intermediateAns = randrange(start=0, stop=Intelligence.RAND_MAX)
+        ans: float = intermediateAns / (1.0 + Intelligence.RAND_MAX)
+
+        return ans

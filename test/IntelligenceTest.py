@@ -39,7 +39,7 @@ class IntelligenceTest(BaseTest):
         """"""
         coordinates = self.smarty.getRandomSectorCoordinates()
         self.assertIsNotNone(coordinates, "Should not be null")
-        self.logger.info("random coordinates: '%s'",coordinates)
+        self.logger.info("random coordinates: '%s'", coordinates)
 
         bogusCoordinate =Coordinates(-1, -1)
 
@@ -178,9 +178,15 @@ class IntelligenceTest(BaseTest):
             self.assertGreater(starDate, 0, "No such thing as a 0 star date")
             self.logger.info("Initial stardate '%s'", starDate)
 
-    def _setupCommandersTest(self, skill: PlayerType)-> Intelligence:
+    def testRand(self):
+
+        for x in range(0, 1000):
+            ans = self.smarty.rand()
+            self.logger.info(f"Iteration {x}, answer is {ans}")
+
+    def _setupCommandersTest(self, skill: PlayerType):
         """"""
-        #settings        = Settings()
+        # settings        = Settings()
         self.settings.skill  = skill
         self.smarty.remainingKlingons = IntelligenceTest.KNOWN_KLINGON_COUNT
 
