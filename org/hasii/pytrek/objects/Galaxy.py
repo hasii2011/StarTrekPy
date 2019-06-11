@@ -28,14 +28,14 @@ class Galaxy:
         self.currentQuadrant = None
         self.quadrants       = []
 
-        self.createGalaxy(screen, settings)
+        self.createGalaxy(screen)
 
         self.placeKlingonsInGalaxy()
         self.placeCommandersInGalaxy()
         self.placeStarBasesInGalaxy()
         self.setInitialQuadrant()
 
-    def createGalaxy(self, screen, settings):
+    def createGalaxy(self, screen):
 
         self.quadrants = []
         for x in range(Intelligence.GALAXY_WIDTH):
