@@ -1,4 +1,6 @@
 from enum import Enum
+
+
 class PlayerType(Enum):
     """"""
     Novice   = 1
