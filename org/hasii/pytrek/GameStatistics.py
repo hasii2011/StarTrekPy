@@ -9,6 +9,9 @@ from org.hasii.pytrek.engine.ComputerStatus import ComputerStatus
 
 
 class GameStatistics:
+    """
+    TODO:  Make this a data class;  Incorrectly uses class variables instead of instance variables
+    """
 
     _singleton  = None
     gameActive  = True
@@ -19,8 +22,8 @@ class GameStatistics:
     shieldEnergy:        float
     starDate:            float
     remainingGameTime:   float
-    remainingKlingons:   float
-    remainingCommanders: float
+    remainingKlingons:   int
+    remainingCommanders: int
 
     currentQuadrantCoordinates: Coordinates
     currentSectorCoordinates:   Coordinates
@@ -29,7 +32,6 @@ class GameStatistics:
     torpedoStatus:  TorpedoStatus  = TorpedoStatus.Up
     phaserStatus:   PhaserStatus   = PhaserStatus.Up
     computerStatus: ComputerStatus = ComputerStatus.Up
-
 
     def __new__(cls, *args, **kwargs):
 
