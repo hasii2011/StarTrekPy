@@ -9,6 +9,7 @@ from pygame import Surface
 from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
+
 class GamePiece(Sprite):
     """Provided only to have a common sprite for us to update"""
 
@@ -18,7 +19,6 @@ class GamePiece(Sprite):
     STANDARD_SPRITE_HEIGHT = 32
     STANDARD_X_ADJUSTMENT  = (STANDARD_SPRITE_WIDTH / 2)
     STANDARD_Y_ADJUSTMENT  = (STANDARD_SPRITE_WIDTH / 2)
-
 
     def __init__(self, screen: Surface, fileNamePath: str):
         """"""
