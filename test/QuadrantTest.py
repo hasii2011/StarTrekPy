@@ -42,7 +42,7 @@ class QuadrantTest(BaseTest):
         self.quadrant.addKlingon()
         self.quadrant.addKlingon()
 
-        actualKlingonCount = self.quadrant.klingonCount
+        actualKlingonCount = self.quadrant.getKlingonCount()
 
         self.assertEqual(2, actualKlingonCount, "mismatched Klingon Count")
 
