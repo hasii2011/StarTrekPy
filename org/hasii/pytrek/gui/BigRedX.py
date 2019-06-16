@@ -18,7 +18,7 @@ class BigRedX(GamePiece):
         self.displayTime      = playTime
         self.eligibleToRemove = False
 
-    def update(self, sectorX: int, sectorY: int, playTime: float):
+    def update(self, sectorX: int, sectorY: int, playTime: float = 0):
         """
         Display for DISPLAY_SECONDS;  Then tell controlling loop
         to remove
@@ -31,6 +31,6 @@ class BigRedX(GamePiece):
 
         timeSinceLastUpdate = playTime - self.displayTime
         if timeSinceLastUpdate < BigRedX.DISPLAY_SECONDS:
-            super().update(sectorX, sectorY,playTime)
+            super().update(sectorX, sectorY, playTime)
         else:
             self.eligibleToRemove = True
