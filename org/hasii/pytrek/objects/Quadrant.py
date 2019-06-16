@@ -6,10 +6,12 @@ import logging
 import pygame
 
 from pygame import Surface
+from pygame.event import Event
+from pygame.event import post as pygamePostEvent
 
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 
-from org.hasii.pytrek.gui import Enterprise
+from org.hasii.pytrek.gui.Enterprise import Enterprise
 from org.hasii.pytrek.gui.Explosion import Explosion
 from org.hasii.pytrek.gui.StarBase import StarBase
 from org.hasii.pytrek.gui.Klingon import Klingon
@@ -112,7 +114,7 @@ class Quadrant:
 
         torpedoSector.sectorType = torpedoType
         torpedoSector.setSprite(torpedo)
-        self.logger.debug("Torpedo position %s", coordinates)
+        self.logger.debug(f"Torpedo position {coordinates}")
 
     def update(self, playTime: float):
         """"""
@@ -126,21 +128,26 @@ class Quadrant:
 
                 if sectorType != SectorType.EMPTY:
 
-                    self.logger.debug("Update sectorType: %s", sectorType)
+                    self.logger.debug(f"Update sectorType: {sectorType}")
                     if sectorType == SectorType.PHOTON_TORPEDO or sectorType == SectorType.KLINGON_TORPEDO:
-                        self.logger.info("Update sectorType: %s", sectorType)
 
                         gamePiece.update(sectorX, sectorY, playTime)
-                        gamePiecePosition = gamePiece.currentPosition
+                        gamePiecePosition        = gamePiece.currentPosition
                         currentSectorCoordinates = Coordinates(sectorX, sectorY)
-                        if not currentSectorCoordinates.__eq__(gamePiecePosition):
-                            self.makeSectorAtCoordinatesEmpty(currentSectorCoordinates)
-                            self.placeSprite(gamePiece, SectorType.PHOTON_TORPEDO, gamePiecePosition)
-                        if sectorType == SectorType.PHOTON_TORPEDO:
-                            self.attemptKlingonKill(gamePiece, playTime, sector)
-                        elif sectorType == SectorType.KLINGON_TORPEDO:
-                            self.attemptEnterpriseKill(gamePiece)
 
+                        enterpriseHit: bool = False
+                        if sectorType == SectorType.KLINGON_TORPEDO:
+                            enterpriseHit = self.checkIfEnterpriseHit(gamePiece)
+                        else:
+                            self.attemptKlingonKill(gamePiece, playTime, sector)
+
+                        if not currentSectorCoordinates == gamePiecePosition and not enterpriseHit:
+                            self.makeSectorAtCoordinatesEmpty(currentSectorCoordinates)
+                            self.placeSprite(gamePiece, sectorType, gamePiecePosition)
+                        if enterpriseHit is True:
+                            self._tellGameLoop(gamePiece)
+                            sector.sectorType = SectorType.EMPTY
+                            sector.sprite = None
                     elif sectorType == SectorType.EXPLOSION:
 
                         explosion: Explosion = gamePiece
@@ -171,20 +178,21 @@ class Quadrant:
                         if bigRedX.eligibleToRemove is True:
                             self.logger.debug("Current sector sectorX: '%s', sectorY: '%s", sectorX, sectorY)
                             self.makeSectorAtCoordinatesEmpty(bigRedX.currentPosition)
-
                     else:
                         gamePiece.update(sectorX, sectorY, playTime)
                 sectorY += 1
             sectorX += 1
 
-    def attemptKlingonKill(self, torpedo: BasicTorpedo, playTime, sector):
+    def attemptKlingonKill(self, torpedo: BasicTorpedo, playTime: float, sector: Sector):
         """
             Did I hit a Klingon
 
-        :param torpedo:
-        :param playTime:
-        :param sector:
-        :return:
+        Args:
+            torpedo: The torpedo to check
+            playTime: The current game time
+            sector: The sector we are in
+
+        Returns:
         """
         klingonGroup = pygame.sprite.Group()
 
@@ -198,7 +206,7 @@ class Quadrant:
         #
         if killedKlingons.__len__() > 0:
             for deadKlingon in killedKlingons:
-                self.logger.debug("deadKlingon at: %s", deadKlingon.currentPosition)
+                self.logger.debug(f"deadKlingon at: {deadKlingon.currentPosition}")
                 sector.sectorType = SectorType.EMPTY
                 sector.sprite = None
 
@@ -210,20 +218,32 @@ class Quadrant:
                     self.placeAnExplosion(deadKlingon.currentPosition, playTime)
         else:
             if torpedo.torpedoAtTarget is True:
-                self.logger.debug("ARRGGHH!! we missed.  Torpedo coordinate: '%s", torpedo.currentPosition)
+                self.logger.debug(f"ARRGGHH!! we missed.  Torpedo coordinate: '{torpedo.currentPosition}'")
                 self.makeSectorAtCoordinatesEmpty(coordinates=torpedo.currentPosition)
                 bigRedX = BigRedX(screen=self.screen, playTime=playTime)
                 bigRedX.currentPosition = torpedo.currentPosition
                 self.placeSprite(sprite=bigRedX, sectorType=SectorType.BIG_RED_X, coordinates=torpedo.currentPosition)
 
-    def attemptEnterpriseKill(self, torpedo: KlingonTorpedo):
+    def checkIfEnterpriseHit(self, torpedo: KlingonTorpedo) -> bool:
+        """
 
-        self.logger.info(f"Attempting Enterprise Kill")
+        Args:
+            torpedo: The torpedo that may hit the Enterprise
+
+        Returns:
+
+        """
+        thereWasAHit: bool = False
+
         enterpriseGroup = pygame.sprite.Group()
         enterpriseGroup.add(self.enterprise)
         enterpriseHit: list = pygame.sprite.spritecollide(torpedo, enterpriseGroup, False)
         if enterpriseHit.__len__() > 0:
-            self.logger.info(f"The enterprise was hit!")
+
+            thereWasAHit = True
+
+        self.logger.info(f"Did Klingon torpedo hit Enterprise: '{thereWasAHit}'")
+        return thereWasAHit
 
     def addKlingon(self):
         """"""
@@ -243,16 +263,11 @@ class Quadrant:
         self._klingonCount -= 1
         self.stats.remainingKlingons -= 1
 
-    def getKlingonPositions(self) -> List[Coordinates]:
+    def getKlingons(self) -> List[Klingon]:
         """
-        Returns: a list of klingon positions in the current quadrant
+        Returns: a list of Klingons in the current quadrant
         """
-        klingonLocations: List[Coordinates] = []
-        for klingon in self.klingons:
-            coord: Coordinates = klingon.currentPosition
-            klingonLocations.append(coord)
-
-        return klingonLocations
+        return self.klingons
 
     def removeCommander(self, deadCommander: Commander):
         """"""
@@ -306,13 +321,18 @@ class Quadrant:
         self.placeSprite(explosion, SectorType.EXPLOSION, coordinates)
 
     def placeAKlingon(self) -> Klingon:
-        """"""
+        """
+
+        """
         sector            = self.getRandomEmptySector()
         sector.sectorType = SectorType.KLINGON
         klingon           = Klingon(screen=self.screen, coordinates=sector.getCoordinates())
+        kpower            = self.intelligence.computeKlingonPower()
+
+        klingon.setPower(kpower)
         sector.setSprite(klingon)
 
-        self.logger.debug("Placed klingon at: quadrant: %s  sector: %s", self.coordinates, sector)
+        self.logger.debug(f"Placed klingon at: quadrant: {self.coordinates}  sector: {sector}, power {kpower}")
         return klingon
 
     def placeACommander(self) -> Commander:
@@ -320,9 +340,12 @@ class Quadrant:
         sector            = self.getRandomEmptySector()
         sector.sectorType = SectorType.COMMANDER
         commander         = Commander(screen=self.screen, coordinates=sector.getCoordinates())
+        cPower            = self.intelligence.computeCommanderPower()
+
+        commander.setPower(cPower)
         sector.setSprite(commander)
 
-        self.logger.debug("Placed commander at: quadrant: %s  sector: %s", self.coordinates, sector)
+        self.logger.debug(f"Placed commander at: quadrant: {self.coordinates}  sector: {sector}  power {cPower}")
         return commander
 
     def getRandomEmptySector(self) -> Sector:
@@ -384,6 +407,17 @@ class Quadrant:
 
         sector: Sector = sectorRow[columnIdx]
         return sector
+
+    def _tellGameLoop(self, torpedo: KlingonTorpedo):
+
+        self.logger.info(f"Tell game loop that the Enterprise was hit!")
+
+        enterpriseHitEvent = Event(Settings.ENTERPRISE_HIT_BY_TORPEDO, dict=None)
+        enterpriseHitEvent.dict['enterprisePosition'] = self.enterprise.currentPosition
+        enterpriseHitEvent.dict['shooterPosition'] = torpedo.shooterPosition
+        enterpriseHitEvent.dict['shooterPower'] = torpedo.shooterPower
+
+        pygamePostEvent(enterpriseHitEvent)
 
     def debugSectors(self):
 

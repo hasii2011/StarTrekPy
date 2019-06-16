@@ -174,3 +174,29 @@ class Intelligence:
         ans: float = intermediateAns / (1.0 + Intelligence.RAND_MAX)
 
         return ans
+
+    def computeKlingonPower(self) -> float:
+        """
+        Regular klingon
+            kpower[i] = Rand()*150.0 +300.0 +25.0*skill;
+
+        Returns:
+
+        """
+        kPower: float = (self.rand() * 150.0) + 300.0 + (25.0 * self.skill.value)
+        return kPower
+
+    def computeCommanderPower(self) -> float:
+        """
+
+        Commander
+            kpower[klhere] = 950.0+400.0*Rand()+50.0*skill;
+
+        Super Commander
+            kpower[1] = 1175.0 + 400.0*Rand() + 125.0*skill;
+
+        Returns:
+
+        """
+        cPower = 950.0 + (400.0 * self.rand()) + (50.0 * self.skill.value)
+        return cPower

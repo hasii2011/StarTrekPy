@@ -7,6 +7,7 @@ from org.hasii.pytrek.engine.Direction import Direction
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
+
 class Commander(GamePiece):
     """"""
 
@@ -20,6 +21,13 @@ class Commander(GamePiece):
 
         self.currentPosition   = coordinates
         self.timeSinceMovement = 0
+        self._power = 0.0
+
+    def getPower(self) -> float:
+        return self._power
+
+    def setPower(self, theNewValue: float):
+        self._power = theNewValue
 
     def update(self, sectorX, sectorY, playTime: float = 0) -> Coordinates:
         """"""

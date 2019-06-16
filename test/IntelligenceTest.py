@@ -41,7 +41,7 @@ class IntelligenceTest(BaseTest):
         self.assertIsNotNone(coordinates, "Should not be null")
         self.logger.info("random coordinates: '%s'", coordinates)
 
-        bogusCoordinate =Coordinates(-1, -1)
+        bogusCoordinate = Coordinates(-1, -1)
 
         self.assertNotEqual(coordinates, bogusCoordinate, "Not truly initializing random coordinates")
 
@@ -184,11 +184,34 @@ class IntelligenceTest(BaseTest):
             ans = self.smarty.rand()
             self.logger.info(f"Iteration {x}, answer is {ans}")
 
+    def testComputeKlingonPower(self):
+
+        self.logger.info("")
+        for skill in PlayerType:
+
+            self.smarty.skill = skill
+
+            klingonPower: float = self.smarty.computeKlingonPower()
+            self.logger.info(f"Klingon power: {klingonPower},  Skill: {self.smarty.skill}")
+            self.assertGreater(klingonPower, 0, "Should get some value")
+
+    def testComputeCommanderPower(self):
+
+        self.logger.info("")
+        for skill in PlayerType:
+
+            self.smarty.skill = skill
+
+            commanderPower: float = self.smarty.computeCommanderPower()
+            self.logger.info(f"Commander power: {commanderPower},  Skill: {self.smarty.skill}")
+            self.assertGreater(commanderPower, 0, "Should get some value")
+
     def _setupCommandersTest(self, skill: PlayerType):
         """"""
         # settings        = Settings()
         self.settings.skill  = skill
         self.smarty.remainingKlingons = IntelligenceTest.KNOWN_KLINGON_COUNT
+
 
 if __name__ == '__main__':
     unittest.main()

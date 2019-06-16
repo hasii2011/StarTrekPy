@@ -4,13 +4,17 @@ from pygame import Surface
 
 from org.hasii.pytrek.gui.BasicTorpedo import BasicTorpedo
 
+from org.hasii.pytrek.objects.Coordinates import Coordinates
+
 
 class KlingonTorpedo(BasicTorpedo):
 
-    def __init__(self, screen: Surface):
+    def __init__(self, screen: Surface, shooterPower: float, shooterPosition: Coordinates):
         """
 
         Args:
             screen:
         """
         super().__init__(screen, "images/KlingonTorpedo.png")
+        self.shooterPower:    float       = shooterPower
+        self.shooterPosition: Coordinates = shooterPosition
