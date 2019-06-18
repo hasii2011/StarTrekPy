@@ -1,11 +1,12 @@
 
-from pygame import Surface
 import logging
+
+from pygame import Surface
 
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 
 
-class BasicExplosion(GamePiece):
+class BasicMiss(GamePiece):
 
     DISPLAY_SECONDS = 5
 
@@ -13,26 +14,26 @@ class BasicExplosion(GamePiece):
 
         super().__init__(screen, fileName)
 
-        self.logger = logging.getLogger(__name__)
-
+        self.logger           = logging.getLogger(__name__)
         self.displayTime      = playTime
         self.eligibleToRemove = False
 
     def update(self, sectorX: int, sectorY: int, playTime: float = 0):
         """
-        Display for DISPLAY_SECONDS;  Then tell controlling loop
-        to remove
 
-        :param sectorX:
-        :param sectorY:
-        :param playTime:
-        :return:
+        Display for DISPLAY_SECONDS;  Then mark as eligible to remove
+
+        Args:
+            sectorX:
+            sectorY:
+            playTime:
+
+        Returns:
+
         """
 
         timeSinceLastUpdate = playTime - self.displayTime
-        if timeSinceLastUpdate < BasicExplosion.DISPLAY_SECONDS:
+        if timeSinceLastUpdate < BasicMiss.DISPLAY_SECONDS:
             super().update(sectorX, sectorY, playTime)
         else:
             self.eligibleToRemove = True
-
-
