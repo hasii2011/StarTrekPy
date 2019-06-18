@@ -21,6 +21,7 @@ from org.hasii.pytrek.gui.GamePiece import GamePiece
 from org.hasii.pytrek.gui.BasicMiss import BasicMiss
 from org.hasii.pytrek.gui.BigRedX import BigRedX
 from org.hasii.pytrek.gui.BasicTorpedo import BasicTorpedo
+from org.hasii.pytrek.gui.PhotonTorpedo import PhotonTorpedo
 from org.hasii.pytrek.gui.KlingonTorpedo import KlingonTorpedo
 from org.hasii.pytrek.gui.KlingonTorpedoMiss import KlingonTorpedoMiss
 
@@ -135,31 +136,31 @@ class Quadrant:
                     self.logger.debug(f"Update sectorType: {sectorType}")
                     if sectorType == SectorType.PHOTON_TORPEDO:
 
-                        gamePiece.update(sectorX, sectorY, playTime)
-                        gamePiecePosition        = gamePiece.currentPosition
+                        photonTorpedo: PhotonTorpedo = cast(gamePiece, PhotonTorpedo)
+                        photonTorpedo.update(sectorX, sectorY, playTime)
+
+                        ptPosition = photonTorpedo.currentPosition
                         currentSectorCoordinates = Coordinates(sectorX, sectorY)
 
-                        if not currentSectorCoordinates.__eq__(gamePiecePosition):
+                        if not currentSectorCoordinates.__eq__(ptPosition):
                             self.makeSectorAtCoordinatesEmpty(currentSectorCoordinates)
-                            self.placeSprite(gamePiece, SectorType.PHOTON_TORPEDO, gamePiecePosition)
-                        self.attemptKlingonKill(gamePiece, playTime, sector)
+                            self.placeSprite(photonTorpedo, SectorType.PHOTON_TORPEDO, ptPosition)
+                        self.attemptKlingonKill(photonTorpedo, playTime, sector)
                     elif sectorType == SectorType.KLINGON_TORPEDO:
 
                         klingonTorpedo: KlingonTorpedo = cast(KlingonTorpedo, gamePiece)
-
                         klingonTorpedo.update(sectorX, sectorY, playTime)
-                        kTorpPosition:            Coordinates = klingonTorpedo.currentPosition
-                        currentSectorCoordinates: Coordinates = Coordinates(sectorX, sectorY)
 
-                        if not currentSectorCoordinates == kTorpPosition:
+                        ktNextPosition = klingonTorpedo.currentPosition
+                        currentSectorCoordinates = Coordinates(sectorX, sectorY)
+                        if not currentSectorCoordinates.__eq__(ktNextPosition):
                             self.makeSectorAtCoordinatesEmpty(currentSectorCoordinates)
-                            self.placeSprite(klingonTorpedo, sectorType, kTorpPosition)
+                            self.placeSprite(klingonTorpedo, SectorType.KLINGON_TORPEDO, ktNextPosition)
 
                         enterpriseHit: bool = self.checkIfEnterpriseHit(klingonTorpedo, playTime)
                         if enterpriseHit is True:
                             self._tellGameLoop(klingonTorpedo)
-                            sector.sectorType = SectorType.EMPTY
-                            sector.sprite = None
+                            self.placeEnterprise(enterprise=self.enterprise, coordinates=ktNextPosition)
 
                     elif sectorType == SectorType.EXPLOSION:
 
