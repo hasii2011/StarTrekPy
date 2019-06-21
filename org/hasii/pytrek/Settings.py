@@ -39,7 +39,7 @@ class Settings:
     def __init__(self):
         """Initialize the game's settings"""
 
-        if self.__initialized == True:
+        if self.__initialized is True:
             return
         else:
             self.__initialized = True
