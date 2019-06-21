@@ -87,14 +87,14 @@ class Quadrant:
             oldSector.setType(SectorType.EMPTY)
             oldSector.sprite = None
 
-        self.logger.debug("Placing enterprise at: %s", coordinates.__str__())
+        self.logger.debug(f"Placing enterprise at: {coordinates}")
 
         sectorRow = self.sectors.__getitem__(coordinates.getX())
         sector    = sectorRow.__getitem__(coordinates.getY())
 
         sector.setType(SectorType.ENTERPRISE)
         sector.setCoordinates(coordinates)
-        self.logger.info("Enterprise @sector: %s", coordinates)
+        self.logger.info(f"Enterprise @sector: {coordinates}")
 
         sector.setSprite(enterprise)
         self.enterprise = enterprise
@@ -104,13 +104,13 @@ class Quadrant:
     def placeAStarBase(self):
         """Randomly place a starbase"""
 
-        self.logger.debug("Starbase @Quadrant %s", self.coordinates)
+        self.logger.debug(f"Starbase @Quadrant {self.coordinates}")
 
         sector            = self.getRandomEmptySector()
         sector.sectorType = SectorType.STARBASE
         starBase          = StarBase(screen=self.screen)
         sector.setSprite(starBase)
-        self.logger.debug("Star Base set at sector (%s,%s)", sector.sectorX, sector.sectorY)
+        self.logger.debug(f"Star Base @Sector {sector}")
 
     def placeATorpedo(self, coordinates: Coordinates, torpedo: BasicTorpedo, torpedoType: SectorType):
         """"""

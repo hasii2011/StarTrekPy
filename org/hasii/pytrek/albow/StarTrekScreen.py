@@ -17,10 +17,7 @@ from albow.core.ui.Shell import Shell
 from albow.core.ui.RootWidget import RootWidget
 from albow.core.UserEventCall import UserEventCall
 
-from albow.themes.Theme import Theme
 from albow.dialog.DialogUtilities import ask
-
-from albow.widgets.TextBox import TextBox
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 from org.hasii.pytrek.GameMode import GameMode
@@ -39,7 +36,8 @@ from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.gui.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
-# from org.hasii.pytrek.gui.MessageWindow import MessageWindow
+from org.hasii.pytrek.gui.MessageConsole import MessageConsole
+
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole
 from org.hasii.pytrek.gui.GamePiece import GamePiece
@@ -82,11 +80,11 @@ class StarTrekScreen(Screen):
         self.soundImpulse        = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
         self.soundTorpedo        = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
         self.soundKlingonTorpedo = pygame.mixer.Sound(os.path.join('sounds', 'klingon_torpedo.wav'))
+        self.shieldHit           = pygame.mixer.Sound(os.path.join('sounds', 'ShieldHit.wav'))
 
         self.galaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround           = QuadrantBackground(theSurface)
         self.console              = StatusConsole(theSurface)
-        # self.messageWindow        = MessageWindow(theSurface)
 
         self.gameEngine = GameEngine()
         self.enterprise = Enterprise(theSurface)
@@ -112,18 +110,10 @@ class StarTrekScreen(Screen):
         RootWidget.addUserEvent(clockCall)
         RootWidget.addUserEvent(ktkCall)
         RootWidget.addUserEvent(entHitCall)
-
-        messageFont    = pygame.font.Font("fonts/MonoFonto.ttf", 14)
-
-        self.messageConsole: TextBox = TextBox(theNumberOfRows=10, theNumberOfColumns=48)
-        self.messageConsole.bg_color = Theme.BLACK
-        self.messageConsole.fg_color = Theme.WHITE
-        self.messageConsole.font = messageFont
-
-        # pos = (4, MESSAGE3_Y + 16)
-        pos = (4, self.settings.gameHeight)
-
-        self.messageConsole.topleft = pos
+        #
+        #  Init the albow widgets here
+        #
+        self.messageConsole = MessageConsole()
         self.add(self.messageConsole)
         StarTrekScreen._myself = self
 
@@ -194,7 +184,6 @@ class StarTrekScreen(Screen):
         quadrant = self.galaxy.getCurrentQuadrant()
         quadrant.update(playTime=playTime)
         self.console.update()
-        # self.messageWindow.update()
 
     def impulseScreenUpdate(self):
         """"""
@@ -204,8 +193,7 @@ class StarTrekScreen(Screen):
             self.soundUnableToComply.play()
         else:
             self.gameEngine.impulse(newCoordinates=coordinates, quadrant=self.quadrant, enterprise=self.enterprise)
-            msg = f"Moved to sector: {coordinates.__str__()}"
-            # self.messageWindow.displayMessage(msg)
+            msg = f"Moved to sector: {coordinates}"
             self.messageConsole.addText(msg)
             self.soundImpulse.play()
 
@@ -225,8 +213,7 @@ class StarTrekScreen(Screen):
             #
             self.quadrant = self.gameEngine.warp(moveToCoordinates=quadCoords, galaxy=self.galaxy,
                                                  intelligence=self.intelligence, enterprise=self.enterprise)
-            msg = f"Warped to: {quadCoords.__str__()}"
-            # self.messageWindow.displayMessage(msg)
+            msg = f"Warped to: {quadCoords}"
             self.messageConsole.addText(msg)
             self.soundWarp.play()
 
@@ -248,7 +235,7 @@ class StarTrekScreen(Screen):
             #
             klingon:         Klingon     = klingons[0]
             klingonPosition: Coordinates = klingon.currentPosition
-            # self.messageWindow.displayMessage(f"Klingon at {klingonPosition} firing!")
+
             self.messageConsole.addText(f"Klingon at {klingonPosition} firing!")
 
             torpedo: KlingonTorpedo = KlingonTorpedo(screen=self.surface,
@@ -262,7 +249,6 @@ class StarTrekScreen(Screen):
     def fireEnterpriseTorpedoesAtKlingons(self):
         """"""
 
-        # self.messageWindow.displayMessage("Firing Torpedoes!!")
         self.messageConsole.addText("Firing Torpedoes!!")
 
         quadrant:           Quadrant      = self.galaxy.getCurrentQuadrant()
@@ -299,8 +285,7 @@ class StarTrekScreen(Screen):
         """
         interceptCoordinates: List = self.computer.interpolateYIntercepts(firingPosition, targetPosition)
 
-        # self.messageWindow.displayMessage(f"Targeting {targetName} at: {targetPosition.__str__()}")
-        self.messageConsole.addText(f"Targeting {targetName} at: {targetPosition.__str__()}")
+        self.messageConsole.addText(f"Targeting {targetName} at: {targetPosition}")
 
         self.logger.debug(f"{targetName} at {targetPosition}, interceptCoordinates {interceptCoordinates}")
 
@@ -367,11 +352,10 @@ class StarTrekScreen(Screen):
         shDegradeValue = shieldHitData.shieldAbsorptionValue
         tpDegradeValue = shieldHitData.degradedTorpedoHitValue
 
-        # self.messageWindow.displayMessage(f"Shield hit {shDegradeValue:4f}")
         self.messageConsole.addText(f"Shield hit {shDegradeValue:4f}")
+        self.shieldHit.play()
 
         self.gameEngine.degradeShields(shDegradeValue)
 
-        # self.messageWindow.displayMessage(f"Energy hit {tpDegradeValue:4f}")
         self.messageConsole.addText(f"Energy hit {tpDegradeValue:4f}")
         self.gameEngine.degradeEnergyLevel(shieldHitData.degradedTorpedoHitValue)
