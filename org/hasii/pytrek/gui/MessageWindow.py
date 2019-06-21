@@ -25,6 +25,7 @@ UPDATE_INTERVAL_SECONDS = 1
 class MessageWindow(Sprite):
     """
 
+
     """
     def __init__(self, screen: pygame.Surface):
         """"""
