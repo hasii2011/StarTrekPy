@@ -21,6 +21,7 @@ FONT_PATH          = "fonts/MonoFonto.ttf"
 
 UPDATE_INTERVAL_SECONDS = 1
 
+
 class MessageWindow(Sprite):
     """
 
@@ -55,7 +56,7 @@ class MessageWindow(Sprite):
         self.messageStrings[2] = self.messageStrings[1]
         self.messageStrings[1] = self.messageStrings[0]
         self.messageStrings[0] = newMessage
-        if makeSound == True:
+        if makeSound is True:
             self.beep.play()
         else:
             self.logger.debug("No beep")
