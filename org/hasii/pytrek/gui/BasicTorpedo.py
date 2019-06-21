@@ -20,7 +20,7 @@ class BasicTorpedo(GamePiece):
 
         self.currentTrajectoryIdx = 0
         self.trajectory           = []
-        self.timeSinceMovement    = 0
+        self.timeSinceMovement    = 0.0
         self.torpedoAtTarget      = False
 
     def update(self, sectorX: int, sectorY: int, playTime: float = 0):

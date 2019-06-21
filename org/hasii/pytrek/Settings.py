@@ -15,15 +15,16 @@ GREEN = (0,255,0)
 RED   = (255,0,0)
 DARK_BLUE = 0,0,128
 
+
 class Settings:
     """
         A class to store all settings for this kewl game
         This class is a singleton
     """
 
-    CLOCK_EVENT = AlbowEventLoop.MUSIC_END_EVENT + 1
-    KLINGON_TORPEDO_EVENT = CLOCK_EVENT + 1
-    ENTERPRISE_HIT_BY_TORPEDO = KLINGON_TORPEDO_EVENT + 1
+    CLOCK_EVENT               = AlbowEventLoop.MUSIC_END_EVENT + 1
+    KLINGON_TORPEDO_EVENT     = CLOCK_EVENT + 1
+    ENTERPRISE_HIT_BY_TORPEDO_EVENT = KLINGON_TORPEDO_EVENT + 1
 
     DEFAULT_FULL_SHIELDS = 2500.0
 
@@ -45,7 +46,7 @@ class Settings:
             self.__initialized = True
 
         self.screenWidth  = 800
-        self.screenHeight = 700
+        self.screenHeight = 700 + 200
         self.gameWidth    = 640
         self.gameHeight   = 640
         self.leftMargin   = 2

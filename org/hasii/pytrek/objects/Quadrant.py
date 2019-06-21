@@ -136,7 +136,7 @@ class Quadrant:
                     self.logger.debug(f"Update sectorType: {sectorType}")
                     if sectorType == SectorType.PHOTON_TORPEDO:
 
-                        photonTorpedo: PhotonTorpedo = cast(gamePiece, PhotonTorpedo)
+                        photonTorpedo: PhotonTorpedo = cast(PhotonTorpedo, gamePiece)
                         photonTorpedo.update(sectorX, sectorY, playTime)
 
                         ptPosition = photonTorpedo.currentPosition
@@ -435,7 +435,7 @@ class Quadrant:
 
         self.logger.info(f"Tell game loop that the Enterprise was hit!")
 
-        enterpriseHitEvent = Event(Settings.ENTERPRISE_HIT_BY_TORPEDO, dict=None)
+        enterpriseHitEvent = Event(Settings.ENTERPRISE_HIT_BY_TORPEDO_EVENT, dict=None)
         enterpriseHitEvent.dict['enterprisePosition'] = self.enterprise.currentPosition
         enterpriseHitEvent.dict['shooterPosition'] = torpedo.shooterPosition
         enterpriseHitEvent.dict['shooterPower'] = torpedo.shooterPower

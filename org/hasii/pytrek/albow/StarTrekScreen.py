@@ -17,7 +17,10 @@ from albow.core.ui.Shell import Shell
 from albow.core.ui.RootWidget import RootWidget
 from albow.core.UserEventCall import UserEventCall
 
+from albow.themes.Theme import Theme
 from albow.dialog.DialogUtilities import ask
+
+from albow.widgets.TextBox import TextBox
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 from org.hasii.pytrek.GameMode import GameMode
@@ -36,7 +39,7 @@ from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.gui.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
-from org.hasii.pytrek.gui.MessageWindow import MessageWindow
+# from org.hasii.pytrek.gui.MessageWindow import MessageWindow
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole
 from org.hasii.pytrek.gui.GamePiece import GamePiece
@@ -83,7 +86,7 @@ class StarTrekScreen(Screen):
         self.galaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround           = QuadrantBackground(theSurface)
         self.console              = StatusConsole(theSurface)
-        self.messageWindow        = MessageWindow(theSurface)
+        # self.messageWindow        = MessageWindow(theSurface)
 
         self.gameEngine = GameEngine()
         self.enterprise = Enterprise(theSurface)
@@ -101,14 +104,27 @@ class StarTrekScreen(Screen):
         pygame.time.set_timer(Settings.CLOCK_EVENT, 10 * 1000)
         pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, 15 * 1000)
 
-        clockEventCall:  UserEventCall = UserEventCall(func=StarTrekScreen.clockEventCallback,       userEvent=Settings.CLOCK_EVENT)
-        ktkEventCall:    UserEventCall = UserEventCall(func=StarTrekScreen.ktkEventCallback,         userEvent=Settings.KLINGON_TORPEDO_EVENT)
-        entHitEventCall: UserEventCall = UserEventCall(func=StarTrekScreen.enterpriseHitWithTorpedo, userEvent=Settings.ENTERPRISE_HIT_BY_TORPEDO)
+        clockCall:  UserEventCall = UserEventCall(func=StarTrekScreen.clockCB, userEvent=Settings.CLOCK_EVENT)
+        ktkCall:    UserEventCall = UserEventCall(func=StarTrekScreen.ktkCB,   userEvent=Settings.KLINGON_TORPEDO_EVENT)
+        entHitCall: UserEventCall = UserEventCall(func=StarTrekScreen.enterpriseTorpHitCB,
+                                                  userEvent=Settings.ENTERPRISE_HIT_BY_TORPEDO_EVENT)
 
-        RootWidget.addUserEvent(clockEventCall)
-        RootWidget.addUserEvent(ktkEventCall)
-        RootWidget.addUserEvent(entHitEventCall)
+        RootWidget.addUserEvent(clockCall)
+        RootWidget.addUserEvent(ktkCall)
+        RootWidget.addUserEvent(entHitCall)
 
+        messageFont    = pygame.font.Font("fonts/MonoFonto.ttf", 14)
+
+        self.messageConsole: TextBox = TextBox(theNumberOfRows=10, theNumberOfColumns=48)
+        self.messageConsole.bg_color = Theme.BLACK
+        self.messageConsole.fg_color = Theme.WHITE
+        self.messageConsole.font = messageFont
+
+        # pos = (4, MESSAGE3_Y + 16)
+        pos = (4, self.settings.gameHeight)
+
+        self.messageConsole.topleft = pos
+        self.add(self.messageConsole)
         StarTrekScreen._myself = self
 
     def key_down(self, theEvent: Event):
@@ -178,17 +194,19 @@ class StarTrekScreen(Screen):
         quadrant = self.galaxy.getCurrentQuadrant()
         quadrant.update(playTime=playTime)
         self.console.update()
-        self.messageWindow.update()
+        # self.messageWindow.update()
 
     def impulseScreenUpdate(self):
         """"""
         coordinates: Coordinates = self.computer.computeSectorCoordinates(self.mouseClickEvent.pos[0], self.mouseClickEvent.pos[1])
         if coordinates.__eq__(self.statistics.currentSectorCoordinates):
-            self.messageWindow.displayMessage("WTF.  You are already here!")
+            self.messageConsole.addText("WTF.  You are already here!")
             self.soundUnableToComply.play()
         else:
             self.gameEngine.impulse(newCoordinates=coordinates, quadrant=self.quadrant, enterprise=self.enterprise)
-            self.messageWindow.displayMessage("Moved to sector: " + coordinates.__str__())
+            msg = f"Moved to sector: {coordinates.__str__()}"
+            # self.messageWindow.displayMessage(msg)
+            self.messageConsole.addText(msg)
             self.soundImpulse.play()
 
         self.settings.gameMode = GameMode.Normal
@@ -196,18 +214,20 @@ class StarTrekScreen(Screen):
     def warpScreenUpdate(self):
         """"""
 
-        quadrantCoordinates: Coordinates = self.computer.computeQuadrantCoordinates(self.mouseClickEvent.pos[0], self.mouseClickEvent.pos[1])
-        if quadrantCoordinates.__eq__(self.statistics.currentQuadrantCoordinates):
-            self.messageWindow.displayMessage("Hey! You are already here.")
+        quadCoords: Coordinates = self.computer.computeQuadrantCoordinates(self.mouseClickEvent.pos[0], self.mouseClickEvent.pos[1])
+        if quadCoords.__eq__(self.statistics.currentQuadrantCoordinates):
+            self.messageConsole.addText("Hey! You are already here.")
             self.soundInaccurate.play()
         else:
-            self.logger.info("Move to quadrant: %s", quadrantCoordinates)
+            self.logger.info(f"Move to quadrant: {quadCoords}")
             #
             # Warping !!
             #
-            self.quadrant = self.gameEngine.warp(moveToCoordinates=quadrantCoordinates, galaxy=self.galaxy,
+            self.quadrant = self.gameEngine.warp(moveToCoordinates=quadCoords, galaxy=self.galaxy,
                                                  intelligence=self.intelligence, enterprise=self.enterprise)
-            self.messageWindow.displayMessage("Warped to: " + quadrantCoordinates.__str__())
+            msg = f"Warped to: {quadCoords.__str__()}"
+            # self.messageWindow.displayMessage(msg)
+            self.messageConsole.addText(msg)
             self.soundWarp.play()
 
         self.settings.gameMode = GameMode.Normal
@@ -228,7 +248,8 @@ class StarTrekScreen(Screen):
             #
             klingon:         Klingon     = klingons[0]
             klingonPosition: Coordinates = klingon.currentPosition
-            self.messageWindow.displayMessage(f"Klingon at {klingonPosition} firing!")
+            # self.messageWindow.displayMessage(f"Klingon at {klingonPosition} firing!")
+            self.messageConsole.addText(f"Klingon at {klingonPosition} firing!")
 
             torpedo: KlingonTorpedo = KlingonTorpedo(screen=self.surface,
                                                      shooterPower=klingon.getPower(),
@@ -241,7 +262,8 @@ class StarTrekScreen(Screen):
     def fireEnterpriseTorpedoesAtKlingons(self):
         """"""
 
-        self.messageWindow.displayMessage("Firing Torpedoes!!")
+        # self.messageWindow.displayMessage("Firing Torpedoes!!")
+        self.messageConsole.addText("Firing Torpedoes!!")
 
         quadrant:           Quadrant      = self.galaxy.getCurrentQuadrant()
         enterprisePosition: Coordinates   = self.enterprise.currentPosition
@@ -250,7 +272,8 @@ class StarTrekScreen(Screen):
 
             direction: Direction = self.computer.determineDirection(enterprisePosition, klingon.currentPosition)
             torpedo: PhotonTorpedo = PhotonTorpedo(screen=self.surface, direction=direction)
-            self.fireTorpedoAt(firingPosition=enterprisePosition, targetPosition=klingon.currentPosition, torpedo=torpedo, sectorType=SectorType.PHOTON_TORPEDO,
+            self.fireTorpedoAt(firingPosition=enterprisePosition, targetPosition=klingon.currentPosition, torpedo=torpedo,
+                               sectorType=SectorType.PHOTON_TORPEDO,
                                targetName="Klingon", soundToPlay=self.soundTorpedo)
 
         for commander in quadrant.commanders:
@@ -276,9 +299,10 @@ class StarTrekScreen(Screen):
         """
         interceptCoordinates: List = self.computer.interpolateYIntercepts(firingPosition, targetPosition)
 
-        self.messageWindow.displayMessage(f"Targeting {targetName} at: {targetPosition.__str__()}")
+        # self.messageWindow.displayMessage(f"Targeting {targetName} at: {targetPosition.__str__()}")
+        self.messageConsole.addText(f"Targeting {targetName} at: {targetPosition.__str__()}")
 
-        self.logger.debug(f"{targetName} at {targetPosition}, Direction: {targetPosition}, interceptCoordinates {interceptCoordinates}")
+        self.logger.debug(f"{targetName} at {targetPosition}, interceptCoordinates {interceptCoordinates}")
 
         torpedo.setTrajectory(interceptCoordinates)
 
@@ -307,7 +331,7 @@ class StarTrekScreen(Screen):
         self.logger.info("Selected Save Game")
 
     @staticmethod
-    def clockEventCallback(theEvent: Event):
+    def clockCB(theEvent: Event):
 
         self = StarTrekScreen._myself
         self.logger.debug(f"clockEventCallback - Event Type: {theEvent.type} - relative time {theEvent.dict['time']}")
@@ -317,7 +341,7 @@ class StarTrekScreen(Screen):
         self.statistics.starDate += randomTime
 
     @staticmethod
-    def ktkEventCallback(theEvent: Event):
+    def ktkCB(theEvent: Event):
 
         self = StarTrekScreen._myself
 
@@ -325,7 +349,7 @@ class StarTrekScreen(Screen):
         self.fireKlingonTorpedoesAtEnterprise()
 
     @staticmethod
-    def enterpriseHitWithTorpedo(theEvent: Event):
+    def enterpriseTorpHitCB(theEvent: Event):
 
         self = StarTrekScreen._myself
 
@@ -343,8 +367,11 @@ class StarTrekScreen(Screen):
         shDegradeValue = shieldHitData.shieldAbsorptionValue
         tpDegradeValue = shieldHitData.degradedTorpedoHitValue
 
-        self.messageWindow.displayMessage(f"Shield hit {shDegradeValue:4f}")
+        # self.messageWindow.displayMessage(f"Shield hit {shDegradeValue:4f}")
+        self.messageConsole.addText(f"Shield hit {shDegradeValue:4f}")
+
         self.gameEngine.degradeShields(shDegradeValue)
 
-        self.messageWindow.displayMessage(f"Energy hit {tpDegradeValue:4f}")
+        # self.messageWindow.displayMessage(f"Energy hit {tpDegradeValue:4f}")
+        self.messageConsole.addText(f"Energy hit {tpDegradeValue:4f}")
         self.gameEngine.degradeEnergyLevel(shieldHitData.degradedTorpedoHitValue)
