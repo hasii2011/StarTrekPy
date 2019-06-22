@@ -62,7 +62,7 @@ class StatusConsole(Sprite):
 
         self.systemStatusLabelFont.set_underline(True)
 
-        self.consoleLabel         = self.consoleLabelFont.render("Status Console", 1, WHITE)
+        self.consoleLabel = self.consoleLabelFont.render("Status Console", 1, WHITE)
 
         self.starDateStatus: StatusRenderer = StatusRenderer(screen, "Stardate:",   STAR_DATE_Y)
         self.quadrantStatus: StatusRenderer = StatusRenderer(screen, "Quadrant:",   QUADRANT_Y)
@@ -73,7 +73,7 @@ class StatusConsole(Sprite):
         self.klingonCount:   StatusRenderer = StatusRenderer(screen, "Klingons:",   KLINGON_COUNT_Y)
         self.commanderCount: StatusRenderer = StatusRenderer(screen, "Commanders:", COMMANDER_COUNT_Y)
 
-        self.systemsStatusLabel   = self.systemStatusLabelFont.render ("SYSTEMS ", 1, WHITE)
+        self.systemsStatusLabel   = self.systemStatusLabelFont.render("SYSTEMS ", 1, WHITE)
 
         self.shieldStatus:   StatusRenderer = StatusRenderer(screen, "Shields:",  SHIELD_STATUS_Y)
         self.phaserStatus:   StatusRenderer = StatusRenderer(screen, "Phasers:",  PHASER_STATUS_Y)
@@ -85,11 +85,10 @@ class StatusConsole(Sprite):
     def update(self):
         """"""
 
-        valueOffset = LABEL_X + 65
-        self.updateGameSettings(valueOffset)
-        self.updateSystemsStatus(valueOffset)
+        self.updateGameSettings()
+        self.updateSystemsStatus()
 
-    def updateGameSettings(self, valueOffset: int):
+    def updateGameSettings(self):
 
         formattedStarDate       = "{:8.2f}".format(self.stats.starDate)
         formattedEnergy         = "{:7.2f}".format(self.stats.energy)
@@ -101,18 +100,14 @@ class StatusConsole(Sprite):
         self.starDateStatus.display(formattedStarDate, WHITE)
         self.quadrantStatus.display(str(self.stats.currentQuadrantCoordinates), WHITE)
         self.sectorStatus.display(str(self.stats.currentSectorCoordinates), WHITE)
-        self.energyStatus.display(formattedEnergy,WHITE)
+        self.energyStatus.display(formattedEnergy, WHITE)
         self.shieldEnergy.display(formattedShieldEnergy, WHITE)
         self.remGameTime.display(formattedRemGameTime, WHITE)
         self.klingonCount.display(str(self.stats.remainingKlingons), WHITE)
         self.commanderCount.display(str(self.stats.remainingCommanders), WHITE)
 
-    def updateSystemsStatus(self, valueOffset):
+    def updateSystemsStatus(self):
         """
-
-        :param gameEngine:
-        :param valueOffset:
-        :return:
         """
         self.screen.blit(self.systemsStatusLabel, (LABEL_X, SYSTEM_STATUS_Y))
 
