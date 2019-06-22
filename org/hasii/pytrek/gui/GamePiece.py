@@ -26,7 +26,7 @@ class GamePiece(Sprite):
 
         self.screen:          Surface     = screen
         self.settings:        Settings    = Settings()
-        self.currentPosition: Coordinates = cast(Coordinates,None)
+        self.currentPosition: Coordinates = cast(Coordinates, None)
         self.playTime:        float       = 0.0
         self.image = pygame.image.load(fileNamePath)
 
@@ -43,6 +43,6 @@ class GamePiece(Sprite):
         self.rect.x = ((sectorX * GamePiece.STANDARD_SPRITE_WIDTH)  * 2) + GamePiece.STANDARD_X_ADJUSTMENT + self.settings.leftMargin
         self.rect.y = ((sectorY * GamePiece.STANDARD_SPRITE_HEIGHT) * 2) + GamePiece.STANDARD_Y_ADJUSTMENT
 
-        # print("sectorX: " + str(sectorX) + " self.rect.x: " + str(self.rect.x) + " sectorY: " + str(sectorY) + " self.rect.y: " +str(self.rect.y))
+        # print(f"sectorX: {str(sectorX)} self.rect.x: {str(self.rect.x)} sectorY: {str(sectorY)} self.rect.y: {str(self.rect.y)}")
         # print(str(self.rect))
         self.screen.blit(self.image, self.rect)

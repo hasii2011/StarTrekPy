@@ -1,6 +1,7 @@
-from enum import Enum
 
 from enum import Enum
+
+
 class ExplosionColor(Enum):
 
     NO_COLOR = 1
@@ -22,4 +23,3 @@ class ExplosionColor(Enum):
         return ExplosionColor(v)
 
     __order__ = 'NO_COLOR GREY BLUE RED WHITE'
-
