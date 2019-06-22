@@ -2,7 +2,7 @@
 from pygame import Surface
 
 
-from org.hasii.pytrek.gui.BasicTorpedo import BasicTorpedo
+from hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 

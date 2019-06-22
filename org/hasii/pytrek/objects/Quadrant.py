@@ -18,9 +18,9 @@ from org.hasii.pytrek.gui.StarBase import StarBase
 from org.hasii.pytrek.gui.Klingon import Klingon
 from org.hasii.pytrek.gui.Commander import Commander
 from org.hasii.pytrek.gui.GamePiece import GamePiece
-from org.hasii.pytrek.gui.BasicMiss import BasicMiss
+from hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
 from org.hasii.pytrek.gui.BigRedX import BigRedX
-from org.hasii.pytrek.gui.BasicTorpedo import BasicTorpedo
+from hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
 from org.hasii.pytrek.gui.PhotonTorpedo import PhotonTorpedo
 from org.hasii.pytrek.gui.KlingonTorpedo import KlingonTorpedo
 from org.hasii.pytrek.gui.KlingonTorpedoMiss import KlingonTorpedoMiss
