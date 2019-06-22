@@ -42,8 +42,8 @@ from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 from org.hasii.pytrek.gui.Klingon import Klingon
-from org.hasii.pytrek.gui.PhotonTorpedo import PhotonTorpedo
-from org.hasii.pytrek.gui.KlingonTorpedo import KlingonTorpedo
+from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
+from hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
 
 
 class StarTrekScreen(Screen):

@@ -11,7 +11,7 @@ from org.hasii.pytrek.engine import Direction
 from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.Intelligence import Intelligence
-from org.hasii.pytrek.gui.PhotonTorpedo import PhotonTorpedo
+from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
 from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.GamePiece import GamePiece

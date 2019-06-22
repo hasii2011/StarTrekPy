@@ -13,17 +13,17 @@ from pygame.event import post as pygamePostEvent
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 
 from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
-from org.hasii.pytrek.gui.Explosion import Explosion
+from hasii.pytrek.gui.gamepieces.Explosion import Explosion
 from org.hasii.pytrek.gui.StarBase import StarBase
 from org.hasii.pytrek.gui.Klingon import Klingon
 from org.hasii.pytrek.gui.Commander import Commander
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 from hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
-from org.hasii.pytrek.gui.BigRedX import BigRedX
+from hasii.pytrek.gui.gamepieces.BigRedX import BigRedX
 from hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
-from org.hasii.pytrek.gui.PhotonTorpedo import PhotonTorpedo
-from org.hasii.pytrek.gui.KlingonTorpedo import KlingonTorpedo
-from org.hasii.pytrek.gui.KlingonTorpedoMiss import KlingonTorpedoMiss
+from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
+from hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
+from hasii.pytrek.gui.gamepieces.KlingonTorpedoMiss import KlingonTorpedoMiss
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Sector import Sector
