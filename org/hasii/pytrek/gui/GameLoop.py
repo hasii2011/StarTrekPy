@@ -14,7 +14,7 @@ from org.hasii.pytrek.engine.Intelligence import Intelligence
 from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
 from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.gui.MessageWindow import MessageWindow
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole

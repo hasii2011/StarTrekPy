@@ -17,7 +17,7 @@ from hasii.pytrek.gui.gamepieces.Explosion import Explosion
 from hasii.pytrek.gui.gamepieces.StarBase import StarBase
 from hasii.pytrek.gui.gamepieces.Klingon import Klingon
 from hasii.pytrek.gui.gamepieces.Commander import Commander
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
 from hasii.pytrek.gui.gamepieces.BigRedX import BigRedX
 from hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo

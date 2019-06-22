@@ -40,7 +40,7 @@ from org.hasii.pytrek.gui.MessageConsole import MessageConsole
 
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from hasii.pytrek.gui.gamepieces.Klingon import Klingon
 from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
 from hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo

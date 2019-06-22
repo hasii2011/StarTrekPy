@@ -11,7 +11,7 @@ from org.hasii.pytrek.objects.Quadrant import Quadrant
 
 from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.engine.Direction import Direction
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 
 class Computer:

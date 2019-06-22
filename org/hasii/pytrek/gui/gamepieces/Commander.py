@@ -4,7 +4,7 @@ import random
 from pygame import Surface
 
 from org.hasii.pytrek.engine.Direction import Direction
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 

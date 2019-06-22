@@ -3,7 +3,7 @@ import logging
 
 from pygame import Surface
 
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 
 class BasicMiss(GamePiece):

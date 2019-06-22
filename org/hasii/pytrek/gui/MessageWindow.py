@@ -6,7 +6,7 @@ from pygame.sprite import Sprite
 
 from org.hasii.pytrek.Settings import WHITE
 from org.hasii.pytrek.engine.Intelligence import Intelligence
-from org.hasii.pytrek.gui.GamePiece import GamePiece
+from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 Y_OFFSET           = 2
 LABEL_X            = 2
