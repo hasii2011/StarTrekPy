@@ -89,7 +89,7 @@ class StarTrekScreen(Screen):
         self.gameEngine = GameEngine()
         self.enterprise = Enterprise(theSurface)
 
-        self.galaxy   = Galaxy(theSurface, self.settings, self.intelligence, self.gameEngine)
+        self.galaxy   = Galaxy(screen=theSurface, intelligence=self.intelligence, gameEngine=self.gameEngine)
         self.quadrant = self.galaxy.getCurrentQuadrant()
 
         self.statistics.currentQuadrantCoordinates = self.galaxy.currentQuadrant.coordinates

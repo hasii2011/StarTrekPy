@@ -12,7 +12,7 @@ from org.hasii.pytrek.GameStatistics import GameStatistics
 class Galaxy:
     """Galaxy management"""
 
-    def __init__(self, screen, settings, intelligence, gameEngine):
+    def __init__(self, screen, intelligence, gameEngine):
         """"""
         self.screen         = screen
         self.intelligence   = intelligence

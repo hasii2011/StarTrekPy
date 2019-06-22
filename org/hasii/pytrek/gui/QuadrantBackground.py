@@ -1,12 +1,15 @@
 import pygame
 
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from hasii.pytrek.gui.BaseBackground import BaseBackGround
 
-class QuadrantBackground(GamePiece):
+
+class QuadrantBackground(BaseBackGround):
+
     """"""
     def __init__(self, screen: pygame.Surface):
         """"""
-        super().__init__(screen=screen, fileNamePath='images/QuadrantBackground.png')
+        super().__init__(screen=screen, fileName='images/QuadrantBackground.png')
+
     def update(self):
         """Background always at 0,0"""
 

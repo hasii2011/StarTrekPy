@@ -3,8 +3,6 @@ import pygame
 
 from pygame import Surface
 
-from pygame.sprite import Sprite
-
 from org.hasii.pytrek.Settings import WHITE
 from org.hasii.pytrek.Settings import RED
 
@@ -12,6 +10,7 @@ from org.hasii.pytrek.objects.Galaxy import Galaxy
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from hasii.pytrek.gui.BaseBackground import BaseBackGround
 
 from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.Intelligence import Intelligence
@@ -20,23 +19,15 @@ X_OFFSET    = 24
 Y_OFFSET    = 16
 
 
-class GalaxyScanBackground(Sprite):
+class GalaxyScanBackground(BaseBackGround):
     """"""
-    def __init__(self, screen: pygame.Surface):
+    def __init__(self, screen: Surface):
         """"""
 
-        super().__init__()
-
-        self.screen: Surface     = screen
-        self.image = pygame.image.load('images/GalaxyScanBackground.png')
+        super().__init__(screen, 'images/GalaxyScanBackground.png')
 
         self.computer = Computer()
         self.labelFont = pygame.font.Font("fonts/FuturistFixedWidth.ttf", 14)
-
-        self.rect   = self.image.get_rect()
-        self.rect.x = self.rect.width
-        self.rect.y = self.rect.height
-        self.x      = float(self.rect.x)
 
     def update(self, galaxy: Galaxy):
         """Displays galaxy content"""
