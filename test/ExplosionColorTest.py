@@ -3,7 +3,7 @@ import unittest
 import logging
 
 from BaseTest import BaseTest
-from org.hasii.pytrek.gui.ExplosionColor import ExplosionColor
+from hasii.pytrek.gui.gamepieces.ExplosionColor import ExplosionColor
 
 
 class ExplosionColorTest(BaseTest):

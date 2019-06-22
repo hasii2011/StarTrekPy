@@ -3,7 +3,7 @@ import pygame
 import os
 import logging
 
-from org.hasii.pytrek.gui.ExplosionColor import ExplosionColor
+from hasii.pytrek.gui.gamepieces.ExplosionColor import ExplosionColor
 from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 class Explosion(GamePiece):
