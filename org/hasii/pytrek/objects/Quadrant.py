@@ -14,9 +14,9 @@ from org.hasii.pytrek.engine.Intelligence import Intelligence
 
 from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from hasii.pytrek.gui.gamepieces.Explosion import Explosion
-from org.hasii.pytrek.gui.StarBase import StarBase
-from org.hasii.pytrek.gui.Klingon import Klingon
-from org.hasii.pytrek.gui.Commander import Commander
+from hasii.pytrek.gui.gamepieces.StarBase import StarBase
+from hasii.pytrek.gui.gamepieces.Klingon import Klingon
+from hasii.pytrek.gui.gamepieces.Commander import Commander
 from org.hasii.pytrek.gui.GamePiece import GamePiece
 from hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
 from hasii.pytrek.gui.gamepieces.BigRedX import BigRedX
