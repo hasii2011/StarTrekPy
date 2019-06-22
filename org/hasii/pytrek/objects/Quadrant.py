@@ -12,7 +12,7 @@ from pygame.event import post as pygamePostEvent
 
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 
-from org.hasii.pytrek.gui.Enterprise import Enterprise
+from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.Explosion import Explosion
 from org.hasii.pytrek.gui.StarBase import StarBase
 from org.hasii.pytrek.gui.Klingon import Klingon

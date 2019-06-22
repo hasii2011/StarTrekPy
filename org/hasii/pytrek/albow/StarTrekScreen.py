@@ -34,7 +34,7 @@ from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Direction import Direction
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
-from org.hasii.pytrek.gui.Enterprise import Enterprise
+from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.MessageConsole import MessageConsole
 

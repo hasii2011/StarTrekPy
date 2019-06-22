@@ -19,7 +19,7 @@ from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 
-from org.hasii.pytrek.gui.Enterprise import Enterprise
+from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Galaxy import Galaxy
