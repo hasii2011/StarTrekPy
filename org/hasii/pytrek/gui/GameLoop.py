@@ -57,7 +57,7 @@ class GameLoop():
 
         self.gameEngine = GameEngine()
 
-        self.galaxy     = Galaxy(screen, self.settings, self.intelligence, self.gameEngine)
+        self.galaxy     = Galaxy(screen, self.intelligence, self.gameEngine)
         self.enterprise = Enterprise(screen)
         self.quadrant   = self.galaxy.getCurrentQuadrant()
 

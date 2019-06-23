@@ -1,14 +1,24 @@
 import logging
 import logging.config
 
+import json
+
 import pygame
 
 from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.gui.GameLoop import GameLoop
 
+JSON_LOGGING_CONFIG_FILENAME = "loggingConfiguration.json"
+
+
 def runGame():
 
-    logging.config.fileConfig('logging.conf')
+    with open(JSON_LOGGING_CONFIG_FILENAME, 'r') as loggingConfigurationFile:
+        configurationDictionary = json.load(loggingConfigurationFile)
+
+    logging.config.dictConfig(configurationDictionary)
+    logging.logProcesses = False
+    logging.logThreads = False
 
     logger   = logging.getLogger(__name__)
     settings = Settings()
@@ -47,8 +57,8 @@ def runGame():
         if cycleTime > 10:
             # logger.debug("10 seconds have elapsed")
             cycleTime = 0
-#
-#
-#
+
+
 if __name__ == "__main__":
     runGame()
+
