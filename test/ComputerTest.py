@@ -16,6 +16,7 @@ from org.hasii.pytrek.Settings import Settings
 
 from BaseTest import BaseTest
 
+
 class ComputerTest(BaseTest):
     """ha ha"""
 
@@ -35,14 +36,11 @@ class ComputerTest(BaseTest):
     def setUp(self):
         """"""
 
-        self.logger       = logging.getLogger(__name__)
-
-        self.settings     = Settings()
-        self.computer     = Computer()
-
-        mockCoordinates   = Coordinates(x=5, y=5)
-
-        self.quadrant     = Quadrant(coordinates=mockCoordinates,screen=None)
+        self.logger     = logging.getLogger(__name__)
+        self.settings   = Settings()
+        self.computer   = Computer()
+        mockCoordinates = Coordinates(x=5, y=5)
+        self.quadrant   = Quadrant(coordinates=mockCoordinates, screen=None)
 
     def testSingletonBehavior(self):
 
@@ -50,50 +48,50 @@ class ComputerTest(BaseTest):
 
         self.assertEqual(self.computer, doppleGanger, "Singleton creation failed")
 
-        self.logger.info("computer: '%s',  doppleGanger: '%s'", self.computer.__repr__(), doppleGanger.__repr__())
+        self.logger.info(f"computer: '{self.computer.__repr__()}',  doppleGanger: '{doppleGanger.__repr__()}'")
 
     def testComputeQuadrantDistanceTopLeftToBottomRight(self):
         """"""
 
-        startSectorCoordinates = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE,Intelligence.MIN_SECTOR_Y_COORDINATE)
-        endSectorCoordinates   = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE,Intelligence.MAX_SECTOR_Y_COORDINATE)
+        startSectorCoordinates = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE, Intelligence.MIN_SECTOR_Y_COORDINATE)
+        endSectorCoordinates   = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE, Intelligence.MAX_SECTOR_Y_COORDINATE)
 
         distance: float = self.computer.computeQuadrantDistance(startSector=startSectorCoordinates, endSector=endSectorCoordinates)
 
-        self.logger.info("Max distance is: %s", distance)
+        self.logger.info(f"Max distance is: {distance}")
         self.assertGreater(distance, ComputerTest.MIN_QUADRANT_DISTANCE, "Max distance calculation failed less than zero")
         self.assertGreaterEqual(distance, ComputerTest.MAX_QUADRANT_DIAGONAL_DISTANCE, "Incorrect max distance")
 
     def testComputeQuadrantDistanceBottomRightToTopLeft(self):
         """"""
 
-        startSectorCoordinates = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE,Intelligence.MAX_SECTOR_Y_COORDINATE)
-        endSectorCoordinates   = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE,Intelligence.MIN_SECTOR_Y_COORDINATE)
+        startSectorCoordinates = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE, Intelligence.MAX_SECTOR_Y_COORDINATE)
+        endSectorCoordinates   = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE, Intelligence.MIN_SECTOR_Y_COORDINATE)
 
         distance = self.computer.computeQuadrantDistance(startSector=startSectorCoordinates, endSector=endSectorCoordinates)
 
-        self.logger.info("Reverse Max distance is: %s", distance)
+        self.logger.info(f"Reverse Max distance is: {distance}")
         self.assertGreater(distance, ComputerTest.MIN_QUADRANT_DISTANCE, "Max distance calculation failed less than zero")
         self.assertGreaterEqual(distance, ComputerTest.MAX_QUADRANT_DIAGONAL_DISTANCE, "Incorrect reverse max distance")
 
     def testComputeQuadrantDistanceEastToWest(self):
         """"""
 
-        startSectorCoordinates = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE,Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
-        endSectorCoordinates   = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE,Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
+        startSectorCoordinates = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE, Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
+        endSectorCoordinates   = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE, Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
 
-        self.logger.info("East to West coordinates %s, %s ", startSectorCoordinates, endSectorCoordinates)
+        self.logger.info(f"East to West coordinates {startSectorCoordinates}, {endSectorCoordinates} ")
 
         distance = self.computer.computeQuadrantDistance(startSector=startSectorCoordinates, endSector=endSectorCoordinates)
 
-        self.logger.info("East/West distance is: %s", distance)
+        self.logger.info(f"East/West distance is: {distance}")
         self.assertGreater(distance, ComputerTest.MIN_QUADRANT_DISTANCE, "East/West calculation failed less than zero")
         self.assertEqual(distance, ComputerTest.MAX_QUADRANT_PERPENDICULAR_DISTANCE, "Incorrect East/West distance")
 
     def testComputeQuadrantDistanceWestToEast(self):
         """"""
-        startSectorCoordinates = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE,Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
-        endSectorCoordinates   = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE,Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
+        startSectorCoordinates = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE, Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
+        endSectorCoordinates   = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE, Intelligence.MAX_SECTOR_Y_COORDINATE // 2)
 
         self.logger.info("Quadrant West to East sector coordinates %s, %s ", startSectorCoordinates, endSectorCoordinates)
 
@@ -104,12 +102,12 @@ class ComputerTest(BaseTest):
 
     def testComputeQuadrantDistanceSmall(self):
 
-        startSectorCoordinates = Coordinates(4,2)
-        endSectorCoordinates   = Coordinates(4,8)
+        startSectorCoordinates = Coordinates(4, 2)
+        endSectorCoordinates   = Coordinates(4, 8)
 
-        self.logger.info("Small distance sector coordinates %s, %s ", startSectorCoordinates, endSectorCoordinates)
+        self.logger.info(f"Small distance sector coordinates {startSectorCoordinates}, {endSectorCoordinates}")
         distance = self.computer.computeQuadrantDistance(startSector=startSectorCoordinates, endSector=endSectorCoordinates)
-        self.logger.info("West/East distance is: %s", distance)
+        self.logger.info(f"West/East distance is: {distance}")
 
     def testComputeGalacticDistanceWestToEast(self):
         """
@@ -119,13 +117,14 @@ class ComputerTest(BaseTest):
         :return:
         """
 
-        startQuadrantCoordinates = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE,math.floor(Intelligence.MAX_QUADRANT_Y_COORDINATE/2))
-        endQuadrantCoordinates   = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE,math.floor(Intelligence.MAX_QUADRANT_Y_COORDINATE/2))
+        startQuadrantCoordinates = Coordinates(Intelligence.MAX_SECTOR_X_COORDINATE, math.floor(Intelligence.MAX_QUADRANT_Y_COORDINATE / 2))
+        endQuadrantCoordinates   = Coordinates(Intelligence.MIN_SECTOR_X_COORDINATE, math.floor(Intelligence.MAX_QUADRANT_Y_COORDINATE / 2))
 
-        self.logger.info("West to East quadrant coordinates %s, %s ", startQuadrantCoordinates, endQuadrantCoordinates)
+        self.logger.info(f"West to East quadrant coordinates {startQuadrantCoordinates}, {endQuadrantCoordinates}")
 
-        distance = self.computer.computeGalacticDistance(startQuadrantCoordinates=startQuadrantCoordinates, endQuadrantCoordinates=endQuadrantCoordinates)
-        self.logger.info("Galactic West/East distance is: %s", distance)
+        distance = self.computer.computeGalacticDistance(startQuadrantCoordinates=startQuadrantCoordinates,
+                                                         endQuadrantCoordinates=endQuadrantCoordinates)
+        self.logger.info(f"Galactic West/East distance is: {distance}")
 
         self.assertGreater(distance, ComputerTest.MIN_GALACTIC_DISTANCE, "East/West calculation failed less than zero")
         self.assertEqual(distance, ComputerTest.MAX_GALACTIC_DISTANCE, "Incorrect East/West distance")
@@ -136,11 +135,11 @@ class ComputerTest(BaseTest):
         xPos = (self.settings.gameWidth  / 2) - 1
         yPos = (self.settings.gameHeight / 2) - 1
 
-        self.logger.info("Mouse click position; %s,%s", xPos,yPos)
+        self.logger.info(f"Mouse click position; {xPos},{yPos}")
         coordinates = self.computer.computeSectorCoordinates(xPos, yPos)
 
         self.assertIsNotNone(coordinates, "Where are my coordinates")
-        self.logger.info("Sector %s", coordinates)
+        self.logger.info(f"Sector {coordinates}")
 
         self.assertEqual(coordinates.x, 4, "")
         self.assertEqual(coordinates.y, 4, "")
@@ -151,11 +150,11 @@ class ComputerTest(BaseTest):
         xPos = self.settings.gameWidth  - 1
         yPos = self.settings.gameHeight - 1
 
-        self.logger.info("Mouse click position; %s,%s", xPos,yPos)
+        self.logger.info(f"Mouse click position; {xPos},{yPos}")
         coordinates = self.computer.computeSectorCoordinates(xPos, yPos)
 
         self.assertIsNotNone(coordinates, "Where are my coordinates")
-        self.logger.info("Sector %s", coordinates)
+        self.logger.info(f"Sector {coordinates}")
 
         self.assertEqual(coordinates.x, 9, "")
         self.assertEqual(coordinates.y, 9, "")
@@ -166,11 +165,11 @@ class ComputerTest(BaseTest):
         xPos = 0
         yPos = self.settings.gameHeight - 1
 
-        self.logger.info("Mouse click position; %s,%s", xPos,yPos)
+        self.logger.info(f"Mouse click position; {xPos},{yPos}")
         coordinates = self.computer.computeSectorCoordinates(xPos, yPos)
 
         self.assertIsNotNone(coordinates, "Where are my coordinates")
-        self.logger.info("Sector %s", coordinates)
+        self.logger.info(f"Sector {coordinates}")
 
         self.assertEqual(coordinates.x, 0, "")
         self.assertEqual(coordinates.y, 9, "")
@@ -181,11 +180,11 @@ class ComputerTest(BaseTest):
         xPos = self.settings.gameWidth  - 1
         yPos = 1
 
-        self.logger.info("Mouse click position; %s,%s", xPos,yPos)
+        self.logger.info(f"Mouse click position; {xPos},{yPos}")
         coordinates = self.computer.computeSectorCoordinates(xPos, yPos)
 
         self.assertIsNotNone(coordinates, "Where are my coordinates")
-        self.logger.info("Sector %s", coordinates)
+        self.logger.info(f"Sector {coordinates}")
 
         self.assertEqual(coordinates.x, 9, "Wrong y coordinate")
         self.assertEqual(coordinates.y, 0, "Wrong y coordinate")
@@ -233,10 +232,9 @@ class ComputerTest(BaseTest):
     def testDoStraightLineInterpolationExtremeWestDown(self):
         """"""
 
-       # [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8)]
-        expectedCoordinates = [Coordinates(0,1), Coordinates(0,2), Coordinates(0,3), Coordinates(0,4),
-                               Coordinates(0,5), Coordinates(0,6), Coordinates(0,7), Coordinates(0,8),
-                               Coordinates(0,9)
+        expectedCoordinates = [Coordinates(0, 1), Coordinates(0, 2), Coordinates(0, 3), Coordinates(0, 4),
+                               Coordinates(0, 5), Coordinates(0, 6), Coordinates(0, 7), Coordinates(0, 8),
+                               Coordinates(0, 9)
                                ]
         x0 = 0
         y0 = 0
@@ -247,16 +245,15 @@ class ComputerTest(BaseTest):
         self.assertIsNotNone(interceptCoordinates, "Better return some  thing")
         self.assertEqual(9, len(interceptCoordinates), "Should have maximum coordinates")
 
-        self.logger.info("interceptCoordinates: %s", pformat(interceptCoordinates))
+        self.logger.info(f"interceptCoordinates: {pformat(interceptCoordinates)}")
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
 
     def testDoStraightLineInterpolationExtremeWestUp(self):
         """"""
 
-       # [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0,9)]
-        expectedCoordinates = [Coordinates(0,8), Coordinates(0,7), Coordinates(0,6), Coordinates(0,5),
-                               Coordinates(0,4), Coordinates(0,3), Coordinates(0,2), Coordinates(0,1),
-                               Coordinates(0,0)
+        expectedCoordinates = [Coordinates(0, 8), Coordinates(0, 7), Coordinates(0, 6), Coordinates(0, 5),
+                               Coordinates(0, 4), Coordinates(0, 3), Coordinates(0, 2), Coordinates(0, 1),
+                               Coordinates(0, 0)
                                ]
         x0 = 0
         y0 = 9
@@ -267,16 +264,15 @@ class ComputerTest(BaseTest):
         self.assertIsNotNone(interceptCoordinates, "Better return some  thing")
         self.assertEqual(9, len(interceptCoordinates), "Should have maximum coordinates")
 
-        self.logger.info("interceptCoordinates: %s", pformat(interceptCoordinates))
+        self.logger.info(f"interceptCoordinates: {pformat(interceptCoordinates)}")
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
 
     def testDoStraightLineInterpolationExtremeEastDown(self):
         """"""
 
-        # [(9,9),(9,8), (9,7), (9,6), (9,5), (9,4), (9,3), (9,2), (9,1)]
         expectedCoordinates = [Coordinates(9, 1), Coordinates(9, 2), Coordinates(9, 3), Coordinates(9, 4),
                                Coordinates(9, 5), Coordinates(9, 6), Coordinates(9, 7), Coordinates(9, 8),
-                               Coordinates(9,9)
+                               Coordinates(9, 9)
                                ]
         x0 = 9
         y0 = 0
@@ -286,16 +282,15 @@ class ComputerTest(BaseTest):
 
         self.assertIsNotNone(interceptCoordinates, "Better return some thing")
         self.assertEqual(9, len(interceptCoordinates), "Should have maximum coordinates")
-        self.logger.info("interceptCoordinates: %s", pformat(interceptCoordinates))
+        self.logger.info(f"interceptCoordinates: {pformat(interceptCoordinates)}")
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
 
     def testDoStraightLineInterpolationExtremeEastUp(self):
         """"""
 
-        # [(0,8), (0,7), (0,6), (0,5), (0,4), (0,3), (0,2), (0,1), (0,0)]
         expectedCoordinates = [Coordinates(0, 8), Coordinates(0, 7), Coordinates(0, 6), Coordinates(0, 5),
                                Coordinates(0, 4), Coordinates(0, 3), Coordinates(0, 2), Coordinates(0, 1),
-                               Coordinates(0,0)
+                               Coordinates(0, 0)
                                ]
         x0 = 0
         y0 = 9
@@ -303,7 +298,7 @@ class ComputerTest(BaseTest):
         interceptCoordinates = self.computer.doStraightLineInterpolation(x0, y0, y1)
         self.assertIsNotNone(interceptCoordinates, "Better return some thing")
         self.assertEqual(9, len(interceptCoordinates), "Should have maximum coordinates")
-        self.logger.info("interceptCoordinates: %s", pformat(interceptCoordinates))
+        self.logger.info(f"interceptCoordinates: {pformat(interceptCoordinates)}")
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
 
     def testInterpolateYInterceptsDoStraightLine(self):
@@ -314,10 +309,10 @@ class ComputerTest(BaseTest):
                                ]
 
         mockComputer = Computer()
-        mockComputer.doStraightLineInterpolation = MagicMock(return_value = expectedCoordinates)
+        mockComputer.doStraightLineInterpolation = MagicMock(return_value=expectedCoordinates)
 
-        start: Coordinates = Coordinates(0,0)
-        end:   Coordinates = Coordinates(0,9)
+        start: Coordinates = Coordinates(0, 0)
+        end:   Coordinates = Coordinates(0, 9)
         interceptCoordinates = mockComputer.interpolateYIntercepts(start=start, end=end)
 
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
@@ -327,11 +322,11 @@ class ComputerTest(BaseTest):
 
         expectedCoordinates = [Coordinates(1, 1), Coordinates(2, 2), Coordinates(3, 3), Coordinates(4, 4),
                                Coordinates(5, 5), Coordinates(6, 6), Coordinates(7, 7), Coordinates(8, 8),
-                               Coordinates(9,9)
+                               Coordinates(9, 9)
                                ]
 
-        start: Coordinates = Coordinates(0,0)
-        end:   Coordinates = Coordinates(9,9)
+        start: Coordinates = Coordinates(0, 0)
+        end:   Coordinates = Coordinates(9, 9)
 
         interceptCoordinates = self.computer.interpolateYIntercepts(start=start, end=end)
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
@@ -341,11 +336,11 @@ class ComputerTest(BaseTest):
 
         expectedCoordinates = [Coordinates(1, 8), Coordinates(2, 7), Coordinates(3, 6), Coordinates(4, 5),
                                Coordinates(5, 4), Coordinates(6, 3), Coordinates(7, 2), Coordinates(8, 1),
-                               Coordinates(9,0)
+                               Coordinates(9, 0)
                                ]
 
-        start: Coordinates = Coordinates(0,9)
-        end:   Coordinates = Coordinates(9,0)
+        start: Coordinates = Coordinates(0, 9)
+        end:   Coordinates = Coordinates(9, 0)
 
         interceptCoordinates = self.computer.interpolateYIntercepts(start=start, end=end)
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Computed coordinates did not match")
@@ -354,10 +349,10 @@ class ComputerTest(BaseTest):
         """"""
 
         # I think this is a bug
-        expectedCoordinates = [Coordinates(4,4), Coordinates(4,4)]
+        expectedCoordinates = [Coordinates(4, 4), Coordinates(4, 4)]
 
-        start: Coordinates = Coordinates(5,0)
-        end:   Coordinates = Coordinates(4,4)
+        start: Coordinates = Coordinates(5, 0)
+        end:   Coordinates = Coordinates(4, 4)
 
         interceptCoordinates = self.computer.interpolateYIntercepts(start=start, end=end)
         self.assertListEqual(expectedCoordinates, interceptCoordinates, "Odd test found bug")
@@ -365,8 +360,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionNorth(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(4,0)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(4, 0)
 
         expectedDirection: Direction = Direction.North
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -376,8 +371,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionSouth(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(4,9)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(4, 9)
 
         expectedDirection: Direction = Direction.South
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -387,8 +382,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionEast(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(9,4)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(9, 4)
 
         expectedDirection: Direction = Direction.East
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -398,8 +393,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionWest(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(0,4)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(0, 4)
 
         expectedDirection: Direction = Direction.West
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -409,8 +404,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionNorthEast(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(9,0)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(9, 0)
 
         expectedDirection: Direction = Direction.NorthEast
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -420,8 +415,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionNorthWest(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(0,0)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(0, 0)
 
         expectedDirection: Direction = Direction.NorthWest
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -431,8 +426,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionSouthWest(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(0,9)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(0, 9)
 
         expectedDirection: Direction = Direction.SouthWest
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -442,8 +437,8 @@ class ComputerTest(BaseTest):
     def testDetermineDirectionSouthEast(self):
         """"""
 
-        startCoordinates: Coordinates = Coordinates(4,4)
-        endCoordinates:   Coordinates = Coordinates(9,9)
+        startCoordinates: Coordinates = Coordinates(4, 4)
+        endCoordinates:   Coordinates = Coordinates(9, 9)
 
         expectedDirection: Direction = Direction.SouthEast
         actualDirection:   Direction = self.computer.determineDirection(startCoordinates=startCoordinates, endCoordinates=endCoordinates)
@@ -458,57 +453,58 @@ class ComputerTest(BaseTest):
             direction = self.computer.randomDirection()
             self.assertIsNotNone(direction, "Should at least return a direction"
                                             "")
-            self.logger.info("Random direction name: '%s', value: '%s'", direction.name,direction.value)
+            self.logger.info(f"Random direction name: '{direction.name}', value: '{direction.value}'")
 
     def test_ComputeCourseZeroZeroToNineNine(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(0,0)
-        enterpriseCoordinates: Coordinates = Coordinates(9,9)
+        klingonCoordinates:    Coordinates = Coordinates(0, 0)
+        enterpriseCoordinates: Coordinates = Coordinates(9, 9)
 
         course: float = self.computer._computeCourse(start=klingonCoordinates, end=enterpriseCoordinates)
         self.assertIsNotNone(course, "Should return a course")
         self.assertAlmostEqual(course, 4.4999, 3)
-        self.logger.info("Course ZeroZeroToNineNine: '%s'", course)
+
+        self.logger.info(f"Course ZeroZeroToNineNine: '{course}'")
 
     def test_ComputeCourseNineNineToZeroZero(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(9,9)
-        enterpriseCoordinates: Coordinates = Coordinates(0,0)
+        klingonCoordinates:    Coordinates = Coordinates(9, 9)
+        enterpriseCoordinates: Coordinates = Coordinates(0, 0)
 
         course: float = self.computer._computeCourse(start=klingonCoordinates, end=enterpriseCoordinates)
         self.assertIsNotNone(course, "Should return a course")
         self.assertAlmostEqual(course, -1.4999, 3)
-        self.logger.info("Course NineNineToZeroZero: '%s'", course)
+        self.logger.info(f"Course NineNineToZeroZero: '{course}'")
 
     def test_ComputeCourseNineZeroToZeroNine(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(9,0)
-        enterpriseCoordinates: Coordinates = Coordinates(0,9)
+        klingonCoordinates:    Coordinates = Coordinates(9, 0)
+        enterpriseCoordinates: Coordinates = Coordinates(0, 9)
 
         course: float = self.computer._computeCourse(start=klingonCoordinates, end=enterpriseCoordinates)
         self.assertIsNotNone(course, "Should return a course")
         self.assertAlmostEqual(course, 1.4999, 3)
-        self.logger.info("Course NineZeroToZeroNine: '%s'", course)
+        self.logger.info(f"Course NineZeroToZeroNine: '{course}'", )
 
     def test_ComputeCourseFourZeroToFourNine(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(4,0)
-        enterpriseCoordinates: Coordinates = Coordinates(4,9)
+        klingonCoordinates:    Coordinates = Coordinates(4, 0)
+        enterpriseCoordinates: Coordinates = Coordinates(4, 9)
 
         course: float = self.computer._computeCourse(start=klingonCoordinates, end=enterpriseCoordinates)
         self.assertIsNotNone(course, "Should return a course")
         self.assertAlmostEqual(course, 2.9999, 3)
-        self.logger.info("Course FourZeroToFourNine: '%s'", course)
+        self.logger.info(f"Course FourZeroToFourNine: '{course}'", )
 
     def test_ComputeCourseFourNineToFourZero(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(4,9)
-        enterpriseCoordinates: Coordinates = Coordinates(4,0)
+        klingonCoordinates:    Coordinates = Coordinates(4, 9)
+        enterpriseCoordinates: Coordinates = Coordinates(4, 0)
 
         course: float = self.computer._computeCourse(start=klingonCoordinates, end=enterpriseCoordinates)
         self.assertIsNotNone(course, "Should return a course")
         self.assertAlmostEqual(course, -2.9999, 3)
-        self.logger.info("Course FourNineToFourZero: '%s'", course)
+        self.logger.info(f"Course FourNineToFourZero: '{course}'")
 
     def test_RandomizeAttackerPower(self):
 
@@ -517,43 +513,43 @@ class ComputerTest(BaseTest):
 
             self.assertIsNotNone(randomPower, "Should generate some value.")
             self.assertGreater(randomPower, 0, "Should always be greater than zero")
-            self.logger.info("Test %s, randomPower: '%s'", x, randomPower)
+            self.logger.info(f"Test {x}, randomPower: '{randomPower}'")
 
     def testComputeHitValueOnEnterpriseFarAwayEmeritus(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(0,0)
-        enterpriseCoordinates: Coordinates = Coordinates(9,9)
+        klingonCoordinates:    Coordinates = Coordinates(0, 0)
+        enterpriseCoordinates: Coordinates = Coordinates(9, 9)
         klingonPower:          float       = KlingonPower.Emeritus.value
 
         hitValue: float = self.computer.computeHitValueOnEnterprise(klingonCoordinates, enterpriseCoordinates, klingonPower)
-        self.logger.info("Emeritus Far away.  Klingon hit value: %s", hitValue)
+        self.logger.info(f"Emeritus Far away.  Klingon hit value: {hitValue}")
 
     def testComputeHitValueOnEnterpriseUpCloseEmeritus(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(4,4)
-        enterpriseCoordinates: Coordinates = Coordinates(4,5)
+        klingonCoordinates:    Coordinates = Coordinates(4, 4)
+        enterpriseCoordinates: Coordinates = Coordinates(4, 5)
         klingonPower:          float       = KlingonPower.Emeritus.value
 
         hitValue: float = self.computer.computeHitValueOnEnterprise(klingonCoordinates, enterpriseCoordinates, klingonPower)
-        self.logger.info("Emeritus Up Close.  Klingon hit value: %s", hitValue)
+        self.logger.info(f"Emeritus Up Close.  Klingon hit value: {hitValue}")
 
     def testComputeHitValueOnEnterpriseFarAwayNovice(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(0,0)
-        enterpriseCoordinates: Coordinates = Coordinates(9,9)
+        klingonCoordinates:    Coordinates = Coordinates(0, 0)
+        enterpriseCoordinates: Coordinates = Coordinates(9, 9)
         klingonPower:          float       = KlingonPower.Novice.value
 
         hitValue: float = self.computer.computeHitValueOnEnterprise(klingonCoordinates, enterpriseCoordinates, klingonPower)
-        self.logger.info("Novice Far away.  Klingon hit value: %s", hitValue)
+        self.logger.info(f"Novice Far away.  Klingon hit value: {hitValue}")
 
     def testComputeHitValueOnEnterpriseUpCloseNovice(self):
 
-        klingonCoordinates:    Coordinates = Coordinates(4,5)
-        enterpriseCoordinates: Coordinates = Coordinates(4,4)
+        klingonCoordinates:    Coordinates = Coordinates(4, 5)
+        enterpriseCoordinates: Coordinates = Coordinates(4, 4)
         klingonPower:          float       = KlingonPower.Novice.value
 
         hitValue: float = self.computer.computeHitValueOnEnterprise(klingonCoordinates, enterpriseCoordinates, klingonPower)
-        self.logger.info("Novice Up Close.  Klingon hit value: %s", hitValue)
+        self.logger.info(f"Novice Up Close.  Klingon hit value: {hitValue}")
 
     def testModulusOnDirection(self):
 
@@ -562,6 +558,8 @@ class ComputerTest(BaseTest):
         modNorthWest = Direction.NorthWest.value % 90
         modSouthEast = Direction.SouthEast.value % 90
 
-        self.logger.info("modNorth: '%s' modSouth: '%s' modNorthWest: '%s' modSouthEast: '%s'", modNorth, modSouth, modNorthWest, modSouthEast)
+        self.logger.info(f"modNorth: '{modNorth}' modSouth: '{modSouth}' modNorthWest: '{modNorthWest}' modSouthEast: '{modSouthEast}'")
+
+
 if __name__ == '__main__':
     unittest.main()

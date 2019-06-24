@@ -14,7 +14,7 @@ from unittest import TestCase
 class BaseTest(TestCase):
     """"""
 
-    JSON_LOGGING_CONFIG_FILENAME = 'loggingConfiguration.json'
+    JSON_LOGGING_CONFIG_FILENAME = 'unitTestLoggingConfiguration.json'
 
     @classmethod
     def setUpLogging(cls):
