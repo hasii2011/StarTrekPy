@@ -3,7 +3,7 @@ from pygame import Surface
 
 import logging
 
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 
 class BasicTorpedo(GamePiece):

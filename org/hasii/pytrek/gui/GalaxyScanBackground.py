@@ -9,8 +9,8 @@ from org.hasii.pytrek.Settings import RED
 from org.hasii.pytrek.objects.Galaxy import Galaxy
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
-from hasii.pytrek.gui.BaseBackground import BaseBackGround
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.BaseBackground import BaseBackGround
 
 from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.Intelligence import Intelligence

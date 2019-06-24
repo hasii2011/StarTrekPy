@@ -1,6 +1,6 @@
 import pygame
 
-from hasii.pytrek.gui.BaseBackground import BaseBackGround
+from org.hasii.pytrek.gui.BaseBackground import BaseBackGround
 
 
 class QuadrantBackground(BaseBackGround):

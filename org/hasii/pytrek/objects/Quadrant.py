@@ -12,18 +12,18 @@ from pygame.event import post as pygamePostEvent
 
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 
-from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
-from hasii.pytrek.gui.gamepieces.Explosion import Explosion
-from hasii.pytrek.gui.gamepieces.StarBase import StarBase
-from hasii.pytrek.gui.gamepieces.Klingon import Klingon
-from hasii.pytrek.gui.gamepieces.Commander import Commander
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
-from hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
-from hasii.pytrek.gui.gamepieces.BigRedX import BigRedX
-from hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
-from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
-from hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
-from hasii.pytrek.gui.gamepieces.KlingonTorpedoMiss import KlingonTorpedoMiss
+from org.hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
+from org.hasii.pytrek.gui.gamepieces.Explosion import Explosion
+from org.hasii.pytrek.gui.gamepieces.StarBase import StarBase
+from org.hasii.pytrek.gui.gamepieces.Klingon import Klingon
+from org.hasii.pytrek.gui.gamepieces.Commander import Commander
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
+from org.hasii.pytrek.gui.gamepieces.BigRedX import BigRedX
+from org.hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
+from org.hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
+from org.hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
+from org.hasii.pytrek.gui.gamepieces.KlingonTorpedoMiss import KlingonTorpedoMiss
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Sector import Sector

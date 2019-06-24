@@ -34,18 +34,18 @@ from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Direction import Direction
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
-from hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
+from org.hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.MessageConsole import MessageConsole
 
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 
-from hasii.pytrek.gui.StatusConsole import StatusConsole
+from org.hasii.pytrek.gui.StatusConsole import StatusConsole
 
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
-from hasii.pytrek.gui.gamepieces.Klingon import Klingon
-from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
-from hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.Klingon import Klingon
+from org.hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
+from org.hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
 
 
 class StarTrekScreen(Screen):

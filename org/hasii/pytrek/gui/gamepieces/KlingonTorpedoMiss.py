@@ -1,6 +1,6 @@
 import pygame
 
-from hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
+from org.hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
 
 
 class KlingonTorpedoMiss(BasicMiss):

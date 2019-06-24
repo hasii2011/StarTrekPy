@@ -11,7 +11,7 @@ from org.hasii.pytrek.objects.Quadrant import Quadrant
 
 from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.engine.Direction import Direction
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 
 class Computer:
@@ -34,7 +34,7 @@ class Computer:
     def __init__(self):
         """"""
 
-        if self.__initialized == True:
+        if self.__initialized is True:
             return
         else:
             self.__initialized = True

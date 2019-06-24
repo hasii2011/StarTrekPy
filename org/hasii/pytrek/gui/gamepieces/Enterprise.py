@@ -1,6 +1,6 @@
 import pygame
 
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 
 class Enterprise(GamePiece):
@@ -10,7 +10,6 @@ class Enterprise(GamePiece):
         """"""
         super().__init__(screen, 'images/EnterpriseD.png')
 
-
-    def update(self, sectorX, sectorY, playTime: float):
+    def update(self, sectorX, sectorY, playTime: float = 0):
         """"""
         super().update(sectorX, sectorY, playTime)

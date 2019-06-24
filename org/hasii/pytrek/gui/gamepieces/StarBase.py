@@ -1,6 +1,6 @@
 import pygame
 
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
 
 class StarBase(GamePiece):

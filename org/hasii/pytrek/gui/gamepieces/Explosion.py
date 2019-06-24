@@ -3,8 +3,9 @@ import pygame
 import os
 import logging
 
-from hasii.pytrek.gui.gamepieces.ExplosionColor import ExplosionColor
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.ExplosionColor import ExplosionColor
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+
 
 class Explosion(GamePiece):
     """"""
@@ -27,7 +28,7 @@ class Explosion(GamePiece):
 
         self.soundExplosion.play()
 
-    def update(self, sectorX: int, sectorY: int, playTime: float):
+    def update(self, sectorX: int, sectorY: int, playTime: float = 0):
         """"""
 
         timeSinceLastUpdate = playTime - self.timeSinceLastExplosion
@@ -46,6 +47,6 @@ class Explosion(GamePiece):
                     self.image                  = pygame.image.load(filename)
                     self.timeSinceLastExplosion = playTime
                     self.soundExplosion.play()
-        else :
+        else:
             self.logger.debug("Last Explosion occurred")
             self.lastExplosion = True

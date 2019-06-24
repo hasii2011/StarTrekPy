@@ -4,7 +4,7 @@ import random
 from pygame import Surface
 
 from org.hasii.pytrek.engine.Direction import Direction
-from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 
@@ -55,7 +55,7 @@ class Commander(GamePiece):
             pDirection:     Direction   = self._randomDirection_()
             newCoordinates: Coordinates = currentLocation.newCoordinates(pDirection)
 
-            self.logger.debug("Random direction %s: currentLocation: %s newCoordinates %s", pDirection.name, currentLocation, newCoordinates)
+            self.logger.debug(f"Random direction {pDirection.name}: currentLocation: {currentLocation} newCoordinates {newCoordinates}")
             if newCoordinates.valid():
                 break
         return newCoordinates

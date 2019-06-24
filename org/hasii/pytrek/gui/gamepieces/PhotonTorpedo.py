@@ -2,7 +2,7 @@
 import pygame
 
 from org.hasii.pytrek.engine import Direction
-from hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
+from org.hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
 
 
 class PhotonTorpedo(BasicTorpedo):
