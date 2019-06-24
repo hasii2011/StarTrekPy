@@ -40,7 +40,7 @@ from org.hasii.pytrek.gui.MessageConsole import MessageConsole
 
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 
-from hasii.pytrek.gui.AlbowStatusConsole import AlbowStatusConsole
+from hasii.pytrek.gui.StatusConsole import StatusConsole
 
 from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from hasii.pytrek.gui.gamepieces.Klingon import Klingon
@@ -115,7 +115,7 @@ class StarTrekScreen(Screen):
         #  Init the albow widgets here
         #
         self.messageConsole = MessageConsole()
-        self.statusConsole  = AlbowStatusConsole()
+        self.statusConsole  = StatusConsole()
 
         self.add(self.messageConsole)
         self.add(self.statusConsole)

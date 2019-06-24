@@ -20,7 +20,7 @@ from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.GameStatistics import GameStatistics
 
 
-class AlbowStatusConsole(Widget):
+class StatusConsole(Widget):
 
     FONT_PATH = "fonts/MonoFonto.ttf"
 
@@ -30,9 +30,9 @@ class AlbowStatusConsole(Widget):
 
         self.logger = logging.getLogger(__name__)
 
-        self.consoleLabelFont      = pygame.font.Font(AlbowStatusConsole.FONT_PATH, 20)
-        self.statusFont            = pygame.font.Font(AlbowStatusConsole.FONT_PATH, 14)
-        self.systemStatusLabelFont = pygame.font.Font(AlbowStatusConsole.FONT_PATH, 16)
+        self.consoleLabelFont      = pygame.font.Font(StatusConsole.FONT_PATH, 20)
+        self.statusFont            = pygame.font.Font(StatusConsole.FONT_PATH, 14)
+        self.systemStatusLabelFont = pygame.font.Font(StatusConsole.FONT_PATH, 16)
 
         self.settings:       Settings       = Settings()
         self.gameStatistics: GameStatistics = GameStatistics()
