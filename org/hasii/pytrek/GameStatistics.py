@@ -77,7 +77,7 @@ class GameStatistics:
         return self._remainingKlingons
 
     def setRemainingKlingons(self, theNewValue: int):
-        self._remainingCommanders = theNewValue
+        self._remainingKlingons = theNewValue
 
     def getRemainingCommanders(self):
         return self._remainingCommanders

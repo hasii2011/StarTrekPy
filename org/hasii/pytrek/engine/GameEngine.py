@@ -163,6 +163,9 @@ class GameEngine:
         if shieldAbsorptionValue > self.stats.shieldEnergy:
             shieldAbsorptionValue = self.stats.shieldEnergy
         self.stats.shieldEnergy -= shieldAbsorptionValue
+        if self.stats.shieldEnergy < 0:
+            self.stats.shieldEnergy = 0
+            self.stats.shieldStatus = ShieldStatus.Down
 
     def degradeEnergyLevel(self, degradedTorpedoValue: float):
         """

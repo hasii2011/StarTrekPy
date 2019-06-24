@@ -39,7 +39,9 @@ from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.MessageConsole import MessageConsole
 
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
-from org.hasii.pytrek.gui.status.StatusConsole import StatusConsole
+
+from org.hasii.pytrek.gui.status.AlbowStatusConsole import AlbowStatusConsole
+
 from hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from hasii.pytrek.gui.gamepieces.Klingon import Klingon
 from hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
@@ -84,7 +86,6 @@ class StarTrekScreen(Screen):
 
         self.galaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround           = QuadrantBackground(theSurface)
-        self.console              = StatusConsole(theSurface)
 
         self.gameEngine = GameEngine()
         self.enterprise = Enterprise(theSurface)
@@ -114,7 +115,10 @@ class StarTrekScreen(Screen):
         #  Init the albow widgets here
         #
         self.messageConsole = MessageConsole()
+        self.statusConsole  = AlbowStatusConsole()
+
         self.add(self.messageConsole)
+        self.add(self.statusConsole)
         StarTrekScreen._myself = self
 
     def key_down(self, theEvent: Event):
@@ -183,7 +187,6 @@ class StarTrekScreen(Screen):
         self.backGround.update()
         quadrant = self.galaxy.getCurrentQuadrant()
         quadrant.update(playTime=playTime)
-        self.console.update()
 
     def impulseScreenUpdate(self):
         """"""

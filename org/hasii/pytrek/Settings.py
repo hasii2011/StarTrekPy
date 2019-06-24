@@ -1,4 +1,5 @@
 
+from pygame import USEREVENT
 
 import configparser
 import os
@@ -7,13 +8,13 @@ from org.hasii.pytrek.GameMode import GameMode
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
 
-from albow.core.ui.AlbowEventLoop import AlbowEventLoop
+# from albow.core.ui.AlbowEventLoop import AlbowEventLoop
 
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-GREEN = (0,255,0)
-RED   = (255,0,0)
-DARK_BLUE = 0,0,128
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+RED   = (255, 0, 0)
+DARK_BLUE = (0, 0, 128)
 
 
 class Settings:
@@ -22,7 +23,7 @@ class Settings:
         This class is a singleton
     """
 
-    CLOCK_EVENT               = AlbowEventLoop.MUSIC_END_EVENT + 1
+    CLOCK_EVENT               = USEREVENT  + 2      # cheat to avoid AlbowEventLoop import
     KLINGON_TORPEDO_EVENT     = CLOCK_EVENT + 1
     ENTERPRISE_HIT_BY_TORPEDO_EVENT = KLINGON_TORPEDO_EVENT + 1
 
@@ -46,7 +47,7 @@ class Settings:
             self.__initialized = True
 
         self.screenWidth  = 800
-        self.screenHeight = 700 + 200
+        self.screenHeight = 700 + 130
         self.gameWidth    = 640
         self.gameHeight   = 640
         self.leftMargin   = 2
@@ -80,6 +81,7 @@ class Settings:
 
         self.gameMode             = GameMode.Normal
         bogus = ''
+
     def findConfigFile(self):
         """"""
         # print("CurrentDir: " + os.getcwd())
@@ -92,6 +94,7 @@ class Settings:
     def setGameMode(self, theGameMode: GameMode):
         """"""
         self.gameMode = theGameMode
+
     def getGameMode(self):
         """"""
         return self.gameMode
