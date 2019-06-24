@@ -16,7 +16,6 @@ from albow.widgets.ValueDisplay import ValueDisplay
 from albow.References import AttrRef
 
 from org.hasii.pytrek.Settings import Settings
-from org.hasii.pytrek.Settings import GREEN
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 
@@ -135,7 +134,7 @@ class AlbowStatusConsole(Widget):
             val = refs[x].get()
             if val.__str__() == 'Up':
                 fieldContents = self._makeStatusRow(labelText=labels[x], statsRef=refs[x], fgColor=Theme.GREEN)
-            else :
+            else:
                 fieldContents = self._makeStatusRow(labelText=labels[x], statsRef=refs[x], fgColor=Theme.RED)
             systemItems.append(fieldContents)
 
