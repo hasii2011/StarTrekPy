@@ -3,7 +3,7 @@ import logging.config
 
 import unittest
 
-from BaseTest import BaseTest
+from test.BaseTest import BaseTest
 
 from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.PlayerType import PlayerType
