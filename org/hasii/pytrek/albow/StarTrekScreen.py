@@ -18,6 +18,7 @@ from albow.core.ui.RootWidget import RootWidget
 from albow.core.UserEventCall import UserEventCall
 
 from albow.dialog.DialogUtilities import ask
+from albow.dialog.DialogUtilities import alert
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 from org.hasii.pytrek.GameMode import GameMode
@@ -362,3 +363,7 @@ class StarTrekScreen(Screen):
 
         self.messageConsole.addText(f"Energy hit {tpDegradeValue:4f}")
         self.gameEngine.degradeEnergyLevel(shieldHitData.degradedTorpedoHitValue)
+        if self.statistics.energy <= 0:
+            alert(theMessage='Game Over!  The Enterprise is out of energy')
+            sys.exit()
+
