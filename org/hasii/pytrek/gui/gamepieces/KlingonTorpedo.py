@@ -13,8 +13,11 @@ class KlingonTorpedo(BasicTorpedo):
         """
 
         Args:
-            screen:
+            screen:             pygame place to draw
+            shooterPower:       The shooter's power
+            shooterPosition:    The shooter's position
         """
+
         super().__init__(screen, "images/KlingonTorpedo.png")
         self.shooterPower:    float       = shooterPower
         self.shooterPosition: Coordinates = shooterPosition

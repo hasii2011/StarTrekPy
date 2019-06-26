@@ -8,7 +8,7 @@ from org.hasii.pytrek.GameMode import GameMode
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
 
-# from albow.core.ui.AlbowEventLoop import AlbowEventLoop
+from albow.core.ui.AlbowEventLoop import AlbowEventLoop
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -23,9 +23,10 @@ class Settings:
         This class is a singleton
     """
 
-    CLOCK_EVENT               = USEREVENT  + 2      # cheat to avoid AlbowEventLoop import
-    KLINGON_TORPEDO_EVENT     = CLOCK_EVENT + 1
-    ENTERPRISE_HIT_BY_TORPEDO_EVENT = KLINGON_TORPEDO_EVENT + 1
+    CLOCK_EVENT           = AlbowEventLoop.MUSIC_END_EVENT + 1
+    KLINGON_TORPEDO_EVENT = CLOCK_EVENT + 1
+    GAME_OVER_EVENT       = KLINGON_TORPEDO_EVENT + 1
+    ENTERPRISE_HIT_BY_TORPEDO_EVENT = GAME_OVER_EVENT + 1
 
     DEFAULT_FULL_SHIELDS = 2500.0
 

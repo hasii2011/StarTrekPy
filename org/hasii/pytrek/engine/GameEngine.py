@@ -114,10 +114,13 @@ class GameEngine:
     def updateTimeAfterWarpTravel(self, travelDistance: float, warpFactor: float):
         """
         Time = 10.0*dist/wfacsq;
-        :return:
+
+        Args:
+            travelDistance:  The travel distance
+            warpFactor:      The warp factor we are using to get there
         """
-        wfacsq:      float = warpFactor ** 2
-        elapsedTime: float = 10.0 * travelDistance / wfacsq
+        warpSquared: float = warpFactor ** 2
+        elapsedTime: float = 10.0 * travelDistance / warpSquared
 
         self.updateTime(elapsedTime=elapsedTime)
 
@@ -178,6 +181,8 @@ class GameEngine:
         """
         self.stats.energy -= degradedTorpedoValue
         self.logger.info(f"{self.stats.energy:.4f}")
+        if self.stats.energy < 0:
+            self.stats.energy = 0
 
     def computeShieldHit(self, torpedoHit: float) -> ShieldHitData:
         """
@@ -214,10 +219,7 @@ class GameEngine:
 
         torpedoHit -= shieldHit
 
-        shieldHitData: ShieldHitData = ShieldHitData()
-
-        shieldHitData.shieldAbsorptionValue   = shieldAbsorptionValue
-        shieldHitData.degradedTorpedoHitValue = torpedoHit
+        shieldHitData: ShieldHitData = ShieldHitData(shieldAbsorptionValue=shieldAbsorptionValue, degradedTorpedoHitValue=torpedoHit)
 
         return shieldHitData
 

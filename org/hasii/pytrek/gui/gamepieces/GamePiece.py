@@ -24,11 +24,12 @@ class GamePiece(Sprite):
         """"""
         super().__init__()
 
-        self.screen:          Surface     = screen
-        self.settings:        Settings    = Settings()
+        self.screen:   Surface  = screen
+        self.image:    Surface  = pygame.image.load(fileNamePath)
+        self.settings: Settings = Settings()
+        self.playTime: float    = 0.0
+
         self.currentPosition: Coordinates = cast(Coordinates, None)
-        self.playTime:        float       = 0.0
-        self.image = pygame.image.load(fileNamePath)
 
         #
         #
