@@ -1,6 +1,6 @@
 
 import logging
-import jsonpickle
+
 
 class SaveGame(object):
     """"""
@@ -16,7 +16,7 @@ class SaveGame(object):
     def __init__(self):
         """"""
 
-        if self.__initialized == True:
+        if self.__initialized is True:
             return
         else:
             self.__initialized = True

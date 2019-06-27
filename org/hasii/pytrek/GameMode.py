@@ -1,4 +1,6 @@
 from enum import Enum
+
+
 class GameMode(Enum):
     """"""
     Normal          = 0

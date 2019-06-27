@@ -1,6 +1,4 @@
 
-from pygame import USEREVENT
-
 import configparser
 import os
 
@@ -61,7 +59,7 @@ class Settings:
         config = configparser.ConfigParser()
         config.read("pyTrek.conf")
 
-        self.maxStarCount    = config.getint('Limits','MaxStarCount')
+        self.maxStarCount    = config.getint('Limits', 'MaxStarCount')
         self.starBaseMinimum = config.getint("Limits", "StarBaseMinimum")
         self.starBaseMaximum = config.getint("Limits", "StarBaseMaximum")
         self.maxPlanets      = config.getint("Limits", "MaxPlanets")
@@ -76,12 +74,11 @@ class Settings:
 
         skillStr                  = config.get("GameLevel", "PlayerSkill")
         self.skill                = PlayerType[skillStr]
-        gameTypeStr               = config.get("GameLevel","GameType")
+        gameTypeStr               = config.get("GameLevel", "GameType")
         self.gameType             = GameType[gameTypeStr]
         self.warpFactor           = config.getint("GameLevel", "DefaultWarpFactor")
 
         self.gameMode             = GameMode.Normal
-        bogus = ''
 
     def findConfigFile(self):
         """"""
