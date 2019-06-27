@@ -1,5 +1,6 @@
 from org.hasii.pytrek.engine.Direction import Direction
 
+
 class Coordinates:
     """Base class for sector and quadrant coordinates"""
 
@@ -21,7 +22,8 @@ class Coordinates:
         """
 
         ans: bool = False
-        if ( (self.x >= 0 and self.x <= 9) and (self.y >=0 and self.y <= 9)):
+        # if self.x >= 0 and self.x <= 9 and self.y >=0 and self.y <= 9:
+        if 0 <= self.x <= 9 and 0 <= self.y <= 9:
             ans = True
 
         return ans
@@ -30,11 +32,13 @@ class Coordinates:
         """
         Duck typing is weird
 
-        Please do .validCoordinates after calling this method
+        Please do `.valid` after calling this method
 
-        :param oldCoordinates:  Old coordinates
-        :param newDirection:    How to generate coordinates
-        :return: New potentially invalid coordinates
+        Args:
+            newDirection: How to generate coordinates
+
+        Returns:  New potentially invalid coordinates
+
         """
         newCoordinates: Coordinates = Coordinates(self.x, self.y)
 
@@ -69,7 +73,7 @@ class Coordinates:
     def __str__(self) -> str:
         return "(" + str(self.x) + "," + str(self.y) + ")"
 
-    def __eq__(self, other)-> bool:
+    def __eq__(self, other) -> bool:
         """"""
         if isinstance(other, Coordinates):
             if self.x == other.x and self.y == other.y:
