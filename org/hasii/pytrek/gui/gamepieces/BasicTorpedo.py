@@ -9,7 +9,7 @@ from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 class BasicTorpedo(GamePiece):
     """"""
 
-    UPDATE_INTERVAL_SECONDS = 1
+    UPDATE_INTERVAL_HALF_SECONDS = 1
 
     def __init__(self, screen: Surface, fileName: str):
         """"""
@@ -30,7 +30,7 @@ class BasicTorpedo(GamePiece):
 
         if self.currentTrajectoryIdx < self.trajectory.__len__() - 1:
 
-            if timeSinceLastUpdate > BasicTorpedo.UPDATE_INTERVAL_SECONDS:
+            if timeSinceLastUpdate > BasicTorpedo.UPDATE_INTERVAL_HALF_SECONDS:
 
                 self.currentTrajectoryIdx += 1
                 self.timeSinceMovement     = playTime
@@ -48,3 +48,5 @@ class BasicTorpedo(GamePiece):
     def setTrajectory(self, trajectory: []):
         """"""
         self.trajectory = trajectory
+        self.logger.debug(f"Trajectory: {self.trajectory}")
+        self.logger.debug(f"Trajectory: {self.trajectory}")

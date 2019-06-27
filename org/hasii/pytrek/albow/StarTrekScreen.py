@@ -53,6 +53,8 @@ class StarTrekScreen(Screen):
 
     MAX_X_POS = Intelligence.GALAXY_WIDTH * GamePiece.QUADRANT_PIXEL_WIDTH
 
+    KLINGON_TORPEDO_EVENT_SECS = 15 * 1000
+
     _myself: 'StarTrekScreen' = None
 
     def __init__(self, shell: Shell, theSurface: Surface):
@@ -102,7 +104,7 @@ class StarTrekScreen(Screen):
         self.mouseClickEvent = None
 
         pygame.time.set_timer(Settings.CLOCK_EVENT, 10 * 1000)
-        pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, 15 * 1000)
+        pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, StarTrekScreen.KLINGON_TORPEDO_EVENT_SECS)
 
         clockCall:  UserEventCall = UserEventCall(func=StarTrekScreen.clockCB, userEvent=Settings.CLOCK_EVENT)
         ktkCall:    UserEventCall = UserEventCall(func=StarTrekScreen.ktkCB,   userEvent=Settings.KLINGON_TORPEDO_EVENT)
@@ -148,6 +150,7 @@ class StarTrekScreen(Screen):
             self.mouseClickEvent = theEvent
             if self.settings.gameMode == GameMode.GalaxyScan:
                 self.settings.gameMode = GameMode.Warp
+                self._cancelKlingonTorpedoEvent()
             elif self.settings.gameMode != GameMode.Impulse:
                 self.settings.gameMode = GameMode.Impulse
 
@@ -161,9 +164,9 @@ class StarTrekScreen(Screen):
 
         """
         clock = pygame.time.Clock()
-        milliseconds = clock.tick(30)      # milliseconds passed since last frame; needs to agree witH StarTrekShell value
-        seconds = milliseconds / 1000.0    # seconds passed since last frame (float)
-        self.playTime += seconds
+        milliseconds = clock.tick(30)        # milliseconds passed since last frame; needs to agree witH StarTrekShell value
+        halfSeconds = milliseconds / 500.0   # half-seconds passed since last frame (float)
+        self.playTime += halfSeconds
 
         return True
 
@@ -197,8 +200,8 @@ class StarTrekScreen(Screen):
             self.soundUnableToComply.play()
         else:
             self.gameEngine.impulse(newCoordinates=coordinates, quadrant=self.quadrant, enterprise=self.enterprise)
-            msg = f"Moved to sector: {coordinates}"
-            self.messageConsole.addText(msg)
+
+            self.messageConsole.addText(f"Moved to sector: {coordinates}")
             self.soundImpulse.play()
 
         self.settings.gameMode = GameMode.Normal
@@ -217,11 +220,12 @@ class StarTrekScreen(Screen):
             #
             self.quadrant = self.gameEngine.warp(moveToCoordinates=quadCoords, galaxy=self.galaxy,
                                                  intelligence=self.intelligence, enterprise=self.enterprise)
-            msg = f"Warped to: {quadCoords}"
-            self.messageConsole.addText(msg)
+
+            self.messageConsole.addText(f"Warped to: {quadCoords}")
             self.soundWarp.play()
 
         self.settings.gameMode = GameMode.Normal
+        self._restartKlingonTorpedoEvent()
 
     def fireKlingonTorpedoesAtEnterprise(self):
         """"""
@@ -319,6 +323,12 @@ class StarTrekScreen(Screen):
     def saveGame(self):
         self.logger.info("Selected Save Game")
 
+    def _cancelKlingonTorpedoEvent(self):
+        pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, 0)
+
+    def _restartKlingonTorpedoEvent(self):
+        pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, StarTrekScreen.KLINGON_TORPEDO_EVENT_SECS)
+
     @staticmethod
     def clockCB(theEvent: Event):
 
@@ -366,4 +376,3 @@ class StarTrekScreen(Screen):
         if self.statistics.energy <= 0:
             alert(theMessage='Game Over!  The Enterprise is out of energy')
             sys.exit()
-

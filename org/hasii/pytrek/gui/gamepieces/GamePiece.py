@@ -17,8 +17,12 @@ class GamePiece(Sprite):
     QUADRANT_PIXEL_WIDTH   = 64
     STANDARD_SPRITE_WIDTH  = 32
     STANDARD_SPRITE_HEIGHT = 32
+    MEDIUM_SPRITE_WIDTH    = 16
+    MEDIUM_SPRITE_HEIGHT   = 16
     STANDARD_X_ADJUSTMENT  = (STANDARD_SPRITE_WIDTH / 2)
     STANDARD_Y_ADJUSTMENT  = (STANDARD_SPRITE_WIDTH / 2)
+    MEDIUM_X_ADJUSTMENT    = MEDIUM_SPRITE_WIDTH
+    MEDIUM_Y_ADJUSTMENT    = MEDIUM_SPRITE_WIDTH
 
     def __init__(self, screen: Surface, fileNamePath: str):
         """"""
@@ -47,3 +51,4 @@ class GamePiece(Sprite):
         # print(f"sectorX: {str(sectorX)} self.rect.x: {str(self.rect.x)} sectorY: {str(sectorY)} self.rect.y: {str(self.rect.y)}")
         # print(str(self.rect))
         self.screen.blit(self.image, self.rect)
+

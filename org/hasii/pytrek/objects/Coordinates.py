@@ -68,10 +68,10 @@ class Coordinates:
         return newCoordinates
 
     def __repr__(self):
-        return "(" + str(self.x) + "," + str(self.y) + ")"
+        return f"({self.x},{self.y})"
 
     def __str__(self) -> str:
-        return "(" + str(self.x) + "," + str(self.y) + ")"
+        return f"({self.x},{self.y})"
 
     def __eq__(self, other) -> bool:
         """"""

@@ -75,10 +75,10 @@ class Quadrant:
     def placeEnterprise(self, enterprise: Enterprise, coordinates: Coordinates):
         """
 
-        :param enterprise:   The fighting ship to place in this quadrant
-        :param coordinates:  The sector coordinates in which to place the Enterprise
+        Args:
+            enterprise:     The fighting ship to place in this quadrant
 
-        :return:
+            coordinates:    The sector coordinates in which to place the Enterprise
         """
         if self.enterpriseCoordinates is not None:
 
@@ -87,7 +87,7 @@ class Quadrant:
             oldSector.setType(SectorType.EMPTY)
             oldSector.sprite = None
 
-        self.logger.debug(f"Placing enterprise at: {coordinates}")
+        self.logger.debug(f"Placing enterprise @quadrant: {coordinates}")
 
         sectorRow = self.sectors.__getitem__(coordinates.getX())
         sector    = sectorRow.__getitem__(coordinates.getY())
@@ -216,11 +216,11 @@ class Quadrant:
             klingonGroup.add(commander)
         killedKlingons: list = pygame.sprite.spritecollide(torpedo, klingonGroup, False)
         #
-        self.logger.info(f"Killed klingon count: {len(killedKlingons)}")
+        self.logger.debug(f"Killed klingon count: {len(killedKlingons)}")
         #
         if killedKlingons.__len__() > 0:
             for deadKlingon in killedKlingons:
-                self.logger.info(f"deadKlingon at: {deadKlingon.currentPosition}")
+                self.logger.debug(f"deadKlingon at: {deadKlingon.currentPosition}")
                 sector.sectorType = SectorType.EMPTY
                 sector.sprite = None
 
@@ -231,7 +231,7 @@ class Quadrant:
                     self.removeCommander(deadKlingon)
                     self.placeAnExplosion(deadKlingon.currentPosition, playTime)
         else:
-            self.logger.info(f"torpedoAtTarget: {torpedo.torpedoAtTarget}")
+            self.logger.debug(f"torpedoAtTarget: {torpedo.torpedoAtTarget}")
             if torpedo.torpedoAtTarget is True:
                 self.logger.info(f"ARRGGHH!! we missed.  Torpedo coordinate: '{torpedo.currentPosition}'")
                 self.makeSectorAtCoordinatesEmpty(coordinates=torpedo.currentPosition)
@@ -336,7 +336,7 @@ class Quadrant:
     def placeAnExplosion(self, coordinates: Coordinates, playTime: float):
         """"""
         explosion = Explosion(screen=self.screen)
-        self.logger.info(f"Placing an explosion at: {coordinates}")
+        self.logger.debug(f"Placing an explosion at: {coordinates}")
 
         explosion.currentPosition        = coordinates
         explosion.timeSinceLastExplosion = playTime

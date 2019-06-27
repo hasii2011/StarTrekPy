@@ -143,7 +143,7 @@ class GameEngine:
 
         quadrantEnergy: float = 20 + (100.0 * travelDistance)
 
-        self.logger.debug("theTravelDistance: '%s' quadrantEnergy : '%s'", travelDistance, quadrantEnergy)
+        self.logger.debug(f"theTravelDistance: '{travelDistance}' quadrantEnergy : '{quadrantEnergy}'")
 
         return quadrantEnergy
 
