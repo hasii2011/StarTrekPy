@@ -1,6 +1,7 @@
 
 from enum import Enum
 
+
 class CommanderPower(Enum):
     """"
     Attacker Initial energy levels (nominal):

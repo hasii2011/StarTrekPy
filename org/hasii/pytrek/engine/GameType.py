@@ -1,5 +1,7 @@
 
 from enum import Enum
+
+
 class GameType(Enum):
     """"""
     Short  = 8
