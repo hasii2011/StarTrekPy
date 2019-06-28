@@ -33,7 +33,7 @@
             "propagate": "False"
         },
         "org.hasii.pytrek.engine.GameEngine": {
-            "level":     "DEBUG",
+            "level":     "ERROR",
             "propagate": "False"
         },
         "org.hasii.pytrek.albow.StarTrekScreen": {

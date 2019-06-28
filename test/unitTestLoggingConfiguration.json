@@ -26,6 +26,11 @@
             "level": "INFO",
             "handlers": ["consoleHandler"],
             "propagate": "False"
+        },
+        "IntelligenceTest": {
+            "level": "INFO",
+            "handlers": ["consoleHandler"],
+            "propagate": "False"
         }
     }
 }

@@ -1,3 +1,6 @@
+
+from math import log
+
 from random import randrange
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
@@ -200,3 +203,17 @@ class Intelligence:
         """
         cPower = 950.0 + (400.0 * self.rand()) + (50.0 * self.skill.value)
         return cPower
+
+    def expRan(self, avrage: float) -> float:
+        """
+
+        1e-7 -- 1 × 10 (minus 5) or 0.0000001
+        double expran(double avrage) {
+            return -avrage * log(1e-7 + Rand());
+        }
+
+        Returns:
+
+        """
+
+        return -avrage * log(1e-7 + self.rand())

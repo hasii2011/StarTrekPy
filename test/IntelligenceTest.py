@@ -23,6 +23,9 @@ class IntelligenceTest(BaseTest):
     #
     KNOWN_KLINGON_COUNT = 48
 
+    DEFAULT_AVRAGE = 1e30
+
+
     @classmethod
     def setUpClass(cls):
         """"""
@@ -205,6 +208,20 @@ class IntelligenceTest(BaseTest):
             commanderPower: float = self.smarty.computeCommanderPower()
             self.logger.info(f"Commander power: {commanderPower},  Skill: {self.smarty.skill}")
             self.assertGreater(commanderPower, 0, "Should get some value")
+
+    def testExpRan(self):
+
+        self.logger.info(f"DEFAULT: {IntelligenceTest.DEFAULT_AVRAGE}")
+        ans: float = self.smarty.expRan(IntelligenceTest.DEFAULT_AVRAGE)
+
+        self.logger.info(f"ans: {ans:4f}")
+
+        ans2: float = self.smarty.expRan(2000.0)
+        self.logger.info(f"avrage: '2000.0'  ans2: {ans2:4f}")
+
+        initStarDate: float = self.smarty.getInitialStarDate()
+        ans3: float = self.smarty.expRan(initStarDate)
+        self.logger.info(f"avrage: '{initStarDate}'  ans2: {ans3:4f}")
 
     def _setupCommandersTest(self, skill: PlayerType):
         """"""
