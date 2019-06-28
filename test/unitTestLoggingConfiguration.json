@@ -31,6 +31,17 @@
             "level": "INFO",
             "handlers": ["consoleHandler"],
             "propagate": "False"
+        },
+        "org.hasii.pytrek": {
+            "level":     "ERROR",
+            "handlers":  ["consoleHandler"],
+            "propagate": "False"
+        },
+
+        "org.hasii.pytrek.engine.Intelligence": {
+            "level": "INFO",
+            "propagate": "False"
         }
+
     }
 }

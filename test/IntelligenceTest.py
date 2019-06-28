@@ -2,11 +2,14 @@ import logging
 import unittest
 
 from BaseTest import BaseTest
+
 from org.hasii.pytrek.Settings import Settings
 from org.hasii.pytrek.engine.Intelligence import Intelligence
-from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
+from org.hasii.pytrek.engine.DeviceType import DeviceType
+
+from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 
 class IntelligenceTest(BaseTest):
@@ -222,6 +225,32 @@ class IntelligenceTest(BaseTest):
         initStarDate: float = self.smarty.getInitialStarDate()
         ans3: float = self.smarty.expRan(initStarDate)
         self.logger.info(f"avrage: '{initStarDate}'  ans2: {ans3:4f}")
+
+    def testEnumerateStringDeviceTypes(self):
+
+        self.logger.info("Device Types")
+        for deviceType in DeviceType:
+            self.logger.info(f"{deviceType}")
+
+        self.logger.info("Player Type Values")
+        for playerType in PlayerType:
+            self.logger.info(f"PlayerType: '{playerType}' -- value '{playerType.value}'")
+
+    def testIsCriticalHit(self):
+
+        hitsToCheck = [100, 200, 300]
+        self.logger.info(f"Hits to check: {hitsToCheck}")
+        self.smarty.skill = PlayerType.Emeritus
+        for val in hitsToCheck:
+            ans: bool = self.smarty.isCriticalHit(val)
+            self.logger.info(f"answer: {ans}")
+
+    def testGetRandomDevice(self):
+
+        for x in range(1000):
+            randomDevice: DeviceType = self.smarty.getRandomDevice()
+            self.logger.info(f"randomDevice: {randomDevice}")
+            self.assertIsNotNone(randomDevice)
 
     def _setupCommandersTest(self, skill: PlayerType):
         """"""

@@ -1,9 +1,15 @@
 
+from typing import Dict
+from typing import cast
+
 from math import log
 
 from random import randrange
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
+
+from org.hasii.pytrek.engine.DeviceType import DeviceType
+
 from org.hasii.pytrek.Settings import Settings
 
 from random import random
@@ -35,6 +41,26 @@ class Intelligence:
     RANDOM_TIME_STEP           = 1.0
 
     RAND_MAX = 32767.0
+
+    DAMAGE_WEIGHTS: Dict[DeviceType, float] = {
+        DeviceType.ShortRangeSensors:   100,    # DSRSENS: short range scanners 10%
+        DeviceType.LongRangeSensors:    100,    # DLRSENS: long range scanners 10%
+        DeviceType.Phasers:             130,    # DPHASER: phasers 12%
+        DeviceType.PhotonTubes:         135,    # DPHOTON: photon torpedoes 12%
+        DeviceType.LifeSupport:         25,     # DLIFSUP: life support 2.5%
+        DeviceType.WarpEngines:         65,     # DWARPEN: warp drive 6.5%
+        DeviceType.ImpulseEngines:      70,     # DIMPULS: impulse engines 6.5%
+        DeviceType.Shields:             145,    # DSHIELD: deflector shields 14.5%
+        DeviceType.SubspaceRadio:       25,     # DRADIO:  subspace radio 2.5%
+        DeviceType.ShuttleCraft:        5,      # DSHUTTL: shuttle 4.0%
+        DeviceType.Computer:            15,     # DCOMPTR: computer 1.5%
+        DeviceType.NavigationSystem:    20,     # NAVCOMP: navigation system 2.0%
+        DeviceType.Transporter:         75,     # DTRANSP: transporter 7.5%
+        DeviceType.ShieldControl:       20,     # DSHCTRL: high - speed shield controller 2.0%
+        DeviceType.DeathRay:            1,      # DDRAY:   death ray 1.0%
+        DeviceType.SpaceProbe:          5,      # DDSP:    deep - space probes 3.0%
+        DeviceType.CAD:                 54      # DCAVD:   collision  avoidance 2.0%
+    }
 
     def __new__(cls, *args, **kwargs):
 
@@ -217,3 +243,62 @@ class Intelligence:
         """
 
         return -avrage * log(1e-7 + self.rand())
+
+    def isCriticalHit(self, theHitToCheck: float) -> bool:
+        """
+
+            if (hit < (275.0-25.0*game.skill)*(1.0+0.5* tk.rand()))
+                return false;
+
+        Args:
+            theHitToCheck:
+
+        Returns: _True_ if above the threshold, else _False_
+
+        """
+        threshHold: float = (275.0 - 25.0 * self.skill.value) * (1.0 + 0.5 * self.rand())
+
+        self.logger.info(f"theHitToCheck: {theHitToCheck} playerSkill: {self.skill} threshHold: {threshHold}")
+        ans = False
+        if theHitToCheck > threshHold:
+            ans = True
+        return ans
+
+    def getRandomDevice(self) -> DeviceType:
+        """
+        Use the algorithm from SpaceWar
+
+            int sum = 0;
+            int idx = (int) Math.round (tk.rand() * 1000.0);    /* weights must sum to 1000 */
+
+            for (int i = 0; i < Constants.NDEVICES; i++) {
+                sum += weights[i];
+                if (idx < sum)
+                    return i;
+            }
+
+            return Constants.NDEVICES -1;   // we should never get here, but I have seen it happen
+
+        Returns: A random devices
+
+        """
+        runningWeight: int = 0
+        weightToBeat:  int = int(round(self.rand() * 1000.0))
+
+        self.logger.debug(f"weightToBeat: {weightToBeat}")
+        randomDevice: DeviceType = cast(DeviceType, None)
+        for deviceType in DeviceType:
+            weight = Intelligence.DAMAGE_WEIGHTS[deviceType]
+            runningWeight += weight
+            if weightToBeat < runningWeight:
+                randomDevice = deviceType
+                break
+        #
+        # May return None as original code occasionally failed
+        # fails about 1 in every 2500 calls
+        #
+        if randomDevice is None:
+            self.logger.error("Code fail, make up for it")
+            randomDevice = DeviceType.CAD
+
+        return randomDevice
