@@ -41,7 +41,10 @@
         "org.hasii.pytrek.engine.Intelligence": {
             "level": "INFO",
             "propagate": "False"
+        },
+        "org.hasii.pytrek.engine.Devices": {
+            "level":     "INFO",
+            "propagate": "False"
         }
-
     }
 }

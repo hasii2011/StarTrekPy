@@ -5,16 +5,19 @@ from typing import cast
 from math import log
 
 from random import randrange
+from random import random
+
+import logging
+from logging import Logger
+from logging import INFO
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.Devices import Devices
+from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
 
 from org.hasii.pytrek.Settings import Settings
-
-from random import random
-
-import logging
 
 
 class Intelligence:
@@ -77,11 +80,9 @@ class Intelligence:
         else:
             self.__initialized = True
 
-        self.settings = Settings()
-        self.logger   = logging.getLogger(__name__)
-
-        self.gameType = self.settings.gameType
-        self.skill    = self.settings.skill
+        self.settings: Settings = Settings()
+        self.devices:  Devices  = Devices()
+        self.logger:   Logger   = logging.getLogger(__name__)
 
         self.remainingKlingons = 0
         self.commanderCount    = 0
@@ -150,13 +151,18 @@ class Intelligence:
         :return:
         """
         nextNum = random() / 4.0
-        self.logger.info("Random value: %s", nextNum)
+        self.logger.info(f"Random value: {nextNum}")
 
-        self.remainingKlingons = (remainingGameTime * nextNum) + self.skill.value + self.gameType.value
+        self.remainingKlingons = (remainingGameTime * nextNum) + self.settings.skill.value + self.settings.gameType.value
         self.remainingKlingons = round(self.remainingKlingons)
 
-        self.logger.info("Player Skill: '%s', GameType '%s', klingonCount: %s",
-                         self.skill.name, self.gameType.name, str(self.remainingKlingons))
+        if self.logger.level == INFO:
+            message = (
+                f"Player Skill: '{self.settings.skill} "
+                f"GameType '{self.settings.gameType}' "
+                f"klingonCount: '{str(self.remainingKlingons)}'"
+            )
+            self.logger.info(message)
 
         return self.remainingKlingons
 
@@ -168,7 +174,7 @@ class Intelligence:
         """
 
         assert hasattr(self, "remainingKlingons")
-        self.commanderCount = self.skill.value * 0.0625 * self.remainingKlingons * random()
+        self.commanderCount = self.settings.skill.value * 0.0625 * self.remainingKlingons * random()
         self.commanderCount = round(self.commanderCount)
 
         #
@@ -179,8 +185,13 @@ class Intelligence:
 
     def getInitialGameTime(self) -> float:
         """"""
-        self.logger.info("Game Length factor: '%s'  GameType: '%s' GameTypeValue: '%s'",
-                         self.settings.gameLengthFactor, self.gameType.name, self.gameType.value)
+        if self.logger.level == INFO:
+            msg = (
+                f"Game Length factor: '{self.settings.gameLengthFactor}' "
+                f"GameType: '{self.settings.gameType}' "
+                f" GameTypeValue: '{self.settings.gameType.value}'"
+            )
+            self.logger.info(msg)
         remainingGameTime = self.settings.gameLengthFactor * self.settings.gameType.value
         return remainingGameTime
 
@@ -212,7 +223,7 @@ class Intelligence:
         Returns:
 
         """
-        kPower: float = (self.rand() * 150.0) + 300.0 + (25.0 * self.skill.value)
+        kPower: float = (self.rand() * 150.0) + 300.0 + (25.0 * self.settings.skill.value)
         return kPower
 
     def computeCommanderPower(self) -> float:
@@ -227,7 +238,7 @@ class Intelligence:
         Returns:
 
         """
-        cPower = 950.0 + (400.0 * self.rand()) + (50.0 * self.skill.value)
+        cPower = 950.0 + (400.0 * self.rand()) + (50.0 * self.settings.skill.value)
         return cPower
 
     def expRan(self, avrage: float) -> float:
@@ -256,15 +267,35 @@ class Intelligence:
         Returns: _True_ if above the threshold, else _False_
 
         """
-        threshHold: float = (275.0 - 25.0 * self.skill.value) * (1.0 + 0.5 * self.rand())
+        threshHold: float = (275.0 - 25.0 * self.settings.skill.value) * (1.0 + 0.5 * self.rand())
 
-        self.logger.info(f"theHitToCheck: {theHitToCheck} playerSkill: {self.skill} threshHold: {threshHold}")
+        self.logger.info(f"theHitToCheck: {theHitToCheck} playerSkill: {self.settings.skill} threshHold: {threshHold}")
         ans = False
         if theHitToCheck > threshHold:
             ans = True
         return ans
 
-    def getRandomDevice(self) -> DeviceType:
+    def fryDevices(self, theHit: float):
+        """
+        ncrit = 1.0 + hit/(500.0+100.0*tk.rand());
+
+         extradm = (hit * game.damfac) / (ncrit * (75.0+25.0 * tk.rand()));
+
+        Args:
+            theHit:
+
+        Returns:
+
+        """
+        if self.isCriticalHit(theHit) is True:
+
+            ncrit:             float      = 1.0 + theHit / (500.0 + 100.0 * self.rand())
+            damagedDeviceType: DeviceType = self._getRandomDevice()
+
+            self.devices.setDeviceStatus(deviceType=damagedDeviceType, deviceStatus=DeviceStatus.Damaged)
+            self.devices.setDeviceDamage(deviceType=damagedDeviceType, damageValue=ncrit)
+
+    def _getRandomDevice(self) -> DeviceType:
         """
         Use the algorithm from SpaceWar
 
@@ -294,7 +325,7 @@ class Intelligence:
                 randomDevice = deviceType
                 break
         #
-        # May return None as original code occasionally failed
+        # May return `None` as original code occasionally failed
         # fails about 1 in every 2500 calls
         #
         if randomDevice is None:

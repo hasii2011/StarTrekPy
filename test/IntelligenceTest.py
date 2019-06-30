@@ -4,16 +4,21 @@ import unittest
 from BaseTest import BaseTest
 
 from org.hasii.pytrek.Settings import Settings
+
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
+
+from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 
 class IntelligenceTest(BaseTest):
-    """ha ha"""
+    """
+    hee hee
+    """
 
     DEFAULT_GAME_LENGTH         = 210.00
     EXPECTED_SHORT_GAME_LENGTH  = 56
@@ -28,7 +33,6 @@ class IntelligenceTest(BaseTest):
 
     DEFAULT_AVRAGE = 1e30
 
-
     @classmethod
     def setUpClass(cls):
         """"""
@@ -38,6 +42,7 @@ class IntelligenceTest(BaseTest):
         """"""
         self.settings = Settings()
         self.smarty   = Intelligence()
+        self.devices  = Devices()
 
         self.logger   = logging.getLogger(__name__)
 
@@ -248,9 +253,15 @@ class IntelligenceTest(BaseTest):
     def testGetRandomDevice(self):
 
         for x in range(1000):
-            randomDevice: DeviceType = self.smarty.getRandomDevice()
+            randomDevice: DeviceType = self.smarty._getRandomDevice()
             self.logger.info(f"randomDevice: {randomDevice}")
             self.assertIsNotNone(randomDevice)
+
+    def testFryDevices(self):
+
+        self.logger.info(f"Device List before Fry: {self.devices}")
+        self.smarty.fryDevices(900)
+        self.logger.info(f"Device List after Fry: {self.devices}")
 
     def _setupCommandersTest(self, skill: PlayerType):
         """"""

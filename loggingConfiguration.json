@@ -36,6 +36,10 @@
             "level":     "ERROR",
             "propagate": "False"
         },
+        "org.hasii.pytrek.engine.Devices": {
+            "level":     "INFO",
+            "propagate": "False"
+        },
         "org.hasii.pytrek.albow.StarTrekScreen": {
             "level": "INFO",
             "propagate": "False"
