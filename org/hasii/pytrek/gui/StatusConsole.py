@@ -19,6 +19,9 @@ from org.hasii.pytrek.Settings import Settings
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 
+from org.hasii.pytrek.engine.Devices import Devices
+from org.hasii.pytrek.engine.DeviceType import DeviceType
+
 
 class StatusConsole(Widget):
 
@@ -36,6 +39,7 @@ class StatusConsole(Widget):
 
         self.settings:       Settings       = Settings()
         self.gameStatistics: GameStatistics = GameStatistics()
+        self.devices:        Devices        = Devices()
 
         self._customizeConsoleContainer()
 
@@ -124,10 +128,10 @@ class StatusConsole(Widget):
             'Computer: '
         ]
         refs = [
-            AttrRef(base=self.gameStatistics, name="shieldStatus"),
-            AttrRef(base=self.gameStatistics, name="phaserStatus"),
-            AttrRef(base=self.gameStatistics, name="torpedoStatus"),
-            AttrRef(base=self.gameStatistics, name="computerStatus"),
+            AttrRef(base=self.devices.getDevice(DeviceType.Shields),     name="deviceStatus"),
+            AttrRef(base=self.devices.getDevice(DeviceType.Phasers),     name="deviceStatus"),
+            AttrRef(base=self.devices.getDevice(DeviceType.PhotonTubes), name="deviceStatus"),
+            AttrRef(base=self.devices.getDevice(DeviceType.Computer),    name="deviceStatus"),
         ]
         systemItems = []
         for x in range(len(labels)):

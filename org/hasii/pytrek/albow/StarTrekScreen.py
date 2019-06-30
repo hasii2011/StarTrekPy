@@ -361,17 +361,16 @@ class StarTrekScreen(Screen):
                                                      targetPosition=enterprisePosition,
                                                      klingonPower=klingonPower)
 
+        self.logger.debug(f"Original Hit Value: {hitValue:4f}")
         shieldHitData: ShieldHitData = self.gameEngine.computeShieldHit(torpedoHit=hitValue)
 
-        shDegradeValue = shieldHitData.shieldAbsorptionValue
-        tpDegradeValue = shieldHitData.degradedTorpedoHitValue
+        shieldAbsorptionValue   = shieldHitData.shieldAbsorptionValue
+        degradedTorpedoHitValue = shieldHitData.degradedTorpedoHitValue
 
-        self.messageConsole.addText(f"Shield hit {shDegradeValue:4f}")
+        self.messageConsole.addText(f"Shield Hit: {shieldAbsorptionValue:4f}  Enterprise hit: {degradedTorpedoHitValue:4f}")
         self.shieldHit.play()
+        self.gameEngine.degradeShields(shieldAbsorptionValue)
 
-        self.gameEngine.degradeShields(shDegradeValue)
-
-        self.messageConsole.addText(f"Energy hit {tpDegradeValue:4f}")
         self.gameEngine.degradeEnergyLevel(shieldHitData.degradedTorpedoHitValue)
         if self.statistics.energy <= 0:
             alert(theMessage='Game Over!  The Enterprise is out of energy')

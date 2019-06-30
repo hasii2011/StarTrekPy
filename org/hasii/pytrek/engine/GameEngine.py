@@ -1,6 +1,7 @@
 
-
 import logging
+
+from logging import Logger
 
 from math import atan2
 from math import fabs
@@ -11,10 +12,10 @@ from org.hasii.pytrek.Settings import Settings
 
 from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.Intelligence import Intelligence
-from org.hasii.pytrek.engine.ShieldStatus import ShieldStatus
-from org.hasii.pytrek.engine.PhaserStatus import PhaserStatus
-from org.hasii.pytrek.engine.TorpedoStatus import TorpedoStatus
-from org.hasii.pytrek.engine.ComputerStatus import ComputerStatus
+from org.hasii.pytrek.engine.Devices import Devices
+from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
+
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
@@ -32,21 +33,18 @@ class GameEngine:
     def __init__(self):
         """"""
 
-        self.computer     = Computer()
-        self.settings     = Settings()
-        self.intelligence = Intelligence()
-        self.logger       = logging.getLogger(__name__)
-        self.stats        = GameStatistics()
+        self.logger: Logger = logging.getLogger(__name__)
+
+        self.computer:      Computer       = Computer()
+        self.settings:      Settings       = Settings()
+        self.intelligence:  Intelligence   = Intelligence()
+        self.stats:         GameStatistics = GameStatistics()
+        self.devices:       Devices        = Devices()
 
         self.stats.skill        = self.settings.skill
         self.stats.gameType     = self.settings.gameType
         self.stats.energy       = self.settings.initialEnergyLevel
         self.stats.shieldEnergy = self.settings.initialShieldEnergy
-
-        self.stats.shieldStatus   = ShieldStatus.Up
-        self.stats.torpedoStatus  = TorpedoStatus.Up
-        self.stats.phaserStatus   = PhaserStatus.Up
-        self.stats.computerStatus = ComputerStatus.Up
 
         self.stats.starDate            = self.intelligence.getInitialStarDate()
         self.stats.remainingGameTime   = self.intelligence.getInitialGameTime()
@@ -155,8 +153,9 @@ class GameEngine:
 
         :return:  The energy need to travel this far.
         """
+
         wCube:          float = warpFactor ** 3
-        shieldValue:    int   = self.stats.shieldStatus.value
+        shieldValue:    int   = self.devices.getDevice(DeviceType.Shields).value
         requiredEnergy: float = (travelDistance + 0.05) + wCube * (shieldValue + 1)
 
         return requiredEnergy
@@ -168,7 +167,7 @@ class GameEngine:
         self.stats.shieldEnergy -= shieldAbsorptionValue
         if self.stats.shieldEnergy < 0:
             self.stats.shieldEnergy = 0
-            self.stats.shieldStatus = ShieldStatus.Down
+            self.devices.getDevice(DeviceType.Shields).setDeviceStatus(DeviceStatus.Down)
 
     def degradeEnergyLevel(self, degradedTorpedoValue: float):
         """

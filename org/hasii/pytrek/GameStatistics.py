@@ -4,10 +4,6 @@ from typing import cast
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
-from org.hasii.pytrek.engine.ShieldStatus import ShieldStatus
-from org.hasii.pytrek.engine.TorpedoStatus import TorpedoStatus
-from org.hasii.pytrek.engine.PhaserStatus import PhaserStatus
-from org.hasii.pytrek.engine.ComputerStatus import ComputerStatus
 
 
 class GameStatistics:
@@ -28,20 +24,15 @@ class GameStatistics:
         if self.__initialized is True:
             return
         else:
-            self._energy:             float = 0.0
-            self._shieldEnergy:       float = 0.0
-            self._starDate:           float = 0.0
-            self._remainingGameTime:  float = 0.0
+            self._energy:              float = 0.0
+            self._shieldEnergy:        float = 0.0
+            self._starDate:            float = 0.0
+            self._remainingGameTime:   float = 0.0
             self._remainingKlingons:   int   = 0
             self._remainingCommanders: int   = 0
 
             self._skill:    PlayerType = cast(PlayerType, None)
             self._gameType: GameType   = cast(GameType, None)
-
-            self._shieldStatus:   ShieldStatus   = ShieldStatus.Up
-            self._torpedoStatus:  TorpedoStatus  = TorpedoStatus.Up
-            self._phaserStatus:   PhaserStatus   = PhaserStatus.Up
-            self._computerStatus: ComputerStatus = ComputerStatus.Up
 
             self.currentQuadrantCoordinates: Coordinates = cast(Coordinates, None)
             self.currentSectorCoordinates:   Coordinates = cast(Coordinates, None)
@@ -67,7 +58,7 @@ class GameStatistics:
     def setStarDate(self, theNewValue: float):
         self._starDate = theNewValue
 
-    def getRemainingGameTime(self):
+    def getRemainingGameTime(self) -> float:
         return self._remainingGameTime
 
     def setRemainingGameTime(self, theNewValue: float):
@@ -97,30 +88,6 @@ class GameStatistics:
     def setGameType(self, theNewValue: GameType):
         self._gameType = theNewValue
 
-    def getShieldStatus(self) -> ShieldStatus:
-        return self._shieldStatus
-
-    def setShieldStatus(self, theNewValue: ShieldStatus):
-        self._shieldStatus = theNewValue
-
-    def getTorpedoStatus(self) -> TorpedoStatus:
-        return self._torpedoStatus
-
-    def setTorpedoStatus(self, theNewValue: TorpedoStatus):
-        self._torpedoStatus = theNewValue
-
-    def getPhaserStatus(self) -> PhaserStatus:
-        return self._phaserStatus
-
-    def setPhaserStatus(self, theNewValue: PhaserStatus):
-        self._phaserStatus = theNewValue
-
-    def getComputerStatus(self) -> ComputerStatus:
-        return self._computerStatus
-
-    def setComputerStatus(self, theNewValue: ComputerStatus):
-        self._computerStatus = theNewValue
-
     def getCurrentQuadrantCoordinates(self) -> Coordinates:
         return self._currentQuadrantCoordinates
 
@@ -137,17 +104,12 @@ class GameStatistics:
     energy       = property(getEnergy, setEnergy)
     starDate     = property(getStarDate, setStarDate)
 
-    remainingGameTime   = property(getRemainingGameTime,  setRemainingGameTime)
-    remainingKlingons   = property(getRemainingKlingons,  setRemainingKlingons)
+    remainingGameTime   = property(getRemainingGameTime,   setRemainingGameTime)
+    remainingKlingons   = property(getRemainingKlingons,   setRemainingKlingons)
     remainingCommanders = property(getRemainingCommanders, setRemainingCommanders)
 
     skill    = property(getSkill,    setSkill)
     gameType = property(getGameType, setGameType)
-
-    shieldStatus    = property(getShieldStatus,   setShieldStatus)
-    torpedoStatus   = property(getTorpedoStatus,  setTorpedoStatus)
-    phaserStatus    = property(getPhaserStatus,   setPhaserStatus)
-    computerStatus  = property(getComputerStatus, setComputerStatus)
 
     currentQuadrantCoordinates = property(getCurrentQuadrantCoordinates, setCurrentQuadrantCoordinates)
     currentSectorCoordinates   = property(getCurrentSectorCoordinates,   setCurrentSectorCoordinates)

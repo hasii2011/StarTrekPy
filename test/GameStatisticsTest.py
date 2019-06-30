@@ -9,7 +9,6 @@ from org.hasii.pytrek.engine.GameType import GameType
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.objects import Coordinates
 from org.hasii.pytrek.objects.Coordinates import Coordinates
-from org.hasii.pytrek.engine.ComputerStatus import ComputerStatus
 
 
 class GameStatisticsTest(BaseTest):
@@ -38,7 +37,9 @@ class GameStatisticsTest(BaseTest):
         gsst.skill    = PlayerType.Emeritus
         gsst.gameType = GameType.Medium
         gsst.starDate = 40501.0
-        gsst.computerStatus = ComputerStatus.Down
+
+        gsst.remainingGameTime = 42.42424242
+
         gsst.currentQuadrantCoordinates = Coordinates(4, 4)
         gsst.currentSectorCoordinates   = Coordinates(9, 9)
 
@@ -59,9 +60,9 @@ class GameStatisticsTest(BaseTest):
         thawedGameGsst = jsonpickle.decode(jsonStr)
         self.assertIsNotNone(thawedGameGsst, "Did that thaw")
 
-        self.assertEqual(gsst.skill,          thawedGameGsst.skill,          "Skill did not thaw")
-        self.assertEqual(gsst.starDate,       thawedGameGsst.starDate,       "Star date did not thaw")
-        self.assertEqual(gsst.computerStatus, thawedGameGsst.computerStatus, "Computer status did not thaw")
+        self.assertEqual(gsst.skill,             thawedGameGsst.skill,             "Skill did not thaw")
+        self.assertEqual(gsst.starDate,          thawedGameGsst.starDate,          "Star date did not thaw")
+        self.assertEqual(gsst.remainingGameTime, thawedGameGsst.remainingGameTime, "Remaining game time did not thaw")
 
 
 if __name__ == '__main__':
