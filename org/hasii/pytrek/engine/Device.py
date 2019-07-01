@@ -32,18 +32,14 @@ class Device:
     def getDamage(self) -> float:
         return self._damage
 
-    def getDamage(self, theNewValue: float):
+    def setDamage(self, theNewValue: float):
         self._damage = theNewValue
 
     deviceType   = property(getDeviceType, setDeviceType)
     deviceStatus = property(getDeviceStatus, setDeviceStatus)
-    damage       = property(getDamage, getDamage)
+    damage       = property(getDamage, setDamage)
 
     def __repr__(self):
 
-        myRep = (
-            f"deviceType: {self.deviceType} "
-            f"deviceStatus: {self.deviceStatus} "
-            f"damage: {self.damage}"
-        )
+        myRep = f"deviceType: {self.deviceType} deviceStatus: {self.deviceStatus} damage: {self.damage}"
         return myRep

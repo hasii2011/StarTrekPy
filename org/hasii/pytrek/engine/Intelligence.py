@@ -281,6 +281,15 @@ class Intelligence:
 
          extradm = (hit * game.damfac) / (ncrit * (75.0+25.0 * tk.rand()));
 
+       // Select devices and cause damage
+        for (int loop1 = 0; loop1 < ncrit; loop1++) {
+            do {
+                j = randdevice();
+                // Cheat to prevent shuttle damage unless on ship
+            } while (game.damage[j]<0.0 || (j==DSHUTTL && (game.iscraft != IsCraft.onship)));
+            cdam[loop1] = j;
+            damaged [j] = 1;
+
         Args:
             theHit:
 
@@ -289,11 +298,21 @@ class Intelligence:
         """
         if self.isCriticalHit(theHit) is True:
 
-            ncrit:             float      = 1.0 + theHit / (500.0 + 100.0 * self.rand())
-            damagedDeviceType: DeviceType = self._getRandomDevice()
+            ncrit:    float = 1.0 + theHit / (500.0 + 100.0 * self.rand())
+            ncritInt: int   = round(ncrit)
+            x = 0
+            damagedDeviceType: DeviceType = cast(DeviceType, None)
+            while x < ncritInt:
+                damagedDeviceType= self._getRandomDevice()
+                x += 1
 
             self.devices.setDeviceStatus(deviceType=damagedDeviceType, deviceStatus=DeviceStatus.Damaged)
             self.devices.setDeviceDamage(deviceType=damagedDeviceType, damageValue=ncrit)
+
+    def moveBaddy(self):
+
+        CENTER_Q: int = 5
+        SHIP_QUADRANT_SIZE: int = 2 * CENTER_Q - 1
 
     def _getRandomDevice(self) -> DeviceType:
         """

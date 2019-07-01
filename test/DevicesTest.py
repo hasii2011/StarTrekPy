@@ -19,7 +19,9 @@ class DevicesTest(BaseTest):
 
     def setUp(self):
         """"""
-        self.logger = logging.getLogger(__name__)
+        self.devices = Devices()
+        self.logger  = logging.getLogger(__name__)
+        print("")
 
     def testDevicesClassISingleton(self):
 
@@ -54,6 +56,14 @@ class DevicesTest(BaseTest):
         lf2: Device = devices.getDevice(DeviceType.LifeSupport)
 
         self.assertEqual(first=lf2.deviceStatus, second=DeviceStatus.Down, msg='Status did not change')
+
+    def testDevicesRepr(self):
+
+        # device:  Device  = Device(deviceType=DeviceType.DeathRay, deviceStatus=DeviceStatus.Damaged, initialDamage=42.42)
+        # self.logger.info(f"device: {device}")
+
+        devices: Devices = Devices()
+        self.logger.info(f"devices: {devices}")
 
 
 if __name__ == '__main__':

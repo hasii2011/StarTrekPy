@@ -32,6 +32,11 @@
             "handlers": ["consoleHandler"],
             "propagate": "False"
         },
+        "DevicesTest": {
+            "level": "INFO",
+            "handlers": ["consoleHandler"],
+            "propagate": "False"
+        },
         "org.hasii.pytrek": {
             "level":     "ERROR",
             "handlers":  ["consoleHandler"],

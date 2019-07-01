@@ -163,10 +163,10 @@ class StarTrekScreen(Screen):
             theEvent:
 
         """
-        clock = pygame.time.Clock()
-        milliseconds = clock.tick(30)        # milliseconds passed since last frame; needs to agree witH StarTrekShell value
-        halfSeconds = milliseconds / 250.0   # half-seconds passed since last frame (float)
-        self.playTime += halfSeconds
+        clock          = pygame.time.Clock()
+        milliseconds   = clock.tick(30)         # milliseconds passed since last frame; needs to agree witH StarTrekShell value
+        quarterSeconds = milliseconds / 250.0   # half-seconds passed since last frame (float)
+        self.playTime  += quarterSeconds
 
         return True
 

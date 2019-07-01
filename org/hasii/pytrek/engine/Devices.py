@@ -50,16 +50,16 @@ class Devices:
     def setDeviceDamage(self, deviceType: DeviceType, damageValue: float):
 
         self.logger.info(f"deviceType: {deviceType}, damageValue: {damageValue}")
-        self.deviceMap[deviceType].damageValue = damageValue
+        self.deviceMap[deviceType].damage = damageValue
 
     def __repr__(self):
 
-        myRep = ""
+        myRep = "\n"
         for deviceType, device in self.deviceMap.items():
             devRep = (
-                f"deviceType: {deviceType} "
-                f"deviceStatus: {device.deviceStatus} "
-                f"damage: {device.damage} "
+                f"deviceType: {deviceType:27} "
+                f"deviceStatus: {device.deviceStatus:7} "
+                f"damage: {device.damage:4.4} \n"
             )
             myRep += devRep
         return myRep
