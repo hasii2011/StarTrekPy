@@ -78,7 +78,9 @@ class Settings:
         self.gameType             = GameType[gameTypeStr]
         self.warpFactor           = config.getint("GameLevel", "DefaultWarpFactor")
 
-        self.gameMode             = GameMode.Normal
+        #     game.damfac = 0.5 * game.skill;
+        self.damageFactor = 0.5 * self.skill.value
+        self.gameMode     = GameMode.Normal
 
     def findConfigFile(self):
         """"""

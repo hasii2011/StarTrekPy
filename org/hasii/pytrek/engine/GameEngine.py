@@ -155,7 +155,7 @@ class GameEngine:
         """
 
         wCube:          float = warpFactor ** 3
-        shieldValue:    int   = self.devices.getDevice(DeviceType.Shields).value
+        shieldValue:    int   = self.devices.getDevice(DeviceType.Shields).getDeviceStatus().value
         requiredEnergy: float = (travelDistance + 0.05) + wCube * (shieldValue + 1)
 
         return requiredEnergy

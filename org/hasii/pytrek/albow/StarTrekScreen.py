@@ -34,14 +34,13 @@ from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Direction import Direction
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
+from org.hasii.pytrek.engine.DeviceType import DeviceType
 
-from org.hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.MessageConsole import MessageConsole
-
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
-
 from org.hasii.pytrek.gui.StatusConsole import StatusConsole
+from org.hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 
 from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.gui.gamepieces.Klingon import Klingon
@@ -108,7 +107,7 @@ class StarTrekScreen(Screen):
 
         clockCall:  UserEventCall = UserEventCall(func=StarTrekScreen.clockCB, userEvent=Settings.CLOCK_EVENT)
         ktkCall:    UserEventCall = UserEventCall(func=StarTrekScreen.ktkCB,   userEvent=Settings.KLINGON_TORPEDO_EVENT)
-        entHitCall: UserEventCall = UserEventCall(func=StarTrekScreen.enterpriseTorpHitCB,
+        entHitCall: UserEventCall = UserEventCall(func=StarTrekScreen.enterpriseHitCB,
                                                   userEvent=Settings.ENTERPRISE_HIT_BY_TORPEDO_EVENT)
 
         RootWidget.addUserEvent(clockCall)
@@ -348,7 +347,7 @@ class StarTrekScreen(Screen):
         self.fireKlingonTorpedoesAtEnterprise()
 
     @staticmethod
-    def enterpriseTorpHitCB(theEvent: Event):
+    def enterpriseHitCB(theEvent: Event):
 
         self = StarTrekScreen._myself
 
@@ -375,3 +374,7 @@ class StarTrekScreen(Screen):
         if self.statistics.energy <= 0:
             alert(theMessage='Game Over!  The Enterprise is out of energy')
             sys.exit()
+
+        damagedDeviceType: DeviceType = self.intelligence.fryDevice(shieldHitData.degradedTorpedoHitValue)
+        if damagedDeviceType is not None:
+            self.messageConsole.addText(f"Device: {damagedDeviceType} has been damaged")

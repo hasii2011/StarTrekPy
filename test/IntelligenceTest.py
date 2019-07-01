@@ -31,7 +31,9 @@ class IntelligenceTest(BaseTest):
     #
     KNOWN_KLINGON_COUNT = 48
 
-    DEFAULT_AVRAGE = 1e30
+    DEFAULT_AVERAGE = 1e30
+    BIG_HIT_VALUE   = 900.42
+    SMALL_HIT_VALUE = 25.25
 
     @classmethod
     def setUpClass(cls):
@@ -219,8 +221,8 @@ class IntelligenceTest(BaseTest):
 
     def testExpRan(self):
 
-        self.logger.info(f"DEFAULT: {IntelligenceTest.DEFAULT_AVRAGE}")
-        ans: float = self.smarty.expRan(IntelligenceTest.DEFAULT_AVRAGE)
+        self.logger.info(f"DEFAULT: {IntelligenceTest.DEFAULT_AVERAGE}")
+        ans: float = self.smarty.expRan(IntelligenceTest.DEFAULT_AVERAGE)
 
         self.logger.info(f"ans: {ans:4f}")
 
@@ -260,8 +262,14 @@ class IntelligenceTest(BaseTest):
     def testFryDevices(self):
 
         self.logger.info(f"Device List before Fry: {self.devices}")
-        self.smarty.fryDevices(900)
-        self.logger.info(f"Device List after Fry: {self.devices}")
+
+        damagedDeviceType: DeviceType = self.smarty.fryDevice(IntelligenceTest.BIG_HIT_VALUE)
+        self.assertIsNotNone(damagedDeviceType, "Oops should have been a critical hit.")
+        self.logger.info(f"damagedDeviceType {damagedDeviceType}")
+
+        damagedDeviceType = self.smarty.fryDevice(IntelligenceTest.SMALL_HIT_VALUE)
+        self.assertIsNone(damagedDeviceType, "Should not have been a critical hit")
+        self.logger.info(f"damagedDeviceType {damagedDeviceType}")
 
     def _setupCommandersTest(self, skill: PlayerType):
         """"""

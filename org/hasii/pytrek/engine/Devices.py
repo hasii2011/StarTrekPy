@@ -47,6 +47,9 @@ class Devices:
         self.logger.info(f"deviceType: {deviceType}, deviceStatus: {deviceStatus}")
         self.deviceMap[deviceType].deviceStatus = deviceStatus
 
+    def getDeviceDamage(self, deviceType: DeviceType) -> float:
+        return self.deviceMap[deviceType].damage
+
     def setDeviceDamage(self, deviceType: DeviceType, damageValue: float):
 
         self.logger.info(f"deviceType: {deviceType}, damageValue: {damageValue}")

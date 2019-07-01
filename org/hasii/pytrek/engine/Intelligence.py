@@ -275,7 +275,7 @@ class Intelligence:
             ans = True
         return ans
 
-    def fryDevices(self, theHit: float):
+    def fryDevice(self, theHit: float) -> DeviceType:
         """
         ncrit = 1.0 + hit/(500.0+100.0*tk.rand());
 
@@ -296,18 +296,26 @@ class Intelligence:
         Returns:
 
         """
+
+        damagedDeviceType: DeviceType = cast(DeviceType, None)
         if self.isCriticalHit(theHit) is True:
 
             ncrit:    float = 1.0 + theHit / (500.0 + 100.0 * self.rand())
             ncritInt: int   = round(ncrit)
             x = 0
-            damagedDeviceType: DeviceType = cast(DeviceType, None)
+            # damagedDeviceType: DeviceType = cast(DeviceType, None)
             while x < ncritInt:
-                damagedDeviceType= self._getRandomDevice()
+                damagedDeviceType = self._getRandomDevice()
                 x += 1
+            extradm: float = (theHit * self.settings.damageFactor) / (ncrit * (75.0 + 25.0 * self.rand()))
 
+            # TODO Prevent shuttle damage unless on ship
             self.devices.setDeviceStatus(deviceType=damagedDeviceType, deviceStatus=DeviceStatus.Damaged)
-            self.devices.setDeviceDamage(deviceType=damagedDeviceType, damageValue=ncrit)
+            currentDamage: float = self.devices.getDeviceDamage(damagedDeviceType)
+            currentDamage += extradm
+            self.devices.setDeviceDamage(deviceType=damagedDeviceType, damageValue=currentDamage)
+
+        return damagedDeviceType
 
     def moveBaddy(self):
 
