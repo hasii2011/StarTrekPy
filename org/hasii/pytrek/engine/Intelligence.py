@@ -317,10 +317,13 @@ class Intelligence:
 
         return damagedDeviceType
 
-    def moveBaddy(self):
+    def moveBaddy(self, comLoc: Coordinates):
 
-        CENTER_Q: int = 5
-        SHIP_QUADRANT_SIZE: int = 2 * CENTER_Q - 1
+        comX: int = comLoc.getX()
+        comY: int = comLoc.getY()
+        self.logger.info(f"{comX}", {comY})
+
+
 
     def _getRandomDevice(self) -> DeviceType:
         """
