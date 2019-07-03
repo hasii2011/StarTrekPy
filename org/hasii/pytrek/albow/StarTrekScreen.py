@@ -33,8 +33,10 @@ from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Direction import Direction
-from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.PlayerType import PlayerType
+from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
+from org.hasii.pytrek.engine.MoveBaddyData import MoveBaddyData
 
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.MessageConsole import MessageConsole
@@ -378,3 +380,10 @@ class StarTrekScreen(Screen):
         damagedDeviceType: DeviceType = self.intelligence.fryDevice(shieldHitData.degradedTorpedoHitValue)
         if damagedDeviceType is not None:
             self.messageConsole.addText(f"Device: {damagedDeviceType} has been damaged")
+
+        currentQuadrant: Quadrant   = self.galaxy.getCurrentQuadrant()
+        skill:           PlayerType = StarTrekScreen._myself.settings.skill
+
+        numKlingons:   int = currentQuadrant.getKlingonCount()
+        numCommanders: int = currentQuadrant.getCommanderCount()
+

@@ -14,8 +14,10 @@ from logging import INFO
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
+from org.hasii.pytrek.engine.MoveBaddyData import MoveBaddyData
 
 from org.hasii.pytrek.Settings import Settings
 
@@ -303,7 +305,6 @@ class Intelligence:
             ncrit:    float = 1.0 + theHit / (500.0 + 100.0 * self.rand())
             ncritInt: int   = round(ncrit)
             x = 0
-            # damagedDeviceType: DeviceType = cast(DeviceType, None)
             while x < ncritInt:
                 damagedDeviceType = self._getRandomDevice()
                 x += 1
@@ -317,13 +318,41 @@ class Intelligence:
 
         return damagedDeviceType
 
-    def moveBaddy(self, comLoc: Coordinates):
+    def moveBaddy(self, moveBaddyData: MoveBaddyData, baddyLocation: Coordinates):
+        """
+        loccom:
 
-        comX: int = comLoc.getX()
-        comY: int = comLoc.getY()
-        self.logger.info(f"{comX}", {comY})
+        Args:
+            moveBaddyData: Additional information we need from the game
 
+            baddyLocation: quadrant location for commander or super commander
 
+        Returns:
+
+        """
+
+        comX: int = baddyLocation.x
+        comY: int = baddyLocation.y
+        self.logger.info(f"comX: {comX}, comY: {comY}")
+        # This should probably be just comhere + ishere
+        # int nbaddys = skill > SGOOD ? (int)((comhere * 2 + ishere * 2 + klhere * 1.23 + irhere * 1.5) / 2.0): (comhere + ishere);
+        # ishere  - super commander in quadrant
+        # comhere - commanders in quadrant
+        # klhere  - klingons in quadrant
+        # irhere  - Romulans in quadrant
+
+        klhere:  int = moveBaddyData.numberOfKlingons
+        comhere: int = moveBaddyData.numberOfCommanders
+        ishere:  int = moveBaddyData.numberOfSuperCommanders
+        irhere:  int = moveBaddyData.numberOfRomulans
+
+        skill:   PlayerType = moveBaddyData.playerSkill
+
+        if skill.value > PlayerType.Good.value:
+            nbaddys: int = round((comhere * 2 + ishere * 2 + klhere * 1.23 + irhere * 1.5) / 2.0)
+        else:
+            nbaddys: int = comhere + ishere
+        self.logger.info(f"nbaddys: {nbaddys}")
 
     def _getRandomDevice(self) -> DeviceType:
         """

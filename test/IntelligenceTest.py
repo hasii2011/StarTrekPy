@@ -1,3 +1,6 @@
+
+from typing import List
+
 import logging
 import unittest
 
@@ -5,13 +8,19 @@ from BaseTest import BaseTest
 
 from org.hasii.pytrek.Settings import Settings
 
+from org.hasii.pytrek.gui.gamepieces.Klingon import Klingon
+
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
 
+from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.MoveBaddyData import MoveBaddyData
 
+from org.hasii.pytrek.objects.Galaxy import Galaxy
+from org.hasii.pytrek.objects.Quadrant import Quadrant
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
 
@@ -45,6 +54,9 @@ class IntelligenceTest(BaseTest):
         self.settings = Settings()
         self.smarty   = Intelligence()
         self.devices  = Devices()
+        self.gameEngine = GameEngine()
+
+        self.galaxy   = Galaxy(screen=None, intelligence=self.smarty, gameEngine=self.gameEngine)
 
         self.logger   = logging.getLogger(__name__)
 
@@ -270,6 +282,23 @@ class IntelligenceTest(BaseTest):
         damagedDeviceType = self.smarty.fryDevice(IntelligenceTest.SMALL_HIT_VALUE)
         self.assertIsNone(damagedDeviceType, "Should not have been a critical hit")
         self.logger.info(f"damagedDeviceType {damagedDeviceType}")
+
+    def testMoveBaddy(self):
+
+        currentQuadrant: Quadrant = self.galaxy.currentQuadrant
+        while currentQuadrant.getKlingonCount() <= 0:
+            self.logger.info(f"No klingons in quadrant: {currentQuadrant.coordinates}")
+            #
+            # generate a new random quadrant
+            self.galaxy.setInitialQuadrant()
+            currentQuadrant = self.galaxy.currentQuadrant
+
+        klingons: List[Klingon] = currentQuadrant.getKlingons()
+
+        baddyData: MoveBaddyData = MoveBaddyData(playerSkill=PlayerType.Emeritus, numberOfKlingons=2, numberOfCommanders=1)
+
+        self.smarty.moveBaddy(moveBaddyData=baddyData, baddyLocation=klingons[0].currentPosition)
+        self.logger.info(f"Did the baddy move?")
 
     def _setupCommandersTest(self, skill: PlayerType):
         """"""

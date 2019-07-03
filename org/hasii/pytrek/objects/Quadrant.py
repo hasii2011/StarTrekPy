@@ -50,8 +50,7 @@ class Quadrant:
         self.settings     = Settings()
 
         self._klingonCount  = 0
-        self.commandCount   = 0
-        self.commanderCount = 0
+        self._commanderCount = 0
 
         self.klingons   = []
         self.commanders = []
@@ -295,12 +294,21 @@ class Quadrant:
     def removeCommander(self, deadCommander: Commander):
         """"""
         self.commanders.remove(deadCommander)
-        self.commanderCount -= 1
+        self._commanderCount -= 1
         self.stats.remainingCommanders -= 1
 
     def getKlingonCount(self):
         """"""
         return self._klingonCount
+
+    def getCommanderCount(self):
+        return self._commanderCount
+
+    def getSuperCommanderCount(self):
+        return 0
+
+    def getRomulanCount(self):
+        return 0
 
     def addStarBase(self):
         """"""
@@ -313,7 +321,7 @@ class Quadrant:
 
     def addCommander(self):
         """"""
-        self.commanderCount += 1
+        self._commanderCount += 1
         commander = self.placeACommander()
         self.commanders.append(commander)
 

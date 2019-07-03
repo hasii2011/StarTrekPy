@@ -1,4 +1,7 @@
 
+from typing import cast
+from typing import List
+
 import logging
 
 from org.hasii.pytrek.Settings import Settings
@@ -22,11 +25,11 @@ class Galaxy:
         self.settings       = Settings()
         self.logger         = logging.getLogger(__name__)
 
-        self.starBaseCount   = 0
-        self.planetCount     = 0
-        self.gameParameters  = None
-        self.currentQuadrant = None
-        self.quadrants       = []
+        self.starBaseCount: int = 0
+        self.planetCount:   int = 0
+        self.gameParameters:  GameStatistics = cast(typ=GameStatistics, val=None)
+        self.currentQuadrant: Quadrant       = cast(typ=Quadrant, val=None)
+        self.quadrants = []  # 2D array aka python list
 
         self.createGalaxy(screen)
 

@@ -6,14 +6,23 @@ class Coordinates:
 
     def __init__(self, x: int, y: int):
         """"""
-        self.x = x
-        self.y = y
+        self._x = x
+        self._y = y
 
     def getX(self) -> int:
-        return self.x
+        return self._x
+
+    def setX(self, theNewX: int):
+        self._x = theNewX
+
+    def setY(self, theNewY: int):
+        self._y = theNewY
 
     def getY(self) -> int:
-        return self.y
+        return self._y
+
+    x = property(getX, setX)
+    y = property(getY, setY)
 
     def valid(self) -> bool:
         """

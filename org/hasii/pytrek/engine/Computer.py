@@ -76,7 +76,7 @@ class Computer:
         """
 
         klingonCount = quadrant.getKlingonCount()
-        klingonCount = klingonCount + quadrant.commanderCount
+        klingonCount = klingonCount + quadrant._commanderCount
         quadrantValue = klingonCount * 100
         if quadrant.hasStarBase():
             quadrantValue += 10

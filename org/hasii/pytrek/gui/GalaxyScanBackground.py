@@ -52,7 +52,7 @@ class GalaxyScanBackground(BaseBackGround):
                 quadrant   = galaxy.getQuadrant(quadrantCoordinates=quadCoords)
 
                 strValue = self.computer.createValueString(quadrant=quadrant)
-                if quadrant.commanderCount > 0:
+                if quadrant._commanderCount > 0:
                     label = self.labelFont.render(strValue, 1, RED)
                 else:
                     label    = self.labelFont.render(strValue, 1, WHITE)
