@@ -22,6 +22,8 @@ from org.hasii.pytrek.GameStatistics import GameStatistics
 from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
 
+from org.hasii.pytrek.gui.DamageValueDisplay import DamageValueDisplay
+
 
 class StatusConsole(Widget):
 
@@ -169,9 +171,9 @@ class StatusConsole(Widget):
             fieldAttrs['fg_color'] = fgColor
 
         if formatStr is None:
-            valueDisplay: ValueDisplay = ValueDisplay(ref=statsRef, **fieldAttrs)
+            valueDisplay: DamageValueDisplay = DamageValueDisplay(ref=statsRef, **fieldAttrs)
         else:
-            valueDisplay: ValueDisplay = ValueDisplay(ref=statsRef, format=formatStr, **fieldAttrs)
+            valueDisplay: DamageValueDisplay = ValueDisplay(ref=statsRef, format=formatStr, **fieldAttrs)
 
         fieldContent = [fieldLabel, valueDisplay]
 
