@@ -4,12 +4,15 @@ import sys
 import os
 
 import logging
+from logging import Logger
 
 from typing import List
 
 import pygame
 
 from pygame import Surface
+from pygame.mixer import Sound
+
 from pygame.event import Event
 
 from albow.core.ui.Screen import Screen
@@ -60,7 +63,7 @@ class StarTrekScreen(Screen):
 
         super().__init__(shell)
 
-        self.logger = logging.getLogger(__name__)
+        self.logger: Logger = logging.getLogger(__name__)
         #
         # Debug logger
         #
@@ -69,38 +72,38 @@ class StarTrekScreen(Screen):
         #     print(f"level: '{self.logger.level}'', name: '{self.logger.name}'', handlers: '{self.logger.handlers}"'')
         #     self.logger = self.logger.parent
         # self.logger = saveLogger
+        #
+        self.surface: Surface = theSurface
 
-        self.surface = theSurface
+        self.settings: Settings = Settings()
+        self.computer: Computer = Computer()
 
-        self.settings = Settings()
-        self.computer = Computer()
+        self.statistics:   GameStatistics = GameStatistics()
+        self.intelligence: Intelligence   = Intelligence()
 
-        self.statistics = GameStatistics()
-        self.intelligence = Intelligence()
+        self.soundUnableToComply: Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
+        self.soundInaccurate:     Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))
+        self.soundWarp:           Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_flyby_1.wav'))
+        self.soundImpulse:        Sound = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
+        self.soundTorpedo:        Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
+        self.soundKlingonTorpedo: Sound = pygame.mixer.Sound(os.path.join('sounds', 'klingon_torpedo.wav'))
+        self.shieldHit:           Sound = pygame.mixer.Sound(os.path.join('sounds', 'ShieldHit.wav'))
 
-        self.soundUnableToComply = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
-        self.soundInaccurate     = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))
-        self.soundWarp           = pygame.mixer.Sound(os.path.join('sounds', 'tos_flyby_1.wav'))
-        self.soundImpulse        = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
-        self.soundTorpedo        = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
-        self.soundKlingonTorpedo = pygame.mixer.Sound(os.path.join('sounds', 'klingon_torpedo.wav'))
-        self.shieldHit           = pygame.mixer.Sound(os.path.join('sounds', 'ShieldHit.wav'))
+        self.galaxyScanBackground: GalaxyScanBackground = GalaxyScanBackground(screen=theSurface)
+        self.backGround:           QuadrantBackground   = QuadrantBackground(theSurface)
 
-        self.galaxyScanBackground = GalaxyScanBackground(screen=theSurface)
-        self.backGround           = QuadrantBackground(theSurface)
+        self.gameEngine: GameEngine = GameEngine()
+        self.enterprise: Enterprise = Enterprise(theSurface)
 
-        self.gameEngine = GameEngine()
-        self.enterprise = Enterprise(theSurface)
-
-        self.galaxy   = Galaxy(screen=theSurface, intelligence=self.intelligence, gameEngine=self.gameEngine)
-        self.quadrant = self.galaxy.getCurrentQuadrant()
+        self.galaxy:   Galaxy   = Galaxy(screen=theSurface, intelligence=self.intelligence, gameEngine=self.gameEngine)
+        self.quadrant: Quadrant = self.galaxy.getCurrentQuadrant()
 
         self.statistics.currentQuadrantCoordinates = self.galaxy.currentQuadrant.coordinates
         self.statistics.currentSectorCoordinates   = self.intelligence.getRandomSectorCoordinates()
         self.quadrant.placeEnterprise(self.enterprise, self.statistics.currentSectorCoordinates)
 
-        self.playTime = 0
-        self.mouseClickEvent = None
+        self.playTime:        float = 0.0
+        self.mouseClickEvent: Event = None
 
         pygame.time.set_timer(Settings.CLOCK_EVENT, 10 * 1000)
         pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, StarTrekScreen.KLINGON_TORPEDO_EVENT_SECS)
@@ -164,7 +167,7 @@ class StarTrekScreen(Screen):
         """
         clock          = pygame.time.Clock()
         milliseconds   = clock.tick(30)         # milliseconds passed since last frame; needs to agree witH StarTrekShell value
-        quarterSeconds = milliseconds / 250.0   # half-seconds passed since last frame (float)
+        quarterSeconds = milliseconds / 250.0   # quarter-seconds passed since last frame (float)
         self.playTime  += quarterSeconds
 
         return True
@@ -184,7 +187,7 @@ class StarTrekScreen(Screen):
         elif self.settings.gameMode == GameMode.PhotonTorpedoes:
             self.fireEnterpriseTorpedoesAtKlingons()
 
-    def normalScreenUpdate(self, playTime: int):
+    def normalScreenUpdate(self, playTime: float):
         """"""
 
         self.backGround.update()
