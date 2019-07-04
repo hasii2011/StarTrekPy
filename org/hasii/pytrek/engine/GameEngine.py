@@ -281,3 +281,30 @@ class GameEngine:
             (1000.0 * sqrt(square(ix-inx) + square(iy-iny))) * fabs(sin(bullseye-angle))
 
         return hit
+
+    def fixDevices(self):
+        """
+        // #define Time a.Time // time taken by current operation
+        double fintim = d.date + Time
+        datemin = fintim;
+
+        // d.date is current stardate
+
+        xtime = datemin-d.date;
+
+        repair = xtime;
+
+        /* Don't fix Deathray here */
+        for (l=1; l<=ndevice; l++)
+            if (damage[l] > 0.0 && l != DDRAY)
+                damage[l] -= (damage[l]-repair > 0.0 ? repair : damage[l]);
+
+        /* Fix Deathray if docked */
+        if (damage[DDRAY] > 0.0 && condit == IHDOCKED)
+            damage[DDRAY] -= (damage[l] - xtime > 0.0 ? xtime : damage[DDRAY]);
+
+        /* If radio repaired, update star chart and attack reports */
+
+
+        """
+        self.logger.info(f"Fixing Stuff")

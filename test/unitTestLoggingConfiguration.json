@@ -37,6 +37,11 @@
             "handlers": ["consoleHandler"],
             "propagate": "False"
         },
+        "EventEngineTest": {
+            "level": "INFO",
+            "handlers": ["consoleHandler"],
+            "propagate": "False"
+        },
         "org.hasii.pytrek": {
             "level":     "ERROR",
             "handlers":  ["consoleHandler"],
