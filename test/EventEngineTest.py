@@ -5,7 +5,7 @@ from logging import Logger
 
 from BaseTest import BaseTest
 
-from org.hasii.pytrek.engine.EventEngine import EventEngine
+from hasii.pytrek.engine.futures.EventEngine import EventEngine
 
 
 class EventEngineTest(BaseTest):
