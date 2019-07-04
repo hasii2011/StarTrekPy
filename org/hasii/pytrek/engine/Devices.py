@@ -42,6 +42,9 @@ class Devices:
         self.logger.info(f"deviceType: {deviceType}")
         return self.deviceMap[deviceType]
 
+    def getDeviceStatus(self, deviceType: DeviceType) -> DeviceStatus:
+        return self.deviceMap[deviceType].getDeviceStatus()
+
     def setDeviceStatus(self, deviceType: DeviceType, deviceStatus: DeviceStatus):
 
         self.logger.info(f"deviceType: {deviceType}, deviceStatus: {deviceStatus}")

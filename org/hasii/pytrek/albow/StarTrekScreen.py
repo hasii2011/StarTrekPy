@@ -36,7 +36,9 @@ from org.hasii.pytrek.engine.Computer import Computer
 from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Direction import Direction
+from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
@@ -49,6 +51,9 @@ from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.gui.gamepieces.Klingon import Klingon
 from org.hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
 from org.hasii.pytrek.gui.gamepieces.KlingonTorpedo import KlingonTorpedo
+
+MSG_IMPULSE_ENGINES_ARE_DOWN = 'Sorry, Impulse Engines are down.'
+MSG_WARP_ENGINES_ARE_DOWN    = 'Apologies, Warp Engines are damaged.'
 
 
 class StarTrekScreen(Screen):
@@ -80,6 +85,7 @@ class StarTrekScreen(Screen):
 
         self.statistics:   GameStatistics = GameStatistics()
         self.intelligence: Intelligence   = Intelligence()
+        self.devices:      Devices        = Devices()
 
         self.soundUnableToComply: Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
         self.soundInaccurate:     Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))
@@ -87,7 +93,8 @@ class StarTrekScreen(Screen):
         self.soundImpulse:        Sound = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
         self.soundTorpedo:        Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
         self.soundKlingonTorpedo: Sound = pygame.mixer.Sound(os.path.join('sounds', 'klingon_torpedo.wav'))
-        self.shieldHit:           Sound = pygame.mixer.Sound(os.path.join('sounds', 'ShieldHit.wav'))
+        self.soundShieldHit:      Sound = pygame.mixer.Sound(os.path.join('sounds', 'ShieldHit.wav'))
+        self.soundDeviceDown:     Sound = pygame.mixer.Sound(os.path.join('sounds', 'tng_red_alert2.wav'))
 
         self.galaxyScanBackground: GalaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround:           QuadrantBackground   = QuadrantBackground(theSurface)
@@ -133,28 +140,54 @@ class StarTrekScreen(Screen):
         if theEvent.key == pygame.K_q:
             self.ensureQuit()
         elif theEvent.key == pygame.K_g:
-            self.settings.setGameMode(GameMode.GalaxyScan)
+            status: DeviceStatus = self.devices.getDeviceStatus(DeviceType.SubspaceRadio)
+            if status == DeviceStatus.Up:
+                self.settings.setGameMode(GameMode.GalaxyScan)
+            else:
+                self.messageConsole.addText("Sorry, The subspace radio is down.")
+                self.soundDeviceDown.play()
         elif theEvent.key == pygame.K_n:
             self.settings.setGameMode(GameMode.Normal)
         elif theEvent.key == pygame.K_i:
-            self.settings.setGameMode(GameMode.Impulse)
+            status: DeviceStatus = self.devices.getDevice(DeviceType.ImpulseEngines).getDeviceStatus()
+            if status == DeviceStatus.Up:
+                self.settings.setGameMode(GameMode.Impulse)
+            else:
+                self.messageConsole.addText(MSG_IMPULSE_ENGINES_ARE_DOWN)
+                self.soundDeviceDown.play()
         elif theEvent.key == pygame.K_t:
-            self.settings.setGameMode(GameMode.PhotonTorpedoes)
+            status: DeviceStatus = self.devices.getDeviceStatus(DeviceType.PhotonTubes)
+            if status == DeviceStatus.Up:
+                self.settings.setGameMode(GameMode.PhotonTorpedoes)
+            else:
+                self.messageConsole.addText("Sorry, Photon Tubes are down.")
+                self.soundDeviceDown.play()
+
         elif theEvent.key == pygame.K_s:
             self.settings.setGameMode(GameMode.SaveGame)
             self.logger.info("Saving Game")
 
     def mouse_down(self, theEvent: Event):
 
-        self.logger.debug("Mouse Down")
+        self.logger.debug("Mouse Pressed Down")
         xPos = theEvent.pos[0]
         if xPos < StarTrekScreen.MAX_X_POS:
             self.mouseClickEvent = theEvent
             if self.settings.gameMode == GameMode.GalaxyScan:
-                self.settings.gameMode = GameMode.Warp
-                self._cancelKlingonTorpedoEvent()
+                status: DeviceStatus = self.devices.getDeviceStatus(DeviceType.WarpEngines)
+                if status == DeviceStatus.Up:
+                    self.settings.gameMode = GameMode.Warp
+                    self._cancelKlingonTorpedoEvent()
+                else:
+                    self.messageConsole.addText(MSG_WARP_ENGINES_ARE_DOWN)
+                    self.soundDeviceDown.play()
             elif self.settings.gameMode != GameMode.Impulse:
-                self.settings.gameMode = GameMode.Impulse
+                status: DeviceStatus = self.devices.getDeviceStatus(DeviceType.ImpulseEngines)
+                if status == DeviceStatus.Up:
+                    self.settings.gameMode = GameMode.Impulse
+                else:
+                    self.messageConsole.addText(MSG_IMPULSE_ENGINES_ARE_DOWN)
+                    self.soundDeviceDown.play()
 
     def timer_event(self, theEvent: Event):
         """
@@ -169,6 +202,8 @@ class StarTrekScreen(Screen):
         milliseconds   = clock.tick(30)         # milliseconds passed since last frame; needs to agree witH StarTrekShell value
         quarterSeconds = milliseconds / 250.0   # quarter-seconds passed since last frame (float)
         self.playTime  += quarterSeconds
+
+        StarTrekScreen.quitIfTimeExpired()
 
         return True
 
@@ -206,6 +241,7 @@ class StarTrekScreen(Screen):
             self.messageConsole.addText(f"Moved to sector: {coordinates}")
             self.soundImpulse.play()
 
+        StarTrekScreen.quitIfTimeExpired()
         self.settings.gameMode = GameMode.Normal
 
     def warpScreenUpdate(self):
@@ -226,6 +262,7 @@ class StarTrekScreen(Screen):
             self.messageConsole.addText(f"Warped to: {quadCoords}")
             self.soundWarp.play()
 
+        StarTrekScreen.quitIfTimeExpired()
         self.settings.gameMode = GameMode.Normal
         self._restartKlingonTorpedoEvent()
 
@@ -340,6 +377,7 @@ class StarTrekScreen(Screen):
         randomTime = self.intelligence.computeRandomTimeInterval()
         self.statistics.remainingGameTime -= randomTime
         self.statistics.starDate += randomTime
+        StarTrekScreen.quitIfTimeExpired()
 
     @staticmethod
     def ktkCB(theEvent: Event):
@@ -364,13 +402,16 @@ class StarTrekScreen(Screen):
                                                      klingonPower=klingonPower)
 
         self.logger.debug(f"Original Hit Value: {hitValue:4f}")
-        shieldHitData: ShieldHitData = self.gameEngine.computeShieldHit(torpedoHit=hitValue)
+        if self.devices.getDeviceStatus(DeviceType.Shields) == DeviceStatus.Up:
+            shieldHitData: ShieldHitData = self.gameEngine.computeShieldHit(torpedoHit=hitValue)
+        else:
+            shieldHitData: ShieldHitData = ShieldHitData(degradedTorpedoHitValue=hitValue, shieldAbsorptionValue=0.0)
 
         shieldAbsorptionValue   = shieldHitData.shieldAbsorptionValue
         degradedTorpedoHitValue = shieldHitData.degradedTorpedoHitValue
 
         self.messageConsole.addText(f"Shield Hit: {shieldAbsorptionValue:4f}  Enterprise hit: {degradedTorpedoHitValue:4f}")
-        self.shieldHit.play()
+        self.soundShieldHit.play()
         self.gameEngine.degradeShields(shieldAbsorptionValue)
 
         self.gameEngine.degradeEnergyLevel(shieldHitData.degradedTorpedoHitValue)
@@ -381,3 +422,22 @@ class StarTrekScreen(Screen):
         damagedDeviceType: DeviceType = self.intelligence.fryDevice(shieldHitData.degradedTorpedoHitValue)
         if damagedDeviceType is not None:
             self.messageConsole.addText(f"Device: {damagedDeviceType} damaged")
+
+        if damagedDeviceType == DeviceType.Shields:
+            self.messageConsole.addText("Shield energy transferred to Enterprise")
+            self.statistics.energy += self.statistics.shieldEnergy
+            self.statistics.shieldEnergy = 0;
+
+    @staticmethod
+    def quitIfTimeExpired():
+
+        self = StarTrekScreen._myself
+        if self.statistics.remainingGameTime <= 0:
+            enemyCount = self.statistics.getRemainingKlingons() + self.statistics.getRemainingCommanders()
+            msg = (
+                    f"It is stardate {self.statistics.starDate:6.2f} "
+                    f"the game time has expired.  "
+                    f"You still have {enemyCount} enemies remaining"
+            )
+            alert(theMessage=msg, theWrapWidth=50)
+            sys.exit()
