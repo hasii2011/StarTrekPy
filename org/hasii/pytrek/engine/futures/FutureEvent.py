@@ -9,7 +9,7 @@ from org.hasii.pytrek.engine.futures.FutureEventType import FutureEventType
 
 class FutureEvent:
 
-    def __init__(self, fEventType: FutureEventType, starDate: float = None, qCoordinates: Coordinates = None):
+    def __init__(self, fEventType: FutureEventType, starDate: float = 0.0, qCoordinates: Coordinates = None):
 
         self.logger: Logger = getLogger(__name__)
 
@@ -38,3 +38,12 @@ class FutureEvent:
     eventType    = property(getEventType, setEventType)
     starDate     = property(getStarDate, setStarDate)
     qCoordinates = property(getQCoordinates, setQCoordinates)
+
+    def __repr__(self):
+
+        representation = (
+            f"eventType: {self.eventType:8} "
+            f"starDate: {self.starDate:5.2f} "
+            f"qCoordinates: '{self.qCoordinates}'"
+        )
+        return representation

@@ -27,9 +27,12 @@ class GameStatistics:
             self._energy:              float = 0.0
             self._shieldEnergy:        float = 0.0
             self._starDate:            float = 0.0
+            self._intime:              float = 0.0
+            self._opTime:              float = 0.0  # #define Time a.Time time taken by current operation
             self._remainingGameTime:   float = 0.0
             self._remainingKlingons:   int   = 0
             self._remainingCommanders: int   = 0
+            self._docked:              bool  = False
 
             self._skill:    PlayerType = cast(PlayerType, None)
             self._gameType: GameType   = cast(GameType, None)
@@ -58,6 +61,18 @@ class GameStatistics:
     def setStarDate(self, theNewValue: float):
         self._starDate = theNewValue
 
+    def getInTime(self) -> float:
+        return self._intime
+
+    def setInTime(self, theNewValue: float):
+        self._intime = theNewValue
+
+    def getOpTime(self) -> float:
+        return self._opTime
+
+    def setOpTime(self, theNewValue: float):
+        self._opTime = theNewValue
+
     def getRemainingGameTime(self) -> float:
         return self._remainingGameTime
 
@@ -75,6 +90,12 @@ class GameStatistics:
 
     def setRemainingCommanders(self, theNewValue: int):
         self._remainingCommanders = theNewValue
+
+    def getDocked(self) -> bool:
+        return self._docked
+
+    def setDocked(self, theNewValue: bool):
+        self._docked = theNewValue
 
     def getSkill(self) -> PlayerType:
         return self._skill
@@ -102,11 +123,14 @@ class GameStatistics:
 
     shieldEnergy = property(getShieldEnergy, setShieldEnergy)
     energy       = property(getEnergy, setEnergy)
+    intime       = property(getInTime, setInTime)
+    opTime       = property(getOpTime, setOpTime)
     starDate     = property(getStarDate, setStarDate)
 
     remainingGameTime   = property(getRemainingGameTime,   setRemainingGameTime)
     remainingKlingons   = property(getRemainingKlingons,   setRemainingKlingons)
     remainingCommanders = property(getRemainingCommanders, setRemainingCommanders)
+    docked              = property(getDocked,              setDocked)
 
     skill    = property(getSkill,    setSkill)
     gameType = property(getGameType, setGameType)

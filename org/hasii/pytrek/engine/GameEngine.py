@@ -46,7 +46,10 @@ class GameEngine:
         self.stats.energy       = self.settings.initialEnergyLevel
         self.stats.shieldEnergy = self.settings.initialShieldEnergy
 
-        self.stats.starDate            = self.intelligence.getInitialStarDate()
+        self.stats.intime              = self.intelligence.getInitialStarDate()
+        self.stats.docked              = False
+        self.stats.opTime              = 0.0
+        self.stats.starDate            = self.stats.intime
         self.stats.remainingGameTime   = self.intelligence.getInitialGameTime()
         self.stats.remainingKlingons   = self.intelligence.getInitialKlingonCount(self.stats.remainingGameTime)
         self.stats.remainingCommanders = self.intelligence.getInitialCommanderCount()
@@ -108,6 +111,7 @@ class GameEngine:
         """
         elapsedTime = travelDistance / 0.095
         self.updateTime(elapsedTime=elapsedTime)
+        self.stats.opTime = elapsedTime
 
     def updateTimeAfterWarpTravel(self, travelDistance: float, warpFactor: float):
         """
@@ -120,6 +124,7 @@ class GameEngine:
         warpSquared: float = warpFactor ** 2
         elapsedTime: float = 10.0 * travelDistance / warpSquared
 
+        self.stats.opTime = elapsedTime
         self.updateTime(elapsedTime=elapsedTime)
 
     def updateTime(self, elapsedTime: float):
@@ -281,30 +286,3 @@ class GameEngine:
             (1000.0 * sqrt(square(ix-inx) + square(iy-iny))) * fabs(sin(bullseye-angle))
 
         return hit
-
-    def fixDevices(self):
-        """
-        // #define Time a.Time // time taken by current operation
-        double fintim = d.date + Time
-        datemin = fintim;
-
-        // d.date is current stardate
-
-        xtime = datemin-d.date;
-
-        repair = xtime;
-
-        /* Don't fix Deathray here */
-        for (l=1; l<=ndevice; l++)
-            if (damage[l] > 0.0 && l != DDRAY)
-                damage[l] -= (damage[l]-repair > 0.0 ? repair : damage[l]);
-
-        /* Fix Deathray if docked */
-        if (damage[DDRAY] > 0.0 && condit == IHDOCKED)
-            damage[DDRAY] -= (damage[l] - xtime > 0.0 ? xtime : damage[DDRAY]);
-
-        /* If radio repaired, update star chart and attack reports */
-
-
-        """
-        self.logger.info(f"Fixing Stuff")

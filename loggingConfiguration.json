@@ -40,6 +40,10 @@
             "level":     "INFO",
             "propagate": "False"
         },
+        "org.hasii.pytrek.engine.futures.EventEngine": {
+            "level":     "INFO",
+            "propagate": "False"
+        },
         "org.hasii.pytrek.albow.StarTrekScreen": {
             "level": "INFO",
             "propagate": "False"
