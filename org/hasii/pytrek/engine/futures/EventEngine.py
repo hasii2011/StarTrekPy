@@ -6,6 +6,9 @@ from logging import Logger
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 from org.hasii.pytrek.engine.Intelligence import Intelligence
+from org.hasii.pytrek.engine.Devices import Devices
+from org.hasii.pytrek.engine.Device import Device
+from org.hasii.pytrek.engine.DeviceType import DeviceType
 
 from org.hasii.pytrek.engine.futures.FutureEventType import FutureEventType
 from org.hasii.pytrek.engine.futures.FutureEvent import FutureEvent
@@ -32,6 +35,7 @@ class EventEngine:
         self.logger:       Logger         = getLogger(__name__)
         self.intelligence: Intelligence   = Intelligence()
         self.gameStats:    GameStatistics = GameStatistics()
+        self.devices:      Devices        = Devices()
 
         self.eventMap: Dict[FutureEventType, FutureEvent] = {}
         for fsEventType in FutureEventType:
@@ -76,6 +80,13 @@ class EventEngine:
         fintim:  float = self.gameStats.starDate + self.gameStats.opTime
         datemin: float = fintim
         xtime:   float = datemin - self.gameStats.starDate
+        repair:  float = xtime
+
+        for devType in DeviceType:
+            device: Device = self.devices.getDevice(devType)
+            if device.deviceType != DeviceType.DeathRay:
+                if device.damage > 0.0:
+                    device.damage = device.damage - repair
 
         self.logger.info(f"Fixing Stuff")
 
