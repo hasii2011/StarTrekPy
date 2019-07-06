@@ -35,11 +35,10 @@ class Devices:
             device: Device = Device(deviceType=deviceType, deviceStatus=DeviceStatus.Up)
             self.deviceMap[deviceType] = device
 
-        self.logger.info(f"Created {len(self.deviceMap):3} devices")
+        self.logger.debug(f"Created {len(self.deviceMap):3} devices")
 
     def getDevice(self, deviceType: DeviceType):
 
-        self.logger.info(f"deviceType: {deviceType}")
         return self.deviceMap[deviceType]
 
     def getDeviceStatus(self, deviceType: DeviceType) -> DeviceStatus:
@@ -47,7 +46,7 @@ class Devices:
 
     def setDeviceStatus(self, deviceType: DeviceType, deviceStatus: DeviceStatus):
 
-        self.logger.info(f"deviceType: {deviceType}, deviceStatus: {deviceStatus}")
+        self.logger.debug(f"set status deviceType: {deviceType}, deviceStatus: {deviceStatus}")
         self.deviceMap[deviceType].deviceStatus = deviceStatus
 
     def getDeviceDamage(self, deviceType: DeviceType) -> float:
@@ -55,7 +54,7 @@ class Devices:
 
     def setDeviceDamage(self, deviceType: DeviceType, damageValue: float):
 
-        self.logger.info(f"deviceType: {deviceType}, damageValue: {damageValue}")
+        self.logger.debug(f"set damage deviceType: {deviceType}, damageValue: {damageValue}")
         self.deviceMap[deviceType].damage = damageValue
 
     def __repr__(self):

@@ -9,6 +9,7 @@ from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.Device import Device
 from org.hasii.pytrek.engine.DeviceType import DeviceType
+from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
 
 from org.hasii.pytrek.engine.futures.FutureEventType import FutureEventType
 from org.hasii.pytrek.engine.futures.FutureEvent import FutureEvent
@@ -42,8 +43,10 @@ class EventEngine:
             if fsEventType != FutureEventType.FSPY:
                 self.eventMap[fsEventType] = FutureEvent(fsEventType)
 
-        self.eventMap[FutureEventType.FSNOVA]  = self.schedule(FutureEventType.FSNOVA,  self.intelligence.expRan(0.5 * self.gameStats.intime))
-        self.eventMap[FutureEventType.FBATTAK] = self.schedule(FutureEventType.FBATTAK, self.intelligence.expRan(0.3 * self.gameStats.intime))
+        self.eventMap[FutureEventType.FSNOVA]  = self.schedule(FutureEventType.FSNOVA,
+                                                               self.intelligence.expRan(0.5 * self.gameStats.intime))
+        self.eventMap[FutureEventType.FBATTAK] = self.schedule(FutureEventType.FBATTAK,
+                                                               self.intelligence.expRan(0.3 * self.gameStats.intime))
 
         self.logger.debug(f"eventMap: {self.eventMap}")
 
@@ -77,6 +80,7 @@ class EventEngine:
         /* If radio repaired, update star chart and attack reports */
 
         """
+        self.logger.info(f"Attempting to repair devices")
         fintim:  float = self.gameStats.starDate + self.gameStats.opTime
         datemin: float = fintim
         xtime:   float = datemin - self.gameStats.starDate
@@ -87,8 +91,10 @@ class EventEngine:
             if device.deviceType != DeviceType.DeathRay:
                 if device.damage > 0.0:
                     device.damage = device.damage - repair
-
-        self.logger.info(f"Fixing Stuff")
+                    if device.damage <= 0:
+                        device.damage = 0
+                        device.deviceStatus = DeviceStatus.Up
+                        self.logger.info(f"Device: {device.deviceType.name} repaired")
 
     def __repr__(self):
 

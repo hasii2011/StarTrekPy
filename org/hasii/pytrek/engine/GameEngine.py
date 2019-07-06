@@ -16,6 +16,8 @@ from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
 from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
 
+from org.hasii.pytrek.engine.futures.EventEngine import EventEngine
+
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
@@ -40,6 +42,7 @@ class GameEngine:
         self.intelligence:  Intelligence   = Intelligence()
         self.stats:         GameStatistics = GameStatistics()
         self.devices:       Devices        = Devices()
+        self.eventEngine:   EventEngine    = EventEngine()
 
         self.stats.skill        = self.settings.skill
         self.stats.gameType     = self.settings.gameType
@@ -110,8 +113,9 @@ class GameEngine:
         :return:
         """
         elapsedTime = travelDistance / 0.095
-        self.updateTime(elapsedTime=elapsedTime)
         self.stats.opTime = elapsedTime
+        self.eventEngine.fixDevices()
+        self.updateTime(elapsedTime=elapsedTime)
 
     def updateTimeAfterWarpTravel(self, travelDistance: float, warpFactor: float):
         """
@@ -123,8 +127,8 @@ class GameEngine:
         """
         warpSquared: float = warpFactor ** 2
         elapsedTime: float = 10.0 * travelDistance / warpSquared
-
         self.stats.opTime = elapsedTime
+        self.eventEngine.fixDevices()
         self.updateTime(elapsedTime=elapsedTime)
 
     def updateTime(self, elapsedTime: float):

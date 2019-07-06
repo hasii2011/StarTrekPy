@@ -252,10 +252,10 @@ class StarTrekScreen(Screen):
             self.messageConsole.addText("Hey! You are already here.")
             self.soundInaccurate.play()
         else:
-            self.logger.info(f"Move to quadrant: {quadCoords}")
             #
             # Warping !!
             #
+            self.logger.info(f"Move to quadrant: {quadCoords}")
             self.quadrant = self.gameEngine.warp(moveToCoordinates=quadCoords, galaxy=self.galaxy,
                                                  intelligence=self.intelligence, enterprise=self.enterprise)
 
@@ -426,7 +426,7 @@ class StarTrekScreen(Screen):
         if damagedDeviceType == DeviceType.Shields:
             self.messageConsole.addText("Shield energy transferred to Enterprise")
             self.statistics.energy += self.statistics.shieldEnergy
-            self.statistics.shieldEnergy = 0;
+            self.statistics.shieldEnergy = 0
 
     @staticmethod
     def quitIfTimeExpired():
@@ -435,9 +435,9 @@ class StarTrekScreen(Screen):
         if self.statistics.remainingGameTime <= 0:
             enemyCount = self.statistics.getRemainingKlingons() + self.statistics.getRemainingCommanders()
             msg = (
-                    f"It is stardate {self.statistics.starDate:6.2f} "
-                    f"the game time has expired.  "
-                    f"You still have {enemyCount} enemies remaining"
+                f"It is stardate {self.statistics.starDate:6.2f} "
+                f"the game time has expired.  "
+                f"You still have {enemyCount} enemies remaining"
             )
             alert(theMessage=msg, theWrapWidth=50)
             sys.exit()
