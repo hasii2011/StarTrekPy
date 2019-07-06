@@ -1,6 +1,4 @@
 
-import os
-
 import json
 
 import logging.config
@@ -19,7 +17,6 @@ class BaseTest(TestCase):
     @classmethod
     def setUpLogging(cls):
         """"""
-        cls.findLoggingConfig()
         with open(BaseTest.JSON_LOGGING_CONFIG_FILENAME, 'r') as loggingConfigurationFile:
             configurationDictionary = json.load(loggingConfigurationFile)
 
@@ -27,11 +24,3 @@ class BaseTest(TestCase):
         logging.logProcesses = False
         logging.logThreads = False
 
-    @classmethod
-    def findLoggingConfig(cls):
-        """"""
-        if os.path.isfile(BaseTest.JSON_LOGGING_CONFIG_FILENAME):
-            return
-        else:
-            os.chdir("../")
-            cls.findLoggingConfig()

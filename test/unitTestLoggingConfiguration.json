@@ -19,11 +19,11 @@
     },
     "loggers": {
         "root": {
-            "level": "INFO",
+            "level": "ERROR",
             "propagate": "False"
         },
         "ComputerTest": {
-            "level": "INFO",
+            "level": "ERROR",
             "handlers": ["consoleHandler"],
             "propagate": "False"
         },
@@ -53,6 +53,10 @@
             "propagate": "False"
         },
         "org.hasii.pytrek.engine.Devices": {
+            "level":     "ERROR",
+            "propagate": "False"
+        },
+        "org.hasii.pytrek.engine.futures.EventEngine": {
             "level":     "INFO",
             "propagate": "False"
         }

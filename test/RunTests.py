@@ -1,6 +1,6 @@
 import unittest
 
-from BaseTest import BaseTest
+
 from ComputerTest import ComputerTest
 from CoordinateTest import CoordinateTest
 from ExplosionColorTest import ExplosionColorTest
@@ -11,13 +11,15 @@ from SettingsTest import SettingsTest
 from IntelligenceTest import IntelligenceTest
 from KlingonPowerTest import KlingonPowerTest
 
-
+#
+# Because of the way the unit test debug logging is set up the test runner needs to run
+# from the project working directory
+#
 # Initialize the test suite
 loader = unittest.TestLoader()
 suite  = unittest.TestSuite()
 
 # add tests to the suite
-suite.addTest(loader.loadTestsFromTestCase(BaseTest))
 suite.addTest(loader.loadTestsFromTestCase(ComputerTest))
 suite.addTest(loader.loadTestsFromTestCase(CoordinateTest))
 suite.addTest(loader.loadTestsFromTestCase(ExplosionColorTest))
@@ -33,4 +35,4 @@ suite.addTest(loader.loadTestsFromTestCase(SettingsTest))
 runner = unittest.TextTestRunner(verbosity=2)
 result = runner.run(suite)
 
-print(result)
+print(f"THE RESULTS ARE IN\n{result}")

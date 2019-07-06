@@ -5,7 +5,9 @@ from logging import Logger
 
 from BaseTest import BaseTest
 
-from hasii.pytrek.engine.futures.EventEngine import EventEngine
+from org.hasii.pytrek.engine.GameEngine import GameEngine
+
+from org.hasii.pytrek.engine.futures.EventEngine import EventEngine
 
 
 class EventEngineTest(BaseTest):
@@ -18,9 +20,13 @@ class EventEngineTest(BaseTest):
     def setUp(self):
         """"""
         self.logger:      Logger      = logging.getLogger(__name__)
+        #
+        # The game engine initializes the game stats object (for better or worse)
+        #
+        self.gameEngine:  GameEngine  = GameEngine()
         self.eventEngine: EventEngine = EventEngine()
 
-    def testEventEngineISingleton(self):
+    def testEventEngineIsSingleton(self):
 
         eventEngine: EventEngine = EventEngine()
 
@@ -30,3 +36,13 @@ class EventEngineTest(BaseTest):
         self.logger.info(f"doppleGangerEngine: {doppleGangerEngine}")
 
         self.assertEqual(first=eventEngine, second=doppleGangerEngine, msg="Not a singleton")
+
+    def testFixDevices(self):
+
+        travelDistance: float = 3.162222
+        warpFactor:     float = 5.0
+        warpSquared: float = warpFactor ** 2
+        elapsedTime: float = 10.0 * travelDistance / warpSquared
+        self.gameEngine.stats.opTime = elapsedTime
+
+        self.eventEngine.fixDevices()
