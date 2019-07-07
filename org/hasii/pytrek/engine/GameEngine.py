@@ -15,6 +15,7 @@ from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
 from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
+from org.hasii.pytrek.engine.ShipCondition import ShipCondition
 
 from org.hasii.pytrek.engine.futures.EventEngine import EventEngine
 
@@ -50,7 +51,7 @@ class GameEngine:
         self.stats.shieldEnergy = self.settings.initialShieldEnergy
 
         self.stats.intime              = self.intelligence.getInitialStarDate()
-        self.stats.docked              = False
+        self.stats.shipCondition       = ShipCondition.Green
         self.stats.opTime              = 0.0
         self.stats.starDate            = self.stats.intime
         self.stats.remainingGameTime   = self.intelligence.getInitialGameTime()
@@ -290,3 +291,26 @@ class GameEngine:
             (1000.0 * sqrt(square(ix-inx) + square(iy-iny))) * fabs(sin(bullseye-angle))
 
         return hit
+
+    def isShipAdjacentToBase(self, enterpriseLoc: Coordinates, starbaseLoc: Coordinates) -> bool:
+        """
+        Logic stolen from Super-Star-Trek
+
+        ```java
+
+            adjacent = ((int) Math.abs(sc.x-game.base.x) <= 1) && ( (int) Math.abs(sc.y-game.base.y) <= 1);
+        ```
+
+        Args:
+            enterpriseLoc:  The enterprise's sector coordinates
+
+            starbaseLoc:    The starbase's sector coordinates
+
+        Returns:  -True- if enterprise is right next to starbase, otherwise `False`
+
+        """
+        ans: bool = False
+        if abs(enterpriseLoc.x - starbaseLoc.x <= 1) and abs(enterpriseLoc.y - starbaseLoc.y) <= 1:
+            ans = True
+
+        return ans

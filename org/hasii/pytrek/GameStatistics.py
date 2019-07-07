@@ -4,6 +4,7 @@ from typing import cast
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.PlayerType import PlayerType
 from org.hasii.pytrek.engine.GameType import GameType
+from org.hasii.pytrek.engine.ShipCondition import ShipCondition
 
 
 class GameStatistics:
@@ -32,7 +33,7 @@ class GameStatistics:
             self._remainingGameTime:   float = 0.0
             self._remainingKlingons:   int   = 0
             self._remainingCommanders: int   = 0
-            self._docked:              bool  = False
+            self._shipCondition:       ShipCondition = ShipCondition.Green
 
             self._skill:    PlayerType = cast(PlayerType, None)
             self._gameType: GameType   = cast(GameType, None)
@@ -85,17 +86,17 @@ class GameStatistics:
     def setRemainingKlingons(self, theNewValue: int):
         self._remainingKlingons = theNewValue
 
-    def getRemainingCommanders(self):
+    def getRemainingCommanders(self) -> int:
         return self._remainingCommanders
 
     def setRemainingCommanders(self, theNewValue: int):
         self._remainingCommanders = theNewValue
 
-    def getDocked(self) -> bool:
-        return self._docked
+    def getShipCondition(self) -> ShipCondition:
+        return self._shipCondition
 
-    def setDocked(self, theNewValue: bool):
-        self._docked = theNewValue
+    def setShipCondition(self, theNewValue: ShipCondition):
+        self._shipCondition = theNewValue
 
     def getSkill(self) -> PlayerType:
         return self._skill
@@ -130,10 +131,10 @@ class GameStatistics:
     remainingGameTime   = property(getRemainingGameTime,   setRemainingGameTime)
     remainingKlingons   = property(getRemainingKlingons,   setRemainingKlingons)
     remainingCommanders = property(getRemainingCommanders, setRemainingCommanders)
-    docked              = property(getDocked,              setDocked)
 
-    skill    = property(getSkill,    setSkill)
-    gameType = property(getGameType, setGameType)
+    shipCondition = property(getShipCondition, setShipCondition)
+    skill         = property(getSkill,         setSkill)
+    gameType      = property(getGameType,      setGameType)
 
     currentQuadrantCoordinates = property(getCurrentQuadrantCoordinates, setCurrentQuadrantCoordinates)
     currentSectorCoordinates   = property(getCurrentSectorCoordinates,   setCurrentSectorCoordinates)

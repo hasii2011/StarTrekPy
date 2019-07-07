@@ -1,5 +1,6 @@
-import logging
-import logging.config
+
+from logging import getLogger
+from logging import Logger
 
 import unittest
 
@@ -11,6 +12,20 @@ from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 
+BASE_COORDINATES: Coordinates = Coordinates(4, 4)
+
+#
+# The following are all possible "docked" positions relative to the starbase
+#
+NORTH_COORDINATES: Coordinates = Coordinates(4, 3)
+SOUTH_COORDINATES: Coordinates = Coordinates(4, 5)
+EAST_COORDINATES:  Coordinates = Coordinates(3, 4)
+WEST_COORDINATES:  Coordinates = Coordinates(5, 4)
+NE_COORDINATES:    Coordinates = Coordinates(3, 3)
+NW_COORDINATES:    Coordinates = Coordinates(5, 3)
+SE_COORDINATES:    Coordinates = Coordinates(3, 5)
+SW_COORDINATES:    Coordinates = Coordinates(5, 5)
+
 
 class GameEngineTest(BaseTest):
     """"""
@@ -21,8 +36,8 @@ class GameEngineTest(BaseTest):
 
     def setUp(self):
         """"""
-        self.logger       = logging.getLogger(__name__)
-        self.gameEngine   = GameEngine()
+        self.logger:      Logger     = getLogger(__name__)
+        self.gameEngine:  GameEngine = GameEngine()
 
     def testRemainingGameTime(self):
         """"""
@@ -51,6 +66,40 @@ class GameEngineTest(BaseTest):
             torpedoHit:     float         = self._commonComputeHit(playerType=pType)
             shieldHitData:  ShieldHitData = self.gameEngine.computeShieldHit(torpedoHit=torpedoHit)
             self.logger.info(f"torpedoHit: f{torpedoHit:.2f}  {pType:19.19}  {shieldHitData}")
+
+    def testIsShipAdjacentToBaseFalse(self):
+
+        ans: bool = self.gameEngine.isShipAdjacentToBase(enterpriseLoc=Coordinates(0, 0), starbaseLoc=BASE_COORDINATES)
+        self.assertFalse(ans, "False Test failed")
+
+    def testIsShipAdjacentToBaseNorth(self):
+        self._adjacentTest(NORTH_COORDINATES, "North code is broken")
+
+    def testIsShipAdjacentToBaseSouth(self):
+        self._adjacentTest(SOUTH_COORDINATES, "South code is broken")
+
+    def testIsShipAdjacentToBaseEast(self):
+        self._adjacentTest(EAST_COORDINATES, "East code is broken")
+
+    def testIsShipAdjacentToBaseWest(self):
+        self._adjacentTest(WEST_COORDINATES, "West code is broken")
+
+    def testIsShipAdjacentToBaseNorthEast(self):
+        self._adjacentTest(NE_COORDINATES, "Northeast code is broken")
+
+    def testIsShipAdjacentToBaseNorthWest(self):
+        self._adjacentTest(NW_COORDINATES, "Northwest code is broken")
+
+    def testIsShipAdjacentToBaseSouthWest(self):
+        self._adjacentTest(SW_COORDINATES, "Southwest code is broken")
+
+    def testIsShipAdjacentToBaseSouthEast(self):
+        self._adjacentTest(SE_COORDINATES, "Southeast code is broken")
+
+    def _adjacentTest(self, testCoords: Coordinates, failMsg: str):
+
+        ans: bool = self.gameEngine.isShipAdjacentToBase(enterpriseLoc=testCoords, starbaseLoc=BASE_COORDINATES)
+        self.assertTrue(ans, failMsg)
 
     def _commonComputeHit(self, playerType: PlayerType) -> float:
 
