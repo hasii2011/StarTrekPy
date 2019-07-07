@@ -7,6 +7,7 @@ import logging
 import pygame
 
 from pygame import Surface
+from pygame.sprite import Sprite
 from pygame.event import Event
 from pygame.event import post as pygamePostEvent
 
@@ -66,7 +67,7 @@ class Quadrant:
             row = []
             for j in range(Intelligence.QUADRANT_WIDTH):
 
-                sector = Sector(None, SectorType.EMPTY, i, j)
+                sector = Sector(cast(Sprite, None), SectorType.EMPTY, i, j)
                 row.append(sector)
                 self.logger.debug("Created empty sector (%s,%s)", str(i), str(j))
             self.sectors.append(row)
