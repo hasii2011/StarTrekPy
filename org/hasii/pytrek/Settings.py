@@ -67,6 +67,7 @@ class Settings:
         self.initialEnergyLevel   = config.getint('Power', 'InitialEnergyLevel')
         self.initialShieldEnergy  = config.getint('Power', 'InitialShieldEnergy')
         self.minimumImpulseEnergy = config.getint('Power', 'MinimumImpulseEnergy')
+        self.initialTorpedoCount  = config.getint('Power',  'InitialTorpedoCount')
 
         self.gameLengthFactor     = config.getfloat("Factors", 'gameLengthFactor')
         self.starBaseExtender     = config.getfloat("Factors", "StarBaseExtender")

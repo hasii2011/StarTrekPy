@@ -33,6 +33,7 @@ class GameStatistics:
             self._remainingGameTime:   float = 0.0
             self._remainingKlingons:   int   = 0
             self._remainingCommanders: int   = 0
+            self._torpedoCount:        int   = 0
             self._shipCondition:       ShipCondition = ShipCondition.Green
 
             self._skill:    PlayerType = cast(PlayerType, None)
@@ -92,6 +93,12 @@ class GameStatistics:
     def setRemainingCommanders(self, theNewValue: int):
         self._remainingCommanders = theNewValue
 
+    def getTorpedoCount(self) -> int:
+        return self._torpedoCount
+
+    def setTorpedoCount(self, theNewValue: int):
+        self._torpedoCount = theNewValue
+
     def getShipCondition(self) -> ShipCondition:
         return self._shipCondition
 
@@ -131,6 +138,7 @@ class GameStatistics:
     remainingGameTime   = property(getRemainingGameTime,   setRemainingGameTime)
     remainingKlingons   = property(getRemainingKlingons,   setRemainingKlingons)
     remainingCommanders = property(getRemainingCommanders, setRemainingCommanders)
+    torpedoCount        = property(getTorpedoCount,        setTorpedoCount)
 
     shipCondition = property(getShipCondition, setShipCondition)
     skill         = property(getSkill,         setSkill)

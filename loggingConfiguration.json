@@ -33,7 +33,7 @@
             "propagate": "False"
         },
         "org.hasii.pytrek.engine.GameEngine": {
-            "level":     "ERROR",
+            "level":     "INFO",
             "propagate": "False"
         },
         "org.hasii.pytrek.engine.Devices": {

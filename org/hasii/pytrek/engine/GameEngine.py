@@ -49,6 +49,7 @@ class GameEngine:
         self.stats.gameType     = self.settings.gameType
         self.stats.energy       = self.settings.initialEnergyLevel
         self.stats.shieldEnergy = self.settings.initialShieldEnergy
+        self.stats.torpedoCount = self.settings.initialTorpedoCount
 
         self.stats.intime              = self.intelligence.getInitialStarDate()
         self.stats.shipCondition       = ShipCondition.Green
@@ -314,3 +315,14 @@ class GameEngine:
             ans = True
 
         return ans
+
+    def dock(self):
+        """
+            Assumes caller has verified that we are actually adjacent to the star base.  Our job
+            is simply to apply all the logic that comes with being docked
+        """
+        self.logger.info(f"Attempting to dock")
+        self.stats.energy       = self.settings.initialEnergyLevel
+        self.stats.shieldEnergy = self.settings.initialShieldEnergy
+
+        self.stats.shipCondition = ShipCondition.Docked

@@ -2,7 +2,8 @@
 from typing import List
 from typing import cast
 
-import logging
+from logging import getLogger
+from logging import Logger
 
 import pygame
 
@@ -43,83 +44,35 @@ class Quadrant:
             Initialize a quadrant
         """
 
-        self.coordinates = coordinates
-        self.screen      = screen
+        self.coordinates: Coordinates = coordinates
+        self.screen:      Surface     = screen
+        self.logger:      Logger      = getLogger(__name__)
 
-        self.stats        = GameStatistics()
-        self.intelligence = Intelligence()
-        self.settings     = Settings()
+        self.stats:        GameStatistics = GameStatistics()
+        self.settings:     Settings       = Settings()
+        self.intelligence: Intelligence   = Intelligence()
 
-        self._klingonCount  = 0
-        self._commanderCount = 0
+        self._klingonCount:   int  = 0
+        self._commanderCount: int = 0
 
-        self.klingons   = []
-        self.commanders = []
-        self.starBase   = False
+        self.klingons:   List[Klingon]   = []
+        self.commanders: List[Commander] = []
+        self.starBase:       bool        = False
+        self.starBaseCoords: Coordinates = cast(Coordinates, None)
 
-        self.enterprise = None
-        self.enterpriseCoordinates = None
+        self.enterprise:            Enterprise  = cast(Enterprise, None)
+        self.enterpriseCoordinates: Coordinates = cast(Coordinates, None)
 
-        self.logger = logging.getLogger(__name__)
+        self.sectors: List[Sector] = []
 
-        self.sectors = []
         for i in range(Intelligence.QUADRANT_HEIGHT):
-            row = []
+            row: List[Sector] = []
             for j in range(Intelligence.QUADRANT_WIDTH):
 
                 sector = Sector(cast(Sprite, None), SectorType.EMPTY, i, j)
                 row.append(sector)
                 self.logger.debug("Created empty sector (%s,%s)", str(i), str(j))
             self.sectors.append(row)
-
-    def placeEnterprise(self, enterprise: Enterprise, coordinates: Coordinates):
-        """
-
-        Args:
-            enterprise:     The fighting ship to place in this quadrant
-
-            coordinates:    The sector coordinates in which to place the Enterprise
-        """
-        if self.enterpriseCoordinates is not None:
-
-            oldEnterpriseRow = self.sectors.__getitem__(self.enterpriseCoordinates.getX())
-            oldSector        = oldEnterpriseRow.__getitem__(self.enterpriseCoordinates.getY())
-            oldSector.setType(SectorType.EMPTY)
-            oldSector.sprite = None
-
-        self.logger.debug(f"Placing enterprise @quadrant: {coordinates}")
-
-        sectorRow = self.sectors.__getitem__(coordinates.getX())
-        sector    = sectorRow.__getitem__(coordinates.getY())
-
-        sector.setType(SectorType.ENTERPRISE)
-        sector.setCoordinates(coordinates)
-        self.logger.info(f"Enterprise @sector: {coordinates}")
-
-        sector.setSprite(enterprise)
-        self.enterprise = enterprise
-        enterprise.currentPosition = coordinates
-        self.enterpriseCoordinates = coordinates
-
-    def placeAStarBase(self):
-        """Randomly place a starbase"""
-
-        self.logger.debug(f"Starbase @Quadrant {self.coordinates}")
-
-        sector            = self.getRandomEmptySector()
-        sector.sectorType = SectorType.STARBASE
-        starBase          = StarBase(screen=self.screen)
-        sector.setSprite(starBase)
-        self.logger.debug(f"Star Base @Sector {sector}")
-
-    def placeATorpedo(self, coordinates: Coordinates, torpedo: BasicTorpedo, torpedoType: SectorType):
-        """"""
-
-        torpedoSector = self.getSector(sectorCoordinates=coordinates)
-
-        torpedoSector.sectorType = torpedoType
-        torpedoSector.setSprite(torpedo)
-        self.logger.debug(f"Torpedo position {coordinates}")
 
     def update(self, playTime: float):
         """"""
@@ -342,6 +295,49 @@ class Quadrant:
 
         return sector
 
+    def placeEnterprise(self, enterprise: Enterprise, coordinates: Coordinates):
+        """
+
+        Args:
+            enterprise:     The fighting ship to place in this quadrant
+
+            coordinates:    The sector coordinates in which to place the Enterprise
+        """
+        if self.enterpriseCoordinates is not None:
+
+            oldEnterpriseRow = self.sectors.__getitem__(self.enterpriseCoordinates.getX())
+            oldSector        = oldEnterpriseRow.__getitem__(self.enterpriseCoordinates.getY())
+            oldSector.setType(SectorType.EMPTY)
+            oldSector.sprite = None
+
+        self.logger.debug(f"Placing enterprise @quadrant: {coordinates}")
+
+        sectorRow = self.sectors.__getitem__(coordinates.getX())
+        sector    = sectorRow.__getitem__(coordinates.getY())
+
+        sector.setType(SectorType.ENTERPRISE)
+        sector.setCoordinates(coordinates)
+        self.logger.info(f"Enterprise @sector: {coordinates}")
+
+        sector.setSprite(enterprise)
+        self.enterprise = enterprise
+        enterprise.currentPosition = coordinates
+        self.enterpriseCoordinates = coordinates
+
+    def placeAStarBase(self):
+        """Randomly place a starbase"""
+
+        self.logger.debug(f"Starbase @Quadrant {self.coordinates}")
+
+        sector: Sector     = self.getRandomEmptySector()
+        sector.sectorType  = SectorType.STARBASE
+        starBase: StarBase = StarBase(screen=self.screen)
+
+        sector.setSprite(starBase)
+        self.starBaseCoords = sector.getCoordinates()
+
+        self.logger.debug(f"Star Base @Sector {sector}")
+
     def placeAnExplosion(self, coordinates: Coordinates, playTime: float):
         """"""
         explosion = Explosion(screen=self.screen)
@@ -379,6 +375,15 @@ class Quadrant:
 
         self.logger.debug(f"Placed commander at: quadrant: {self.coordinates}  sector: {sector}  power {cPower}")
         return commander
+
+    def placeATorpedo(self, coordinates: Coordinates, torpedo: BasicTorpedo, torpedoType: SectorType):
+        """"""
+
+        torpedoSector = self.getSector(sectorCoordinates=coordinates)
+
+        torpedoSector.sectorType = torpedoType
+        torpedoSector.setSprite(torpedo)
+        self.logger.debug(f"Torpedo position {coordinates}")
 
     def getRandomEmptySector(self) -> Sector:
         """"""

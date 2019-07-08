@@ -242,6 +242,16 @@ class StarTrekScreen(Screen):
             self.soundImpulse.play()
 
         StarTrekScreen.quitIfTimeExpired()
+        currentQuadrant: Quadrant = self.galaxy.currentQuadrant
+        if currentQuadrant.hasStarBase() is True:
+            currentQuadrant:  Quadrant    = self.galaxy.currentQuadrant
+            enterpriseCoords: Coordinates = currentQuadrant.enterpriseCoordinates
+            starBaseCoords:   Coordinates = currentQuadrant.starBaseCoords
+
+            if self.gameEngine.isShipAdjacentToBase(enterpriseLoc=enterpriseCoords, starbaseLoc=starBaseCoords) is True:
+                self.gameEngine.dock()
+                self.messageConsole.addText(f"Docked with starbase at: {starBaseCoords}")
+
         self.settings.gameMode = GameMode.Normal
 
     def warpScreenUpdate(self):

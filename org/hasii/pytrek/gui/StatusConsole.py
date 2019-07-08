@@ -23,6 +23,7 @@ from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
 
 from org.hasii.pytrek.gui.DamageValueDisplay import DamageValueDisplay
+from org.hasii.pytrek.gui.ShipConditionValueDisplay import ShipConditionValueDisplay
 
 
 class StatusConsole(Widget):
@@ -91,6 +92,7 @@ class StatusConsole(Widget):
             'Commanders:'
         ]
         refs = [
+
             AttrRef(base=self.gameStatistics, name="starDate"),
             AttrRef(base=self.gameStatistics, name="currentQuadrantCoordinates"),
             AttrRef(base=self.gameStatistics, name="currentSectorCoordinates"),
@@ -110,7 +112,8 @@ class StatusConsole(Widget):
             None,
             None,
         ]
-        statusItems = []
+        statusItems = [self._makeShipConditionRow()]
+
         for x in range(len(labels)):
             fieldContent = self._makeStatusRow(labels[x], refs[x], formatStrs[x])
             statusItems.append(fieldContent)
@@ -173,11 +176,33 @@ class StatusConsole(Widget):
         if formatStr is None:
             valueDisplay: DamageValueDisplay = DamageValueDisplay(ref=statsRef, **fieldAttrs)
         else:
-            valueDisplay: DamageValueDisplay = ValueDisplay(ref=statsRef, format=formatStr, **fieldAttrs)
+            valueDisplay: ValueDisplay       = ValueDisplay(ref=statsRef, format=formatStr, **fieldAttrs)
 
         fieldContent = [fieldLabel, valueDisplay]
 
         return fieldContent
+
+    def _makeShipConditionRow(self):
+
+        # TODO remove this duplicate stuff
+        # dupe of what is on _makeStatusRow
+        labelAttrs = {
+            'font':     self.statusFont,
+            'bg_color': Theme.BLACK,
+            'fg_color': Theme.WHITE,
+        }
+        fieldAttrs = {
+            'font':     self.statusFont,
+            'bg_color': Theme.BLACK,
+        }
+
+        conditionLabel:   Label = Label('Condition', **labelAttrs)
+        conditionDisplay: ShipConditionValueDisplay = \
+            ShipConditionValueDisplay(ref=AttrRef(base=self.gameStatistics, name="shipCondition"), **fieldAttrs)
+
+        conditionContent = [conditionLabel, conditionDisplay]
+
+        return conditionContent
 
     def _customizeConsoleContainer(self):
 

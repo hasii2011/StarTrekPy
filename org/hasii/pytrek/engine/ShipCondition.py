@@ -9,3 +9,6 @@ class ShipCondition(Enum):
     Red     = 2
     Docked  = 3
     Dead    = 4
+
+    def __str__(self):
+        return self.name
