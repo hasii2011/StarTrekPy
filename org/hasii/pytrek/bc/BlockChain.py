@@ -4,6 +4,8 @@ from logging import Logger
 
 from typing import List
 
+from hashlib import sha256
+
 from org.hasii.pytrek.bc.Block import Block
 
 
@@ -72,17 +74,24 @@ class BlockChain(object):
         return True
 
     def mine_block(self, miner_address):
-        # Sender "0" means that this node has mined a new block
-        # For mining the Block(or finding the proof), we must be awarded with some amount(in our case this is 1)
+        """
+        Sender "0" means that this node has mined a new block
+        For mining the Block(or finding the proof), we must be awarded with some amount(in our case this is 1)
+
+        Args:
+            miner_address:
+
+        Returns:
+
+        """
         self.create_new_transaction(sender="0", recipient=miner_address, amount=1)
 
-        last_block = self.get_last_block
+        last_block: Block = self.get_last_block
+        last_proof: int   = last_block.proof
+        proof:      int   = self.create_proof_of_work(last_proof)
 
-        last_proof = last_block.proof
-        proof = self.create_proof_of_work(last_proof)
-
-        last_hash = last_block.get_block_hash
-        block = self.create_new_block(proof, last_hash)
+        last_hash: sha256 = last_block.get_block_hash
+        block:     Block  = self.create_new_block(proof, last_hash)
 
         return vars(block)  # Return a native Dict type object
 
