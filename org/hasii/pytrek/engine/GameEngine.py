@@ -324,5 +324,6 @@ class GameEngine:
         self.logger.info(f"Attempting to dock")
         self.stats.energy       = self.settings.initialEnergyLevel
         self.stats.shieldEnergy = self.settings.initialShieldEnergy
+        self.stats.torpedoCount = self.settings.initialTorpedoCount
 
         self.stats.shipCondition = ShipCondition.Docked

@@ -29,7 +29,7 @@ class Galaxy:
         self.planetCount:   int = 0
         self.gameParameters:  GameStatistics = cast(GameStatistics, None)
         self.currentQuadrant: Quadrant       = cast(Quadrant, None)
-        self.quadrants = []  # 2D array aka python list
+        self.quadrants:       List[List[Quadrant]] = []  # 2D array aka python list
 
         self.createGalaxy(screen)
 

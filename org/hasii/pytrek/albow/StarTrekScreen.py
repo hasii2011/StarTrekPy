@@ -40,13 +40,14 @@ from org.hasii.pytrek.engine.Devices import Devices
 from org.hasii.pytrek.engine.DeviceType import DeviceType
 from org.hasii.pytrek.engine.DeviceStatus import DeviceStatus
 from org.hasii.pytrek.engine.ShieldHitData import ShieldHitData
+from org.hasii.pytrek.engine.ShipCondition import ShipCondition
 
 from org.hasii.pytrek.gui.GalaxyScanBackground import GalaxyScanBackground
 from org.hasii.pytrek.gui.MessageConsole import MessageConsole
 from org.hasii.pytrek.gui.QuadrantBackground import QuadrantBackground
 from org.hasii.pytrek.gui.StatusConsole import StatusConsole
-from org.hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 
+from org.hasii.pytrek.gui.gamepieces.Enterprise import Enterprise
 from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.gui.gamepieces.Klingon import Klingon
 from org.hasii.pytrek.gui.gamepieces.PhotonTorpedo import PhotonTorpedo
@@ -242,16 +243,7 @@ class StarTrekScreen(Screen):
             self.soundImpulse.play()
 
         StarTrekScreen.quitIfTimeExpired()
-        currentQuadrant: Quadrant = self.galaxy.currentQuadrant
-        if currentQuadrant.hasStarBase() is True:
-            currentQuadrant:  Quadrant    = self.galaxy.currentQuadrant
-            enterpriseCoords: Coordinates = currentQuadrant.enterpriseCoordinates
-            starBaseCoords:   Coordinates = currentQuadrant.starBaseCoords
-
-            if self.gameEngine.isShipAdjacentToBase(enterpriseLoc=enterpriseCoords, starbaseLoc=starBaseCoords) is True:
-                self.gameEngine.dock()
-                self.messageConsole.addText(f"Docked with starbase at: {starBaseCoords}")
-
+        self._dockIfAdjacentToStarbase()
         self.settings.gameMode = GameMode.Normal
 
     def warpScreenUpdate(self):
@@ -273,6 +265,7 @@ class StarTrekScreen(Screen):
             self.soundWarp.play()
 
         StarTrekScreen.quitIfTimeExpired()
+        self._dockIfAdjacentToStarbase()
         self.settings.gameMode = GameMode.Normal
         self._restartKlingonTorpedoEvent()
 
@@ -377,6 +370,36 @@ class StarTrekScreen(Screen):
 
     def _restartKlingonTorpedoEvent(self):
         pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, StarTrekScreen.KLINGON_TORPEDO_EVENT_SECS)
+
+    def _dockIfAdjacentToStarbase(self):
+
+        currentQuadrant: Quadrant = self.galaxy.currentQuadrant
+        if currentQuadrant.hasStarBase() is True:
+            currentQuadrant: Quadrant = self.galaxy.currentQuadrant
+            enterpriseCoords: Coordinates = currentQuadrant.enterpriseCoordinates
+            starBaseCoords: Coordinates = currentQuadrant.starBaseCoords
+
+            if self.gameEngine.isShipAdjacentToBase(enterpriseLoc=enterpriseCoords, starbaseLoc=starBaseCoords) is True:
+                self.gameEngine.dock()
+                self.messageConsole.addText(f"Docked with starbase at: {starBaseCoords}")
+        else:
+            self._determineShipCondition(self.galaxy.getCurrentQuadrant())
+
+    def _determineShipCondition(self, quadrant: Quadrant):
+        """
+        Called when we know we are NOT docked
+
+        TODO:  What determines the other conditions, Yellow and Red
+        From the java version Space War it seems like
+        Yellow:
+            ships energy is less than 1000
+        """
+        self.statistics.shipCondition = ShipCondition.Green
+        if self.statistics.energy < 1000:
+            self.statistics.shipCondition = ShipCondition.Yellow
+        if quadrant.getKlingonCount() > 0 or quadrant.getCommanderCount() > 0 or \
+        quadrant.getRomulanCount() > 0 or quadrant.getSuperCommanderCount() > 0:
+            self.statistics.shipCondition = ShipCondition.Red
 
     @staticmethod
     def clockCB(theEvent: Event):
