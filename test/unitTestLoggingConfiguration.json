@@ -42,6 +42,11 @@
             "handlers": ["consoleHandler"],
             "propagate": "False"
         },
+        "BlockChainTest": {
+            "level": "INFO",
+            "handlers": ["consoleHandler"],
+            "propagate": "False"
+        },
         "org.hasii.pytrek": {
             "level":     "ERROR",
             "handlers":  ["consoleHandler"],
