@@ -51,8 +51,11 @@ class BlockChainTest(BaseTest):
 
         self.logger.info("More mining")
 
-        minedBlock = blockchain.mine_block(miner_address='humberto.a.sanchez.ii@gmail.com')
-        self.logger.info(f"minedBlock: {minedBlock}")
+        for x in range(7):
+            minerAddress: str = f"humberto.a.sanchez.{x}@gmail.com"
+            minedBlock = blockchain.mine_block(miner_address=minerAddress)
+            self.logger.info(f"minedBlock: {minedBlock}")
+
         self.logger.info(">>>>> After More Mining...")
         self.logger.info(blockchain.chain)
 
