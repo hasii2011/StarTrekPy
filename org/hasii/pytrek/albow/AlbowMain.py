@@ -42,7 +42,7 @@ def main():
     surface: Surface = pygame.display.set_mode((settings.screenWidth, settings.screenHeight))
     shell: StarTrekShell = StarTrekShell(surface)
 
-    logger.info("Starting %s", __name__)
+    logger.info(f"Starting {__name__}")
 
     shell.run()
 

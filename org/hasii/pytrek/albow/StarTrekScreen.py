@@ -136,7 +136,7 @@ class StarTrekScreen(Screen):
 
     def key_down(self, theEvent: Event):
 
-        self.logger.debug("key down: %s ", theEvent.key)
+        self.logger.debug(f"key down: {theEvent.key}")
 
         if theEvent.key == pygame.K_q:
             self.ensureQuit()
