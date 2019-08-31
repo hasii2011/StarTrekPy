@@ -398,7 +398,7 @@ class StarTrekScreen(Screen):
         if self.statistics.energy < 1000:
             self.statistics.shipCondition = ShipCondition.Yellow
         if quadrant.getKlingonCount() > 0 or quadrant.getCommanderCount() > 0 or \
-        quadrant.getRomulanCount() > 0 or quadrant.getSuperCommanderCount() > 0:
+                quadrant.getRomulanCount() > 0 or quadrant.getSuperCommanderCount() > 0:
             self.statistics.shipCondition = ShipCondition.Red
 
     @staticmethod

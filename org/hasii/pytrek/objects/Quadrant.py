@@ -281,7 +281,7 @@ class Quadrant:
 
     def getCommanderCount(self):
         """"""
-        return self.commanders
+        return self._commanderCount
 
     def getCoordinates(self) -> Coordinates:
         """"""
