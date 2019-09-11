@@ -227,7 +227,11 @@ class StarTrekScreen(Screen):
         """"""
 
         self.backGround.update()
-        quadrant = self.galaxy.getCurrentQuadrant()
+        quadrant: Quadrant = self.galaxy.getCurrentQuadrant()
+
+        if quadrant.getKlingonCount() == 0 and quadrant.getCommanderCount() == 0:
+            self.statistics.shipCondition = ShipCondition.Green
+
         quadrant.update(playTime=playTime)
 
     def impulseScreenUpdate(self):
@@ -311,6 +315,7 @@ class StarTrekScreen(Screen):
             self.fireTorpedoAt(firingPosition=enterprisePosition, targetPosition=klingon.currentPosition, torpedo=torpedo,
                                sectorType=SectorType.PHOTON_TORPEDO,
                                targetName="Klingon", soundToPlay=self.soundTorpedo)
+            self.statistics.torpedoCount -= 1
 
         for commander in quadrant.commanders:
 
@@ -318,6 +323,7 @@ class StarTrekScreen(Screen):
             torpedo: PhotonTorpedo = PhotonTorpedo(screen=self.surface, direction=direction)
             self.fireTorpedoAt(firingPosition=enterprisePosition, targetPosition=commander.currentPosition, torpedo=torpedo,
                                sectorType=SectorType.PHOTON_TORPEDO, targetName="Commander", soundToPlay=self.soundTorpedo)
+            self.statistics.torpedoCount -= 1
 
         self.settings.gameMode = GameMode.Normal
 

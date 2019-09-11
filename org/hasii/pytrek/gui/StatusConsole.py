@@ -89,10 +89,10 @@ class StatusConsole(Widget):
             'Shields: ',
             'Game Time: ',
             'Klingons:',
-            'Commanders:'
+            'Commanders:',
+            'Torpedoes:'
         ]
         refs = [
-
             AttrRef(base=self.gameStatistics, name="starDate"),
             AttrRef(base=self.gameStatistics, name="currentQuadrantCoordinates"),
             AttrRef(base=self.gameStatistics, name="currentSectorCoordinates"),
@@ -101,6 +101,7 @@ class StatusConsole(Widget):
             AttrRef(base=self.gameStatistics, name="remainingGameTime"),
             AttrRef(base=self.gameStatistics, name="remainingKlingons"),
             AttrRef(base=self.gameStatistics, name="remainingCommanders"),
+            AttrRef(base=self.gameStatistics, name="torpedoCount"),
         ]
         formatStrs = [
             '%8.2f',
@@ -109,6 +110,7 @@ class StatusConsole(Widget):
             '%7.2f',
             '%7.2f',
             '%6.2f',
+            None,
             None,
             None,
         ]
