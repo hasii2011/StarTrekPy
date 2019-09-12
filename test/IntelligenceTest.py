@@ -40,7 +40,7 @@ class IntelligenceTest(BaseTest):
     #
     KNOWN_KLINGON_COUNT = 48
 
-    DEFAULT_AVERAGE = 1e30
+    DEFAULT_AVERAGE = 7.0
     BIG_HIT_VALUE   = 900.42
     SMALL_HIT_VALUE = 25.25
 
@@ -236,14 +236,14 @@ class IntelligenceTest(BaseTest):
         self.logger.info(f"DEFAULT: {IntelligenceTest.DEFAULT_AVERAGE}")
         ans: float = self.smarty.expRan(IntelligenceTest.DEFAULT_AVERAGE)
 
-        self.logger.info(f"ans: {ans:4f}")
+        self.logger.info(f"avrage: {IntelligenceTest.DEFAULT_AVERAGE} ans: {ans:4f}")
 
-        ans2: float = self.smarty.expRan(2000.0)
-        self.logger.info(f"avrage: '2000.0'  ans2: {ans2:4f}")
+        ans2: float = self.smarty.expRan(56.0)
+        self.logger.info(f"avrage: '56.0'  ans2: {ans2:4f}")
 
-        initStarDate: float = self.smarty.getInitialStarDate()
-        ans3: float = self.smarty.expRan(initStarDate)
-        self.logger.info(f"avrage: '{initStarDate}'  ans2: {ans3:4f}")
+        initGameTime: float = self.smarty.getInitialGameTime()
+        ans3: float = self.smarty.expRan(initGameTime)
+        self.logger.info(f"avrage: '{initGameTime}'  ans2: {ans3:4f}")
 
     def testEnumerateStringDeviceTypes(self):
 

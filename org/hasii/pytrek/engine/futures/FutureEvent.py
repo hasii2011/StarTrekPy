@@ -42,7 +42,7 @@ class FutureEvent:
     def __repr__(self):
 
         representation = (
-            f"eventType: {self.eventType:8} "
+            f"eventType: {self.eventType.name:8} "
             f"starDate: {self.starDate:5.2f} "
             f"qCoordinates: '{self.qCoordinates}'"
         )

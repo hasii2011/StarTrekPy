@@ -19,6 +19,11 @@ class EventEngine:
 
     _singleton: 'EventEngine' = None
 
+    NONZERO_OPTIME_THRESHOLD: float = 0.0001
+    """
+    This constant is the amount of time that a game operation (e.g. firing, movement) must take to trigger
+    a check for events. It exists so the check for zero does not have to be exact.
+    """
     def __new__(cls, *args, **kwargs):
 
         if not cls._singleton:
@@ -48,7 +53,7 @@ class EventEngine:
         self.eventMap[FutureEventType.FBATTAK] = self.schedule(FutureEventType.FBATTAK,
                                                                self.intelligence.expRan(0.3 * self.gameStats.intime))
 
-        self.logger.debug(f"eventMap: {self.eventMap}")
+        self.logger.info(f"intime: {self.gameStats.intime} eventMap: {self.__repr__()}")
 
     def schedule(self, fEventType: FutureEventType, finTime: float) -> FutureEvent:
 

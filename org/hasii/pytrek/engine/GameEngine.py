@@ -43,7 +43,6 @@ class GameEngine:
         self.intelligence:  Intelligence   = Intelligence()
         self.stats:         GameStatistics = GameStatistics()
         self.devices:       Devices        = Devices()
-        self.eventEngine:   EventEngine    = EventEngine()
 
         self.stats.skill        = self.settings.skill
         self.stats.gameType     = self.settings.gameType
@@ -51,13 +50,15 @@ class GameEngine:
         self.stats.shieldEnergy = self.settings.initialShieldEnergy
         self.stats.torpedoCount = self.settings.initialTorpedoCount
 
-        self.stats.intime              = self.intelligence.getInitialStarDate()
+        self.stats.intime              = self.intelligence.getInitialGameTime()
         self.stats.shipCondition       = ShipCondition.Green
         self.stats.opTime              = 0.0
-        self.stats.starDate            = self.stats.intime
+        self.stats.starDate            = self.intelligence.getInitialStarDate()
         self.stats.remainingGameTime   = self.intelligence.getInitialGameTime()
         self.stats.remainingKlingons   = self.intelligence.getInitialKlingonCount(self.stats.remainingGameTime)
         self.stats.remainingCommanders = self.intelligence.getInitialCommanderCount()
+
+        self.eventEngine:   EventEngine    = EventEngine()
 
     def impulse(self, newCoordinates: Coordinates, quadrant: Quadrant, enterprise: Enterprise):
         """"""

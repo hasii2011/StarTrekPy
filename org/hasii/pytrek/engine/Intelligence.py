@@ -250,11 +250,8 @@ class Intelligence:
         double expran(double avrage) {
             return -avrage * log(1e-7 + Rand());
         }
-
         Returns:
-
         """
-
         return -avrage * log(1e-7 + self.rand())
 
     def isCriticalHit(self, theHitToCheck: float) -> bool:

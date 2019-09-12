@@ -133,6 +133,9 @@ class GameStatistics:
     energy       = property(getEnergy, setEnergy)
     intime       = property(getInTime, setInTime)
     opTime       = property(getOpTime, setOpTime)
+    """
+    The time it took for the last operation to complete
+    """
     starDate     = property(getStarDate, setStarDate)
 
     remainingGameTime   = property(getRemainingGameTime,   setRemainingGameTime)
