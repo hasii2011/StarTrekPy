@@ -241,6 +241,7 @@ class IntelligenceTest(BaseTest):
         ans2: float = self.smarty.expRan(56.0)
         self.logger.info(f"avrage: '56.0'  ans2: {ans2:4f}")
 
+        self.settings.gameType = GameType.Long
         initGameTime: float = self.smarty.getInitialGameTime()
         ans3: float = self.smarty.expRan(initGameTime)
         self.logger.info(f"avrage: '{initGameTime}'  ans2: {ans3:4f}")
