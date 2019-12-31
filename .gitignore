@@ -11,3 +11,5 @@ __pycache__/
 /venv-1.9.4-3.7.2/
 /starTrek.log
 /Blockchain.log
+/GameStats.json
+tests/GameStats.json
