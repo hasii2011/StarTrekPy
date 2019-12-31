@@ -1,7 +1,7 @@
 import unittest
 import logging
 
-from BaseTest import BaseTest
+from tests.BaseTest import BaseTest
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.engine.Intelligence import Intelligence

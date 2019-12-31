@@ -1,9 +1,15 @@
-import unittest
+
+from typing import cast
+
 import logging
 import math
 
+import unittest
 from unittest.mock import MagicMock
+
 from pprint import pformat
+
+from pygame.surface import SurfaceType
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
 from org.hasii.pytrek.objects.Quadrant import Quadrant
@@ -14,7 +20,7 @@ from org.hasii.pytrek.engine.KlingonPower import KlingonPower
 from org.hasii.pytrek.engine.Intelligence import Intelligence
 from org.hasii.pytrek.Settings import Settings
 
-from BaseTest import BaseTest
+from tests.BaseTest import BaseTest
 
 
 class ComputerTest(BaseTest):
@@ -28,6 +34,7 @@ class ComputerTest(BaseTest):
     N_RANDOM_DIRECTION_LOOPS            = 9
     N_RANDOM_POWER_LOOPS                = 5
     N_COMPUTE_HIT_VALUE_LOOPS           = 5
+
     @classmethod
     def setUpClass(cls):
         """"""
@@ -40,7 +47,7 @@ class ComputerTest(BaseTest):
         self.settings   = Settings()
         self.computer   = Computer()
         mockCoordinates = Coordinates(x=5, y=5)
-        self.quadrant   = Quadrant(coordinates=mockCoordinates, screen=None)
+        self.quadrant   = Quadrant(coordinates=mockCoordinates, screen=cast(SurfaceType, None))
 
     def testSingletonBehavior(self):
 
@@ -251,10 +258,7 @@ class ComputerTest(BaseTest):
     def testDoStraightLineInterpolationExtremeWestUp(self):
         """"""
 
-        expectedCoordinates = [Coordinates(0, 8), Coordinates(0, 7), Coordinates(0, 6), Coordinates(0, 5),
-                               Coordinates(0, 4), Coordinates(0, 3), Coordinates(0, 2), Coordinates(0, 1),
-                               Coordinates(0, 0)
-                               ]
+        expectedCoordinates = self._getExpectedCoordinates()
         x0 = 0
         y0 = 9
         y1 = 0
@@ -288,10 +292,7 @@ class ComputerTest(BaseTest):
     def testDoStraightLineInterpolationExtremeEastUp(self):
         """"""
 
-        expectedCoordinates = [Coordinates(0, 8), Coordinates(0, 7), Coordinates(0, 6), Coordinates(0, 5),
-                               Coordinates(0, 4), Coordinates(0, 3), Coordinates(0, 2), Coordinates(0, 1),
-                               Coordinates(0, 0)
-                               ]
+        expectedCoordinates = self._getExpectedCoordinates()
         x0 = 0
         y0 = 9
         y1 = 0
@@ -559,6 +560,14 @@ class ComputerTest(BaseTest):
         modSouthEast = Direction.SouthEast.value % 90
 
         self.logger.info(f"modNorth: '{modNorth}' modSouth: '{modSouth}' modNorthWest: '{modNorthWest}' modSouthEast: '{modSouthEast}'")
+
+    def _getExpectedCoordinates(self):
+
+        expectedCoordinates = [Coordinates(0, 8), Coordinates(0, 7), Coordinates(0, 6), Coordinates(0, 5),
+                               Coordinates(0, 4), Coordinates(0, 3), Coordinates(0, 2), Coordinates(0, 1),
+                               Coordinates(0, 0)
+                               ]
+        return expectedCoordinates
 
 
 if __name__ == '__main__':

@@ -30,5 +30,6 @@ class SettingsTest(TestCase):
         self.assertIsNotNone(settings.starBaseExtender)
         self.assertIsNotNone(settings.starBaseMultiplier)
 
+
 if __name__ == '__main__':
     unittest.main()

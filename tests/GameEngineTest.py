@@ -4,7 +4,7 @@ from logging import Logger
 
 import unittest
 
-from BaseTest import BaseTest
+from tests.BaseTest import BaseTest
 
 from org.hasii.pytrek.engine.GameEngine import GameEngine
 from org.hasii.pytrek.engine.PlayerType import PlayerType

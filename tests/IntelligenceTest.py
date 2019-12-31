@@ -4,7 +4,7 @@ from typing import List
 import logging
 import unittest
 
-from BaseTest import BaseTest
+from tests.BaseTest import BaseTest
 
 from org.hasii.pytrek.Settings import Settings
 

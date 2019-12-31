@@ -2,7 +2,7 @@ import unittest
 import logging
 import jsonpickle
 
-from BaseTest import BaseTest
+from tests.BaseTest import BaseTest
 
 from org.hasii.pytrek.GameStatistics import GameStatistics
 from org.hasii.pytrek.engine.GameType import GameType

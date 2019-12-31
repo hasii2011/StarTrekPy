@@ -1,7 +1,7 @@
 
 import logging
 
-from BaseTest import BaseTest
+from tests.BaseTest import BaseTest
 
 from org.hasii.pytrek.engine.KlingonPower import KlingonPower
 
