@@ -1,6 +1,8 @@
 
 from typing import cast
 
+from pkg_resources import resource_filename
+
 import pygame
 
 from pygame.sprite import Sprite
@@ -24,12 +26,14 @@ class GamePiece(Sprite):
     MEDIUM_X_ADJUSTMENT    = MEDIUM_SPRITE_WIDTH
     MEDIUM_Y_ADJUSTMENT    = MEDIUM_SPRITE_WIDTH
 
-    def __init__(self, screen: Surface, fileNamePath: str):
+    def __init__(self, screen: Surface, fileName: str):
         """"""
         super().__init__()
 
+        fqFileName = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, fileName)
+
         self.screen:   Surface  = screen
-        self.image:    Surface  = pygame.image.load(fileNamePath)
+        self.image:    Surface  = pygame.image.load(fqFileName)
         self.settings: Settings = Settings()
         self.playTime: float    = 0.0
 

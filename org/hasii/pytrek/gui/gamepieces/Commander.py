@@ -15,7 +15,7 @@ class Commander(GamePiece):
 
     def __init__(self, screen: Surface, coordinates: Coordinates):
         """"""
-        super().__init__(screen, 'images/medfighter.png')
+        super().__init__(screen, 'medfighter.png')
 
         self.logger = logging.getLogger(__name__)
 

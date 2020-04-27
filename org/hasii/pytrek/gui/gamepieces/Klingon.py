@@ -10,7 +10,7 @@ class Klingon(GamePiece):
 
     def __init__(self, screen: Surface, coordinates: Coordinates):
         """"""
-        super().__init__(screen, 'images/KlingonD7.png')
+        super().__init__(screen, 'KlingonD7.png')
         self.currentPosition = coordinates
         self._power = 0.0
 

@@ -8,7 +8,7 @@ class Enterprise(GamePiece):
 
     def __init__(self, screen: pygame.Surface):
         """"""
-        super().__init__(screen, 'images/EnterpriseD.png')
+        super().__init__(screen, 'EnterpriseD.png')
 
     def update(self, sectorX, sectorY, playTime: float = 0):
         """"""

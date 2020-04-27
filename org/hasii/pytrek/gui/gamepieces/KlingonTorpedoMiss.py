@@ -6,7 +6,7 @@ from org.hasii.pytrek.gui.gamepieces.BasicMiss import BasicMiss
 class KlingonTorpedoMiss(BasicMiss):
 
     DISPLAY_SECONDS: int = 5
-    FILENAME:        str = "images/KlingonTorpedoMiss.png"
+    FILENAME:        str = "KlingonTorpedoMiss.png"
 
     def __init__(self, screen: pygame.Surface, playTime: float):
         """"""

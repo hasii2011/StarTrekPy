@@ -1,7 +1,15 @@
 
-import pygame
-import os
 import logging
+
+import os
+
+from pkg_resources import resource_filename
+
+import pygame
+
+from pygame import Surface
+
+from org.hasii.pytrek.Settings import Settings
 
 from org.hasii.pytrek.gui.gamepieces.ExplosionColor import ExplosionColor
 from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
@@ -16,7 +24,8 @@ class Explosion(GamePiece):
         """"""
 
         self.explosionColor = ExplosionColor.GREY
-        filename            = "images/explosion_rays_{}.png".format(self.explosionColor.name.lower())
+        # filename            = "images/explosion_rays_{}.png".format(self.explosionColor.name.lower())
+        filename = f'explosion_rays_{self.explosionColor.name.lower()}.png'
         super().__init__(screen, filename)
 
         self.soundExplosion = pygame.mixer.Sound(os.path.join('sounds', 'smallexplosion3.wav'))
@@ -41,11 +50,15 @@ class Explosion(GamePiece):
             if timeSinceLastUpdate > Explosion.UPDATE_INTERVAL_SECONDS:
 
                 self.explosionColor = self.explosionColor.successor()
-                self.logger.debug("Explosion Color %s", self.explosionColor.name)
+                self.logger.debug(f'Explosion Color {self.explosionColor.name}')
+
                 if self.explosionColor != ExplosionColor.NO_COLOR:
-                    filename                    = "images/explosion_rays_{}.png".format(self.explosionColor.name.lower())
-                    self.image                  = pygame.image.load(filename)
-                    self.timeSinceLastExplosion = playTime
+
+                    filename:   str = f'explosion_rays_{self.explosionColor.name.lower()}.png'
+                    fqFileName: str = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, filename)
+
+                    self.image:                  Surface = pygame.image.load(fqFileName)
+                    self.timeSinceLastExplosion: float   = playTime
                     self.soundExplosion.play()
         else:
             self.logger.debug("Last Explosion occurred")

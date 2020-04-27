@@ -26,7 +26,7 @@ class KlingonTorpedo(BasicTorpedo):
         super().__init__(screen, "images/KlingonTorpedo.png")
 
         self.logger                       = logging.getLogger(__name__)
-        self.followerImage:   Surface     = pygame.image.load('images/KlingonTorpedoFollower-16.png')
+        self.followerImage:   Surface     = pygame.image.load('KlingonTorpedoFollower-16.png')
         self.shooterPower:    float       = shooterPower
         self.shooterPosition: Coordinates = shooterPosition
 
