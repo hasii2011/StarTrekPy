@@ -1,6 +1,7 @@
 
 import configparser
-import os
+
+from pkg_resources import resource_filename
 
 from org.hasii.pytrek.GameMode import GameMode
 from org.hasii.pytrek.engine.PlayerType import PlayerType
@@ -20,6 +21,7 @@ class Settings:
         A class to store all settings for this kewl game
         This class is a singleton
     """
+    RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources'
 
     CLOCK_EVENT           = AlbowEventLoop.MUSIC_END_EVENT + 1
     KLINGON_TORPEDO_EVENT = CLOCK_EVENT + 1
@@ -55,9 +57,9 @@ class Settings:
         #
         #
         #
-        self.findConfigFile()
+        fqFileName: str = resource_filename(Settings.RESOURCES_PACKAGE_NAME, 'pyTrek.conf')
         config = configparser.ConfigParser()
-        config.read("pyTrek.conf")
+        config.read(fqFileName)
 
         self.maxStarCount    = config.getint('Limits', 'MaxStarCount')
         self.starBaseMinimum = config.getint("Limits", "StarBaseMinimum")
@@ -83,14 +85,6 @@ class Settings:
         self.damageFactor = 0.5 * self.skill.value
         self.gameMode     = GameMode.Normal
 
-    def findConfigFile(self):
-        """"""
-        # print("CurrentDir: " + os.getcwd())
-        if os.path.isfile("pyTrek.conf"):
-            return
-        else:
-            os.chdir("../")
-            self.findConfigFile()
 
     def setGameMode(self, theGameMode: GameMode):
         """"""
