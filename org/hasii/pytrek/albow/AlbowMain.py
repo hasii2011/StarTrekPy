@@ -4,6 +4,8 @@ import json
 import logging
 import logging.config
 
+from pkg_resources import resource_filename
+
 import pygame
 
 from pygame import Surface
@@ -15,12 +17,14 @@ from org.hasii.pytrek.Settings import Settings
 
 from org.hasii.pytrek.albow.StarTrekShell import StarTrekShell
 
-JSON_LOGGING_CONFIG_FILENAME = "loggingConfiguration.json"
+JSON_LOGGING_CONFIG_FILENAME: str = "loggingConfiguration.json"
 
 
 def main():
 
-    with open(JSON_LOGGING_CONFIG_FILENAME, 'r') as loggingConfigurationFile:
+    fqFileName = resource_filename(Settings.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
+
+    with open(fqFileName, 'r') as loggingConfigurationFile:
         configurationDictionary = json.load(loggingConfigurationFile)
 
     logging.config.dictConfig(configurationDictionary)
