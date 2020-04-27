@@ -27,7 +27,7 @@ class GalaxyScanBackground(BaseBackGround):
     def __init__(self, screen: Surface):
         """"""
 
-        super().__init__(screen, 'images/GalaxyScanBackground.png')
+        super().__init__(screen, 'GalaxyScanBackground.png')
 
         self.computer = Computer()
 
