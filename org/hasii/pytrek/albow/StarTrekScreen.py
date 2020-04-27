@@ -1,12 +1,12 @@
 
-import sys
-
-import os
+from typing import List
 
 import logging
 from logging import Logger
 
-from typing import List
+import sys
+
+from pkg_resources import resource_filename
 
 import pygame
 
@@ -88,14 +88,14 @@ class StarTrekScreen(Screen):
         self.intelligence: Intelligence   = Intelligence()
         self.devices:      Devices        = Devices()
 
-        self.soundUnableToComply: Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_unabletocomply.wav'))
-        self.soundInaccurate:     Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_inaccurateerror_ep.wav'))
-        self.soundWarp:           Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_flyby_1.wav'))
-        self.soundImpulse:        Sound = pygame.mixer.Sound(os.path.join('sounds', 'probe_launch_1.wav'))
-        self.soundTorpedo:        Sound = pygame.mixer.Sound(os.path.join('sounds', 'tos_photon_torpedo.wav'))
-        self.soundKlingonTorpedo: Sound = pygame.mixer.Sound(os.path.join('sounds', 'klingon_torpedo.wav'))
-        self.soundShieldHit:      Sound = pygame.mixer.Sound(os.path.join('sounds', 'ShieldHit.wav'))
-        self.soundDeviceDown:     Sound = pygame.mixer.Sound(os.path.join('sounds', 'tng_red_alert2.wav'))
+        self.soundUnableToComply: Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_unabletocomply.wav'))
+        self.soundInaccurate:     Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_inaccurateerror_ep.wav'))
+        self.soundWarp:           Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_flyby_1.wav'))
+        self.soundImpulse:        Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'probe_launch_1.wav'))
+        self.soundTorpedo:        Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_photon_torpedo.wav'))
+        self.soundKlingonTorpedo: Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'klingon_torpedo.wav'))
+        self.soundShieldHit:      Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'ShieldHit.wav'))
+        self.soundDeviceDown:     Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tng_red_alert2.wav'))
 
         self.galaxyScanBackground: GalaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround:           QuadrantBackground   = QuadrantBackground(theSurface)

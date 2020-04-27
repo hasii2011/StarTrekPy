@@ -26,7 +26,7 @@ class Explosion(GamePiece):
         filename = f'explosion_rays_{self.explosionColor.name.lower()}.png'
         super().__init__(screen, filename)
 
-        fqFileName = resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'smallexplosion3.wav')
+        fqFileName = resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'SmallExplosion.wav')
         self.soundExplosion = pygame.mixer.Sound(fqFileName)
         self.logger         = logging.getLogger(__name__)
 

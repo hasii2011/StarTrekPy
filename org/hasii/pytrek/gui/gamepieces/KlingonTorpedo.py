@@ -1,15 +1,19 @@
 
 import logging
 
+from pkg_resources import resource_filename
+
 import pygame
 
 from pygame import Surface
 
-from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 
+from org.hasii.pytrek.gui.gamepieces.GamePiece import GamePiece
 from org.hasii.pytrek.gui.gamepieces.BasicTorpedo import BasicTorpedo
 
 from org.hasii.pytrek.objects.Coordinates import Coordinates
+
+from org.hasii.pytrek.Settings import Settings
 
 
 class KlingonTorpedo(BasicTorpedo):
@@ -23,10 +27,12 @@ class KlingonTorpedo(BasicTorpedo):
             shooterPosition:    The shooter's position
         """
 
-        super().__init__(screen, "images/KlingonTorpedo.png")
+        super().__init__(screen, "KlingonTorpedo.png")
 
         self.logger                       = logging.getLogger(__name__)
-        self.followerImage:   Surface     = pygame.image.load('KlingonTorpedoFollower-16.png')
+        fqFileName = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, 'KlingonTorpedoFollower-16.png')
+
+        self.followerImage:   Surface     = pygame.image.load(fqFileName)
         self.shooterPower:    float       = shooterPower
         self.shooterPosition: Coordinates = shooterPosition
 
