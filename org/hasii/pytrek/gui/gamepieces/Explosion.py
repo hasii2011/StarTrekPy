@@ -1,8 +1,6 @@
 
 import logging
 
-import os
-
 from pkg_resources import resource_filename
 
 import pygame
@@ -28,7 +26,8 @@ class Explosion(GamePiece):
         filename = f'explosion_rays_{self.explosionColor.name.lower()}.png'
         super().__init__(screen, filename)
 
-        self.soundExplosion = pygame.mixer.Sound(os.path.join('sounds', 'smallexplosion3.wav'))
+        fqFileName = resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'smallexplosion3.wav')
+        self.soundExplosion = pygame.mixer.Sound(fqFileName)
         self.logger         = logging.getLogger(__name__)
 
         self.timeSinceLastExplosion = 0
