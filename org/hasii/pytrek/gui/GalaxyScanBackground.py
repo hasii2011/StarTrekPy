@@ -1,10 +1,13 @@
 
+from pkg_resources import resource_filename
+
 import pygame
 
 from pygame import Surface
 
 from org.hasii.pytrek.Settings import WHITE
 from org.hasii.pytrek.Settings import RED
+from org.hasii.pytrek.Settings import Settings
 
 from org.hasii.pytrek.objects.Galaxy import Galaxy
 from org.hasii.pytrek.objects.Coordinates import Coordinates
@@ -27,7 +30,9 @@ class GalaxyScanBackground(BaseBackGround):
         super().__init__(screen, 'images/GalaxyScanBackground.png')
 
         self.computer = Computer()
-        self.labelFont = pygame.font.Font("fonts/FuturistFixedWidth.ttf", 14)
+
+        fqFileName = resource_filename(Settings.FONT_RESOURCES_PACKAGE_NAME, Settings.ALTERNATE_FIXED_WIDTH_FONT_NAME)
+        self.labelFont = pygame.font.Font(fqFileName, 14)
 
     def update(self, galaxy: Galaxy):
         """Displays galaxy content"""
@@ -52,7 +57,7 @@ class GalaxyScanBackground(BaseBackGround):
                 quadrant   = galaxy.getQuadrant(quadrantCoordinates=quadCoords)
 
                 strValue = self.computer.createValueString(quadrant=quadrant)
-                if quadrant._commanderCount > 0:
+                if quadrant.getCommanderCount() > 0:
                     label = self.labelFont.render(strValue, 1, RED)
                 else:
                     label    = self.labelFont.render(strValue, 1, WHITE)

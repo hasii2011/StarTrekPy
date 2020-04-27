@@ -21,7 +21,11 @@ class Settings:
         A class to store all settings for this kewl game
         This class is a singleton
     """
-    RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources'
+    RESOURCES_PACKAGE_NAME:      str = 'org.hasii.pytrek.resources'
+    FONT_RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources.fonts'
+
+    FIXED_WIDTH_FONT_NAME:           str = 'MonoFonto.ttf'
+    ALTERNATE_FIXED_WIDTH_FONT_NAME: str = 'FuturistFixedWidth.ttf'
 
     CLOCK_EVENT           = AlbowEventLoop.MUSIC_END_EVENT + 1
     KLINGON_TORPEDO_EVENT = CLOCK_EVENT + 1

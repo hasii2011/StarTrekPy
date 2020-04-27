@@ -3,6 +3,8 @@ import pygame
 
 import logging
 
+from pkg_resources import resource_filename
+
 from albow.themes.Theme import Theme
 
 from albow.core.ui.Widget import Widget
@@ -28,17 +30,17 @@ from org.hasii.pytrek.gui.ShipConditionValueDisplay import ShipConditionValueDis
 
 class StatusConsole(Widget):
 
-    FONT_PATH = "fonts/MonoFonto.ttf"
-
     def __init__(self, **kwds):
 
         super().__init__(**kwds)
 
         self.logger = logging.getLogger(__name__)
 
-        self.consoleLabelFont      = pygame.font.Font(StatusConsole.FONT_PATH, 20)
-        self.statusFont            = pygame.font.Font(StatusConsole.FONT_PATH, 14)
-        self.systemStatusLabelFont = pygame.font.Font(StatusConsole.FONT_PATH, 16)
+        fqFileName = resource_filename(Settings.FONT_RESOURCES_PACKAGE_NAME, Settings.FIXED_WIDTH_FONT_NAME)
+
+        self.consoleLabelFont      = pygame.font.Font(fqFileName, 20)
+        self.statusFont            = pygame.font.Font(fqFileName, 14)
+        self.systemStatusLabelFont = pygame.font.Font(fqFileName, 16)
 
         self.settings:       Settings       = Settings()
         self.gameStatistics: GameStatistics = GameStatistics()
