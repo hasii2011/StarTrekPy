@@ -15,11 +15,6 @@
             "class":     "logging.StreamHandler",
             "formatter": "starTrekSimple",
             "stream":     "ext://sys.stdout"
-        },
-        "fileHandler": {
-            "class":     "logging.FileHandler",
-            "formatter": "starTrekSimple",
-            "filename":  "starTrek.log"
         }
     },
     "loggers": {

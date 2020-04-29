@@ -6,9 +6,11 @@ __pycache__/
 /build/
 /dist/
 /python3_albow.egg-info/
+/UNKNOWN.egg-info/
 /.svn/
 /venv/
 /venv-1.9.4-3.7.2/
+/.eggs/
 /starTrek.log
 /Blockchain.log
 /GameStats.json
