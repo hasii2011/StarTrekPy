@@ -7,7 +7,7 @@ Usage:
 
 from setuptools import setup
 
-APP = ['org/hasii/pytrek/albow/AlbowMain.py']
+APP = ['org/hasii/pytrek/albow/StarTrek.py']
 DATA_FILES = [
               ('org/hasii/pytrek/resources/fonts', ['org/hasii/pytrek/resources/fonts/FuturistFixedWidth.ttf']),
               ('org/hasii/pytrek/resources/fonts', ['org/hasii/pytrek/resources/fonts/MonoFonto.ttf']),
@@ -18,7 +18,7 @@ DATA_FILES = [
               ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/SmallExplosion.wav']),
               ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/tng_red_alert2.wav']),
               ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/tos_flyby_1.wav']),
-              ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/tos_inaccureateerror.wav']),
+              ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/tos_inaccurateerror_ep.wav']),
               ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/tos_photon_torpedo.wav']),
               ('org/hasii/pytrek/resources/sounds', ['org/hasii/pytrek/resources/sounds/tos_unabletocomply.wav']),
 
@@ -66,7 +66,6 @@ setup(
               'org.hasii.pytrek.resources.sounds'
     ],
     include_package_data=True,
-    package_dir={'': '.'},
 
     url='https://github.com/hasii2011/StarTrekPy',
     author='Humberto A. Sanchez II',
