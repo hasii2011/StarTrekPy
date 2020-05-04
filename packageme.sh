@@ -12,7 +12,7 @@ else
     if [[ ${1} = 'deploy' ]] ; then
             echo "in deploy mode"
             rm -rf build dist
-            python3 setup.py py2app --iconfile org/hasii/pytrek/resources/images/StarTrek.icns
+            python3 setup.py py2app --packages=pygame --iconfile org/hasii/pytrek/resources/images/StarTrek.icns
     else
         echo "Unknown command line arguments"
     fi
