@@ -2,6 +2,9 @@
 import json
 
 import logging
+from logging import Logger
+from logging import getLogger
+
 import logging.config
 
 from pkg_resources import resource_filename
@@ -20,36 +23,39 @@ from org.hasii.pytrek.albow.StarTrekShell import StarTrekShell
 JSON_LOGGING_CONFIG_FILENAME: str = "loggingConfiguration.json"
 
 
-def main():
+class StarTrekPy:
 
-    fqFileName = resource_filename(Settings.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
+    def __init__(self):
+        fqFileName = resource_filename(Settings.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
 
-    with open(fqFileName, 'r') as loggingConfigurationFile:
-        configurationDictionary = json.load(loggingConfigurationFile)
+        with open(fqFileName, 'r') as loggingConfigurationFile:
+            configurationDictionary = json.load(loggingConfigurationFile)
 
-    logging.config.dictConfig(configurationDictionary)
-    logging.logProcesses = False
-    logging.logThreads = False
+        logging.config.dictConfig(configurationDictionary)
+        logging.logProcesses = False
+        logging.logThreads = False
 
-    logger = logging.getLogger(__name__)
+        self.logger: Logger = getLogger(__name__)
 
-    themeLoader: ThemeLoader = ThemeLoader()
-    themeLoader.load()
-    themeRoot: Theme = themeLoader.themeRoot
-    Theme.setThemeRoot(themeRoot)
+        themeLoader: ThemeLoader = ThemeLoader()
+        themeLoader.load()
+        themeRoot: Theme = themeLoader.themeRoot
+        Theme.setThemeRoot(themeRoot)
 
-    settings: Settings = Settings()
+        self._settings: Settings = Settings()
 
-    pygame.init()
-    pygame.display.set_caption("Star Trek ala' Python Albow")
+    def run(self):
+        pygame.init()
+        pygame.display.set_caption("Star Trek ala' Python Albow")
 
-    surface: Surface = pygame.display.set_mode((settings.screenWidth, settings.screenHeight))
-    shell: StarTrekShell = StarTrekShell(surface)
+        surface: Surface = pygame.display.set_mode((self._settings.screenWidth, self._settings.screenHeight))
+        shell: StarTrekShell = StarTrekShell(surface)
 
-    logger.info(f"Starting {__name__}")
+        self.logger.info(f"Starting {__name__}")
 
-    shell.run()
+        shell.run()
 
 
 if __name__ == "__main__":
-    main()
+    app: StarTrekPy = StarTrekPy()
+    app.run()
