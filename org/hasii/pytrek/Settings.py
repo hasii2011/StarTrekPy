@@ -21,10 +21,13 @@ class Settings:
         A class to store all settings for this kewl game
         This class is a singleton
     """
+    RESOURCE_ENV_VAR:             str = 'RESOURCEPATH'
     RESOURCES_PACKAGE_NAME:       str = 'org.hasii.pytrek.resources'
     FONT_RESOURCES_PACKAGE_NAME:  str = 'org.hasii.pytrek.resources.fonts'
     IMAGE_RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources.images'
     SOUND_RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources.sounds'
+
+    RESOURCES_PATH: str = 'org/hasii/pytrek/resources'
 
     FIXED_WIDTH_FONT_NAME:           str = 'MonoFonto.ttf'
     ALTERNATE_FIXED_WIDTH_FONT_NAME: str = 'FuturistFixedWidth.ttf'

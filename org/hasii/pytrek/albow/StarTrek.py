@@ -26,8 +26,8 @@ JSON_LOGGING_CONFIG_FILENAME: str = "loggingConfiguration.json"
 class StarTrekPy:
 
     def __init__(self):
-        fqFileName = resource_filename(Settings.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
-
+        # fqFileName = resource_filename(Settings.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
+        fqFileName: str = self._retrieveResourcePath(JSON_LOGGING_CONFIG_FILENAME)
         with open(fqFileName, 'r') as loggingConfigurationFile:
             configurationDictionary = json.load(loggingConfigurationFile)
 
@@ -54,6 +54,25 @@ class StarTrekPy:
         self.logger.info(f"Starting {__name__}")
 
         shell.run()
+
+    def _retrieveResourcePath(self, bareFileName: str) -> str:
+
+        # Use this method in Python 3.9
+        # from importlib_resources import files
+        # configFilePath: str  = files('org.hasii.pytrek.resources').joinpath(JSON_LOGGING_CONFIG_FILENAME)
+
+        try:
+            fqFileName: str = resource_filename(Settings.RESOURCES_PACKAGE_NAME, bareFileName)
+        except (ValueError, Exception):
+            #
+            # Maybe we are in an app
+            #
+            from os import environ
+            print(f'In App')
+            pathToResources: str = environ.get(f'{Settings.RESOURCE_ENV_VAR}')
+            fqFileName:      str = f'{pathToResources}/{Settings.RESOURCES_PATH}/{bareFileName}'
+
+        return fqFileName
 
 
 if __name__ == "__main__":
