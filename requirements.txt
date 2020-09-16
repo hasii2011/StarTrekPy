@@ -1,3 +1,4 @@
-pygame==1.9.6
-python3-albow==2.7.8
-jsonpickle==1.2
+pygame==2.0.0.dev10
+python3-albow==2.80
+jsonpickle==1.4.1
+py2app==0.21
