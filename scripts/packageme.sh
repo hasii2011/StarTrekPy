@@ -4,6 +4,16 @@
 #
 clear
 
+function changeToProjectRoot {
+
+    export areHere=`basename ${PWD}`
+    if [[ ${areHere} = "scripts" ]]; then
+        cd ..
+    fi
+}
+
+changeToProjectRoot
+
 if [[ $# -eq 0 ]] ; then
         echo "in alias mode"
         rm -rf build dist
