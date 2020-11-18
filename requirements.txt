@@ -1,5 +1,5 @@
 pygame==2.0.0
-python3-albow==2.82
+python3-albow==2.80
 jsonpickle==1.4.1
 py2app==0.22
 wheel==0.35.1
