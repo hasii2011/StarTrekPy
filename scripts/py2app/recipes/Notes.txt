@@ -1,0 +1,12 @@
+
+The albow.py file located here is a py2app recipe that allows StarTrekPy and the python albow package to load
+its default-theme.ini file
+
+We monkey patch this into the created virtual environment <venv-root>/lib/<pythonversion>/site-packages/py2pp/recipes
+
+Don't forget to update the package's .__init__.py file to do
+
+from . import albow
+
+
+
