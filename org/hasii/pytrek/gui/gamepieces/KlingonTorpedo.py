@@ -1,8 +1,6 @@
 
 import logging
 
-from pkg_resources import resource_filename
-
 import pygame
 
 from pygame import Surface
@@ -29,8 +27,12 @@ class KlingonTorpedo(BasicTorpedo):
 
         super().__init__(screen, "KlingonTorpedo.png")
 
-        self.logger                       = logging.getLogger(__name__)
-        fqFileName = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, 'KlingonTorpedoFollower-16.png')
+        self.logger = logging.getLogger(__name__)
+
+        fqFileName: str = Settings.getResourcesPath(bareFileName='KlingonTorpedoFollower-16.png',
+                                                    resourcePackageName=Settings.IMAGE_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.IMAGE_RESOURCES_PATH
+                                                    )
 
         self.followerImage:   Surface     = pygame.image.load(fqFileName)
         self.shooterPower:    float       = shooterPower

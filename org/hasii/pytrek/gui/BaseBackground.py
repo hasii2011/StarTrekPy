@@ -1,6 +1,5 @@
 
 import pygame
-from pkg_resources import resource_filename
 
 from pygame import Surface
 
@@ -16,7 +15,11 @@ class BaseBackGround(Sprite):
         super().__init__()
 
         self.screen: Surface = screen
-        fqFileName = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, fileName)
+
+        fqFileName: str = Settings.getResourcesPath(bareFileName=fileName,
+                                                    resourcePackageName=Settings.IMAGE_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.IMAGE_RESOURCES_PATH
+                                                    )
 
         self.image = pygame.image.load(fqFileName)
 

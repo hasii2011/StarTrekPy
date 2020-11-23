@@ -36,7 +36,10 @@ class StatusConsole(Widget):
 
         self.logger = logging.getLogger(__name__)
 
-        fqFileName = resource_filename(Settings.FONT_RESOURCES_PACKAGE_NAME, Settings.FIXED_WIDTH_FONT_NAME)
+        fqFileName: str = Settings.getResourcesPath(bareFileName=Settings.FIXED_WIDTH_FONT_NAME,
+                                                    resourcePackageName=Settings.FONT_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.FONT_RESOURCES_PATH
+                                                    )
 
         self.consoleLabelFont      = pygame.font.Font(fqFileName, 20)
         self.statusFont            = pygame.font.Font(fqFileName, 14)

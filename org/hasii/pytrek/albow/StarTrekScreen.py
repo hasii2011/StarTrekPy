@@ -1,12 +1,11 @@
 
 from typing import List
+from typing import cast
 
-import logging
 from logging import Logger
+from logging import getLogger
 
 import sys
-
-from pkg_resources import resource_filename
 
 import pygame
 
@@ -69,7 +68,7 @@ class StarTrekScreen(Screen):
 
         super().__init__(shell)
 
-        self.logger: Logger = logging.getLogger(__name__)
+        self.logger: Logger = getLogger(__name__)
         #
         # Debug logger
         #
@@ -88,14 +87,15 @@ class StarTrekScreen(Screen):
         self.intelligence: Intelligence   = Intelligence()
         self.devices:      Devices        = Devices()
 
-        self.soundUnableToComply: Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_unabletocomply.wav'))
-        self.soundInaccurate:     Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_inaccurateerror_ep.wav'))
-        self.soundWarp:           Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_flyby_1.wav'))
-        self.soundImpulse:        Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'probe_launch_1.wav'))
-        self.soundTorpedo:        Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tos_photon_torpedo.wav'))
-        self.soundKlingonTorpedo: Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'klingon_torpedo.wav'))
-        self.soundShieldHit:      Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'ShieldHit.wav'))
-        self.soundDeviceDown:     Sound = pygame.mixer.Sound(resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'tng_red_alert2.wav'))
+        self.soundUnableToComply: Sound = pygame.mixer.Sound(self.__getSoundResourcePath('tos_unabletocomply.wav'))
+        self.soundWarp:           Sound = pygame.mixer.Sound(self.__getSoundResourcePath('tos_flyby_1.wav'))
+        self.soundImpulse:        Sound = pygame.mixer.Sound(self.__getSoundResourcePath('probe_launch_1.wav'))
+
+        self.soundInaccurate:     Sound = pygame.mixer.Sound(self.__getSoundResourcePath('probe_launch_1.wav'))
+        self.soundTorpedo:        Sound = pygame.mixer.Sound(self.__getSoundResourcePath('tos_photon_torpedo.wav'))
+        self.soundKlingonTorpedo: Sound = pygame.mixer.Sound(self.__getSoundResourcePath('klingon_torpedo.wav'))
+        self.soundShieldHit:      Sound = pygame.mixer.Sound(self.__getSoundResourcePath('ShieldHit.wav'))
+        self.soundDeviceDown:     Sound = pygame.mixer.Sound(self.__getSoundResourcePath('tng_red_alert2.wav'))
 
         self.galaxyScanBackground: GalaxyScanBackground = GalaxyScanBackground(screen=theSurface)
         self.backGround:           QuadrantBackground   = QuadrantBackground(theSurface)
@@ -111,7 +111,7 @@ class StarTrekScreen(Screen):
         self.quadrant.placeEnterprise(self.enterprise, self.statistics.currentSectorCoordinates)
 
         self.playTime:        float = 0.0
-        self.mouseClickEvent: Event = None
+        self.mouseClickEvent: Event = cast(Event, None)
 
         pygame.time.set_timer(Settings.CLOCK_EVENT, 10 * 1000)
         pygame.time.set_timer(Settings.KLINGON_TORPEDO_EVENT, StarTrekScreen.KLINGON_TORPEDO_EVENT_SECS)
@@ -406,6 +406,15 @@ class StarTrekScreen(Screen):
         if quadrant.getKlingonCount() > 0 or quadrant.getCommanderCount() > 0 or \
                 quadrant.getRomulanCount() > 0 or quadrant.getSuperCommanderCount() > 0:
             self.statistics.shipCondition = ShipCondition.Red
+
+    def __getSoundResourcePath(self, bareFileName: str) -> str:
+
+        fqFileName: str = Settings.getResourcesPath(bareFileName=bareFileName,
+                                                    resourcePackageName=Settings.SOUND_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.SOUND_RESOURCES_PATH
+                                                    )
+
+        return fqFileName
 
     @staticmethod
     def clockCB(theEvent: Event):

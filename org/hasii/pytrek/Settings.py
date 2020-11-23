@@ -1,6 +1,8 @@
 
 import configparser
 
+from os import sep as osSep
+
 from pkg_resources import resource_filename
 
 from org.hasii.pytrek.GameMode import GameMode
@@ -27,7 +29,12 @@ class Settings:
     IMAGE_RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources.images'
     SOUND_RESOURCES_PACKAGE_NAME: str = 'org.hasii.pytrek.resources.sounds'
 
-    RESOURCES_PATH: str = 'org/hasii/pytrek/resources'
+    RESOURCES_PATH:       str = 'org/hasii/pytrek/resources'
+    SOUND_RESOURCES_PATH: str = f'{RESOURCES_PATH}{osSep}sounds'
+    IMAGE_RESOURCES_PATH: str = f'{RESOURCES_PATH}{osSep}images'
+    FONT_RESOURCES_PATH:  str = f'{RESOURCES_PATH}{osSep}fonts'
+
+    SETTINGS_FILENAME: str = 'pyTrek.conf'
 
     FIXED_WIDTH_FONT_NAME:           str = 'MonoFonto.ttf'
     ALTERNATE_FIXED_WIDTH_FONT_NAME: str = 'FuturistFixedWidth.ttf'
@@ -66,7 +73,10 @@ class Settings:
         #
         #
         #
-        fqFileName: str = resource_filename(Settings.RESOURCES_PACKAGE_NAME, 'pyTrek.conf')
+        fqFileName: str = Settings.getResourcesPath(resourcePackageName=Settings.RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.RESOURCES_PATH,
+                                                    bareFileName=Settings.SETTINGS_FILENAME
+                                                    )
         config = configparser.ConfigParser()
         config.read(fqFileName)
 
@@ -94,7 +104,6 @@ class Settings:
         self.damageFactor = 0.5 * self.skill.value
         self.gameMode     = GameMode.Normal
 
-
     def setGameMode(self, theGameMode: GameMode):
         """"""
         self.gameMode = theGameMode
@@ -102,3 +111,18 @@ class Settings:
     def getGameMode(self):
         """"""
         return self.gameMode
+
+    @staticmethod
+    def getResourcesPath(resourcePackageName: str, resourcesPath: str, bareFileName: str) -> str:
+
+        try:
+            fqFileName: str = resource_filename(resourcePackageName, bareFileName)
+        except (ValueError, Exception):
+            #
+            # Maybe we are in an app
+            #
+            from os import environ
+            pathToResources: str = environ.get(f'{Settings.RESOURCE_ENV_VAR}')
+            fqFileName:      str = f'{pathToResources}/{resourcesPath}/{bareFileName}'
+
+        return fqFileName

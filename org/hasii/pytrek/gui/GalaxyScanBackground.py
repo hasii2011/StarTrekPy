@@ -1,6 +1,4 @@
 
-from pkg_resources import resource_filename
-
 import pygame
 
 from pygame import Surface
@@ -31,7 +29,11 @@ class GalaxyScanBackground(BaseBackGround):
 
         self.computer = Computer()
 
-        fqFileName = resource_filename(Settings.FONT_RESOURCES_PACKAGE_NAME, Settings.ALTERNATE_FIXED_WIDTH_FONT_NAME)
+        fqFileName: str = Settings.getResourcesPath(bareFileName=Settings.ALTERNATE_FIXED_WIDTH_FONT_NAME,
+                                                    resourcePackageName=Settings.FONT_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.FONT_RESOURCES_PATH
+                                                    )
+
         self.labelFont = pygame.font.Font(fqFileName, 14)
 
     def update(self, galaxy: Galaxy):
@@ -58,7 +60,7 @@ class GalaxyScanBackground(BaseBackGround):
 
                 strValue = self.computer.createValueString(quadrant=quadrant)
                 if quadrant.getCommanderCount() > 0:
-                    label = self.labelFont.render(strValue, 1, RED)
+                    label = self.labelFont.render(strValue, True, RED)
                 else:
-                    label    = self.labelFont.render(strValue, 1, WHITE)
+                    label    = self.labelFont.render(strValue, True, WHITE)
                 self.screen.blit(label, (xPos, yPos))

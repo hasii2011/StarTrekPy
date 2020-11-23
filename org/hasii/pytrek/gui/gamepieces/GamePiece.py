@@ -1,8 +1,6 @@
 
 from typing import cast
 
-from pkg_resources import resource_filename
-
 import pygame
 
 from pygame.sprite import Sprite
@@ -30,7 +28,10 @@ class GamePiece(Sprite):
         """"""
         super().__init__()
 
-        fqFileName = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, fileName)
+        fqFileName: str = Settings.getResourcesPath(bareFileName=fileName,
+                                                    resourcePackageName=Settings.IMAGE_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.IMAGE_RESOURCES_PATH
+                                                    )
 
         self.screen:   Surface  = screen
         self.image:    Surface  = pygame.image.load(fqFileName)
@@ -55,4 +56,3 @@ class GamePiece(Sprite):
         # print(f"sectorX: {str(sectorX)} self.rect.x: {str(self.rect.x)} sectorY: {str(sectorY)} self.rect.y: {str(self.rect.y)}")
         # print(str(self.rect))
         self.screen.blit(self.image, self.rect)
-

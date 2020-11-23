@@ -1,4 +1,4 @@
-from pkg_resources import resource_filename
+
 from pygame.font import Font
 
 from albow.themes.Theme import Theme
@@ -16,7 +16,10 @@ class MessageConsole(TextBox):
 
         super().__init__(theNumberOfRows=10, theNumberOfColumns=53)
 
-        fqFileName = resource_filename(Settings.FONT_RESOURCES_PACKAGE_NAME, Settings.FIXED_WIDTH_FONT_NAME)
+        fqFileName: str = Settings.getResourcesPath(bareFileName=Settings.FIXED_WIDTH_FONT_NAME,
+                                                    resourcePackageName=Settings.FONT_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.FONT_RESOURCES_PATH
+                                                    )
 
         messageFont: Font     = Font(fqFileName, MessageConsole.CONSOLE_FONT_SIZE)
         settings:    Settings = Settings()

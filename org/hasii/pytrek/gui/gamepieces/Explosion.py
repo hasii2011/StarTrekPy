@@ -1,8 +1,6 @@
 
 import logging
 
-from pkg_resources import resource_filename
-
 import pygame
 
 from pygame import Surface
@@ -22,11 +20,15 @@ class Explosion(GamePiece):
         """"""
 
         self.explosionColor = ExplosionColor.GREY
-        # filename            = "images/explosion_rays_{}.png".format(self.explosionColor.name.lower())
+
         filename = f'explosion_rays_{self.explosionColor.name.lower()}.png'
         super().__init__(screen, filename)
 
-        fqFileName = resource_filename(Settings.SOUND_RESOURCES_PACKAGE_NAME, 'SmallExplosion.wav')
+        fqFileName: str = Settings.getResourcesPath(bareFileName='SmallExplosion.wav',
+                                                    resourcePackageName=Settings.SOUND_RESOURCES_PACKAGE_NAME,
+                                                    resourcesPath=Settings.SOUND_RESOURCES_PATH
+                                                    )
+
         self.soundExplosion = pygame.mixer.Sound(fqFileName)
         self.logger         = logging.getLogger(__name__)
 
@@ -54,7 +56,11 @@ class Explosion(GamePiece):
                 if self.explosionColor != ExplosionColor.NO_COLOR:
 
                     filename:   str = f'explosion_rays_{self.explosionColor.name.lower()}.png'
-                    fqFileName: str = resource_filename(Settings.IMAGE_RESOURCES_PACKAGE_NAME, filename)
+
+                    fqFileName: str = Settings.getResourcesPath(bareFileName=filename,
+                                                                resourcePackageName=Settings.IMAGE_RESOURCES_PACKAGE_NAME,
+                                                                resourcesPath=Settings.IMAGE_RESOURCES_PATH
+                                                                )
 
                     self.image:                  Surface = pygame.image.load(fqFileName)
                     self.timeSinceLastExplosion: float   = playTime

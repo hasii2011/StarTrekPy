@@ -31,6 +31,7 @@ DATA_FILES = [
               ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/GalaxyScanBackground.png']),
               ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/KlingonD7.png']),
               ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/KlingonTorpedo.png']),
+              ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/KlingonTorpedoFollower-16.png']),
               ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/KlingonTorpedoMiss.png']),
               ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/medfighter.png']),
               ('org/hasii/pytrek/resources/images', ['org/hasii/pytrek/resources/images/QuadrantBackground.png']),
@@ -46,7 +47,6 @@ DATA_FILES = [
 
               ('org/hasii/pytrek/resources', ['org/hasii/pytrek/resources/loggingConfiguration.json']),
               ('org/hasii/pytrek/resources', ['org/hasii/pytrek/resources/pyTrek.conf']),
-
              ]
 OPTIONS = {}
 
@@ -63,7 +63,7 @@ setup(
               'org.hasii.pytrek.resources',
               'org.hasii.pytrek.resources.fonts',
               'org.hasii.pytrek.resources.images',
-              'org.hasii.pytrek.resources.sounds'
+              'org.hasii.pytrek.resources.sounds',
     ],
     include_package_data=True,
 
