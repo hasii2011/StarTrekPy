@@ -9,6 +9,9 @@ import logging.config
 
 from pkg_resources import resource_filename
 
+from os import chdir
+from sys import path as sysPath
+
 import pygame
 
 from pygame import Surface
@@ -44,16 +47,35 @@ class StarTrekPy:
 
         self._settings: Settings = Settings()
 
+        self._executionPath:  str = self._getExecutionPath()
+        self.logger.warning(f'{self._executionPath=}')
+
     def run(self):
         pygame.init()
         pygame.display.set_caption("Star Trek ala' Python Albow")
 
-        surface: Surface = pygame.display.set_mode((self._settings.screenWidth, self._settings.screenHeight))
-        shell: StarTrekShell = StarTrekShell(surface)
+        surface: Surface       = pygame.display.set_mode((self._settings.screenWidth, self._settings.screenHeight))
+        shell:   StarTrekShell = StarTrekShell(surface)
+
+        self._setOurSysPath()
 
         self.logger.info(f"Starting {__name__}")
 
         shell.run()
+
+    def _getExecutionPath(self) -> str:
+        """
+        Return the absolute path currently used
+        """
+        absPath = sysPath[0]
+        return absPath
+
+    def _setOurSysPath(self):
+        try:
+            sysPath.append(self._executionPath)
+            chdir(self._executionPath)
+        except OSError as msg:
+            self.logger.error(f"Error while setting path: {msg}")
 
     def _retrieveResourcePath(self, bareFileName: str) -> str:
 
