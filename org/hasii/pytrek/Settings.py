@@ -114,7 +114,9 @@ class Settings:
 
     @staticmethod
     def getResourcesPath(resourcePackageName: str, resourcesPath: str, bareFileName: str) -> str:
-
+        # Use this method in Python 3.9
+        # from importlib_resources import files
+        # configFilePath: str  = files('org.hasii.pytrek.resources').joinpath(JSON_LOGGING_CONFIG_FILENAME)
         try:
             fqFileName: str = resource_filename(resourcePackageName, bareFileName)
         except (ValueError, Exception):
