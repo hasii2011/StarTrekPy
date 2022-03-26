@@ -1,5 +1,8 @@
 pygame==2.0.1
 python3-albow~=2.90.0
-jsonpickle==2.0.0
-py2app==0.23
-wheel==0.36.2
+jsonpickle~=2.0.0
+py2app~=0.23
+wheel~=0.36.2
+twine~=3.4.1
+epr~=0.25
+watchpoints~=0.2.2

@@ -49,4 +49,3 @@ class BasicTorpedo(GamePiece):
         """"""
         self.trajectory = trajectory
         self.logger.debug(f"Trajectory: {self.trajectory}")
-        self.logger.debug(f"Trajectory: {self.trajectory}")

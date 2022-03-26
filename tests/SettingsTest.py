@@ -15,7 +15,7 @@ class SettingsTest(TestCase):
 
         settings = Settings()
 
-        self.assertEqual(2,settings.leftMargin)
+        self.assertEqual(2, settings.leftMargin)
 
         self.assertIsNotNone(settings.maxPlanets)
         self.assertIsNotNone(settings.maxStarCount)

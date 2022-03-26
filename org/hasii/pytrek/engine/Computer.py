@@ -61,8 +61,8 @@ class Computer:
 
     def computeCoordinates(self, xPos: int, yPos: int) -> Coordinates:
         """"""
-        gameX =  int(math.floor(xPos / GamePiece.QUADRANT_PIXEL_WIDTH))
-        gameY =  int(math.floor(yPos / GamePiece.QUADRANT_PIXEL_HEIGHT))
+        gameX = int(math.floor(xPos / GamePiece.QUADRANT_PIXEL_WIDTH))
+        gameY = int(math.floor(yPos / GamePiece.QUADRANT_PIXEL_HEIGHT))
 
         coordinates = Coordinates(gameX, gameY)
 

@@ -3,8 +3,6 @@ import pygame
 
 import logging
 
-from pkg_resources import resource_filename
-
 from albow.themes.Theme import Theme
 
 from albow.core.ui.Widget import Widget
